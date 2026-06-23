@@ -90,9 +90,13 @@ function sourceFrontmatter(source) {
     '    publisher: ' + yamlString(source.publisher),
     '    publisherType: ' + publisherType,
     '    reliability: ' + (source.role === 'primary' ? 'R1' : 'R2'),
-    '    publicationDate: ' + yamlString(source.published_at || new Date().toISOString().slice(0, 10)),
+    '    publicationDate: ' + yamlString(sourcePublicationDate(source)),
     '    archived: false',
   ].join('\n');
+}
+
+function sourcePublicationDate(source) {
+  return source.published_at || new Date().toISOString().slice(0, 10);
 }
 
 function assertCampaignSourceReadiness(packet) {
@@ -147,7 +151,7 @@ function mitreFrontmatter(packet, { required = false } = {}) {
 }
 
 function frontmatter(packet, createdAt) {
-  const title = safeTitle(packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
+  const title = safeTitle(packet.candidate?.title || packet.claims?.[0]?.claim || packet.candidate?.canonical_subject_id || 'Grounded Threatpedia Draft');
   const tags = ['grounded-draft', packet.lane, 'supply-chain'].filter(Boolean);
   const sources = allSources(packet).map(sourceFrontmatter).join('\n');
   const date = packet.key_dates?.disclosed_at || packet.key_dates?.published_at || createdAt;
@@ -273,8 +277,12 @@ function fallbackLine(packet, text) {
 
 function sectionContent(packet, heading, claimSets) {
   if (heading === 'Sources & References') {
+    const extractTitles = new Map((packet.source_extracts || []).map((extract) => [extract.source_id, extract.title]));
     const sourceRows = allSources(packet)
-      .map((source, index) => `${index + 1}. [${markdownEscape(source.publisher)}](${source.url}) — ${markdownEscape(source.publisher)}, ${source.published_at || 'accessed during packet assembly'}`);
+      .map((source) => {
+        const title = markdownEscape(extractTitles.get(source.id) || source.publisher);
+        return `- [${markdownEscape(source.publisher)}: ${title}](${source.url}) — ${markdownEscape(source.publisher)}, ${sourcePublicationDate(source)}`;
+      });
     return sourceRows.length ? sourceRows : [fallbackLine(packet, 'The source packet did not include source rows for this draft.')];
   }
   if (/timeline/i.test(heading)) {
@@ -284,21 +292,21 @@ function sectionContent(packet, heading, claimSets) {
     return claimSets.summary.length ? claimLines(claimSets.summary) : [fallbackLine(packet, 'The source packet establishes only the approved candidate subject.')];
   }
   if (/technical|attack chain|exploit chain|mitre|capabilities/i.test(heading)) {
-    return claimSets.findings.length ? claimLines(claimSets.findings) : claimLines(packet.claims || []);
+    return claimSets.findings.length ? claimLines(claimSets.findings) : [fallbackLine(packet, 'The source packet does not establish additional packet-backed technical findings.')];
   }
   if (/attribution|campaign/i.test(heading)) {
     return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'The packet does not establish additional attribution beyond the candidate classification.')];
   }
   if (/remediation|impact|detection|indicators|open questions/i.test(heading)) {
-    const uncertaintyLines = (packet.uncertainties || []).map((item) => fallbackLine(packet, item.drafting_instruction));
-    return uncertaintyLines.length ? uncertaintyLines : [fallbackLine(packet, 'The packet does not establish additional guidance for this section.')];
+    return [fallbackLine(packet, 'The source packet does not establish additional packet-backed facts for this section.')];
   }
-  return claimLines(packet.claims || []);
+  return claimLines(claimSets.reader);
 }
 
 function body(packet) {
   const groups = groupedClaims(packet);
-  const summaryClaims = groups.get('summary') || packet.claims?.slice(0, 2) || [];
+  const readerClaims = (packet.claims || []).filter((claim) => !['frontmatter', 'internal'].includes(claim.article_section));
+  const summaryClaims = groups.get('summary') || [];
   const technicalClaims = groups.get('technical-analysis') || [];
   const timelineClaims = groups.get('timeline') || [];
   const attributionClaims = groups.get('attribution') || (packet.claims || []).filter((claim) => claim.claim_type === 'attribution');
@@ -306,7 +314,7 @@ function body(packet) {
   const technicalClaimIds = new Set(technicalClaims.map((claim) => claim.claim_id));
   const timelineClaimIds = new Set(timelineClaims.map((claim) => claim.claim_id));
   const attributionClaimIds = new Set(attributionClaims.map((claim) => claim.claim_id));
-  const supportingClaims = (packet.claims || []).filter((claim) =>
+  const supportingClaims = readerClaims.filter((claim) =>
     !summaryClaimIds.has(claim.claim_id)
     && !technicalClaimIds.has(claim.claim_id)
     && !timelineClaimIds.has(claim.claim_id)
@@ -325,6 +333,7 @@ function body(packet) {
     findings: findingClaims,
     timeline: timelineClaims,
     attribution: attributionClaims,
+    reader: readerClaims,
   };
   const lines = [];
   for (const heading of headings) {
@@ -353,7 +362,7 @@ async function run() {
     output: path.resolve(repoRoot, args.out),
     lane: packet.lane,
     claims: packet.claims.length,
-    slug: slugPart(packet.claims[0]?.claim || packet.source_packet_id),
+    slug: slugPart(packet.candidate?.title || packet.claims[0]?.claim || packet.source_packet_id),
   }, null, 2)}\n`);
 }
 

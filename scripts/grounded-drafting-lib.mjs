@@ -101,9 +101,14 @@ export function classifySource(url) {
   if (host === 'google.com' || host.endsWith('.google.com')) return { publisher: 'Google', source_type: 'vendor' };
   if (host === 'socket.dev' || host.endsWith('.socket.dev')) return { publisher: 'Socket', source_type: 'research' };
   if (host === 'snyk.io' || host.endsWith('.snyk.io')) return { publisher: 'Snyk', source_type: 'research' };
+  if (host === 'stepsecurity.io' || host.endsWith('.stepsecurity.io')) return { publisher: 'StepSecurity', source_type: 'research' };
+  if (host === 'sysdig.com' || host.endsWith('.sysdig.com')) return { publisher: 'Sysdig', source_type: 'research' };
+  if (host === 'cloudsecurityalliance.org' || host.endsWith('.cloudsecurityalliance.org')) return { publisher: 'Cloud Security Alliance', source_type: 'research' };
   if (host === 'wiz.io' || host.endsWith('.wiz.io')) return { publisher: 'Wiz', source_type: 'research' };
   if (host === 'trendmicro.com' || host.endsWith('.trendmicro.com')) return { publisher: 'Trend Micro', source_type: 'vendor' };
+  if (host === 'checkmarx.com' || host.endsWith('.checkmarx.com')) return { publisher: 'Checkmarx', source_type: 'vendor' };
   if (host === 'thehackernews.com' || host.endsWith('.thehackernews.com')) return { publisher: 'The Hacker News', source_type: 'news' };
+  if (host === 'securityweek.com' || host.endsWith('.securityweek.com')) return { publisher: 'SecurityWeek', source_type: 'news' };
   return { publisher: parsed.hostname, source_type: 'other' };
 }
 

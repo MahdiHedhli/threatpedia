@@ -86,7 +86,7 @@ function isSubstantiveLine(line, inSources) {
   if (trimmed.startsWith('---')) return false;
   if (trimmed.startsWith('##')) return false;
   if (trimmed.startsWith('<!--') && trimmed.endsWith('-->')) return false;
-  if (inSources && /^\d+\.\s+\[/.test(trimmed)) return false;
+  if (inSources && /^(?:\d+\.\s+|- )\[/.test(trimmed)) return false;
   if (/^\|?\s*:?-{3,}:?\s*\|/.test(trimmed)) return false;
   return /[A-Za-z0-9]/.test(trimmed);
 }

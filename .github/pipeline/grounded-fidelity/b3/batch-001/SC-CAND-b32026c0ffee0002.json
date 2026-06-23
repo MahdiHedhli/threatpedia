@@ -1,0 +1,29 @@
+{
+  "pass": true,
+  "status": "pass",
+  "errors": [],
+  "warnings": [
+    {
+      "path": "$.claims.claim-3",
+      "message": "packet claim is not referenced in draft body"
+    },
+    {
+      "path": "$.claims.claim-4",
+      "message": "packet claim is not referenced in draft body"
+    },
+    {
+      "path": "$.claims.claim-5",
+      "message": "packet claim is not referenced in draft body"
+    },
+    {
+      "path": "$.claims.claim-6",
+      "message": "packet claim is not referenced in draft body"
+    }
+  ],
+  "summary": {
+    "packet_claims": 12,
+    "referenced_claims": 8,
+    "packet_urls": 4,
+    "draft_urls": 8
+  }
+}

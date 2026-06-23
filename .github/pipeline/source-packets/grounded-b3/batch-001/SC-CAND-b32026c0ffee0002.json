@@ -1,0 +1,365 @@
+{
+  "schema_version": "source-packet/1",
+  "task_id": "TASK-2026-0002",
+  "lane": "incident",
+  "source_packet_id": "sp-SC-CAND-b32026c0ffee0002",
+  "created_at": "2026-06-23T00:00:00Z",
+  "source_packet_status": "draft",
+  "candidate": {
+    "candidate_id": "SC-CAND-b32026c0ffee0002",
+    "canonical_subject_id": "SC-2026-MEGALODON",
+    "proposed_archetype": "incident",
+    "title": "Megalodon GitHub Actions repository workflow poisoning campaign",
+    "summary": "The Megalodon campaign inserted malicious GitHub Actions workflows into thousands of public repositories to harvest CI/CD secrets and cloud credentials through automated commit activity.",
+    "classification": {
+      "leadClass": "current",
+      "leadClassReason": "curated 2026 supply-chain backfill with public reporting inside the recent window",
+      "workIntent": "create_article",
+      "routingPriority": "p1",
+      "effectiveActiveStatus": "malware_confirmed",
+      "activeStatus": "malware_confirmed",
+      "activeStatusExpiresAt": "2026-07-23T00:00:00Z",
+      "needsReverify": false,
+      "kevStatusDerived": null,
+      "kevStatusIsAuthoredTruth": false,
+      "manualOverrideValid": false,
+      "manualOverrideErrors": []
+    },
+    "rank": 85,
+    "rank_reasons": [
+      "curated B3 backfill",
+      "large-scale GitHub Actions workflow poisoning",
+      "government alert present"
+    ]
+  },
+  "approval": {
+    "approved_by": "KernelK",
+    "approval_ref": "Kernel K user request: Start B3 batch 001",
+    "approved_at": "2026-06-23T00:00:00Z",
+    "scope": "grounded_draft_sample_or_candidate"
+  },
+  "grounding_contract": {
+    "drafting_mode": "packet_claims_only",
+    "disallow_model_memory": true,
+    "disallow_placeholder_urls": true,
+    "require_claim_markers": true,
+    "require_source_url_parity": true,
+    "generation_must_fail_on_fetch_error": true
+  },
+  "output_target": {
+    "file_pattern": "site/src/content/incidents/SC-CAND-b32026c0ffee0002.md",
+    "branch": null,
+    "pr": true
+  },
+  "primary_sources": [
+    {
+      "id": "src-1",
+      "publisher": "StepSecurity",
+      "url": "https://www.stepsecurity.io/blog/megalodon-mass-github-actions-secret-exfiltration-across-5-500-public-repositories",
+      "published_at": null,
+      "source_type": "research",
+      "role": "primary",
+      "notes": "Fetched and extracted by the grounded source-packet builder."
+    },
+    {
+      "id": "src-2",
+      "publisher": "Cybersecurity and Infrastructure Security Agency",
+      "url": "https://www.cisa.gov/news-events/alerts/2026/05/28/supply-chain-compromises-impact-nx-console-and-github-repositories",
+      "published_at": null,
+      "source_type": "database",
+      "role": "primary",
+      "notes": "Fetched and extracted by the grounded source-packet builder."
+    },
+    {
+      "id": "src-3",
+      "publisher": "Cloud Security Alliance",
+      "url": "https://labs.cloudsecurityalliance.org/research/csa-research-note-megalodon-github-actions-cicd-supply-chain/",
+      "published_at": null,
+      "source_type": "research",
+      "role": "primary",
+      "notes": "Fetched and extracted by the grounded source-packet builder."
+    }
+  ],
+  "supporting_sources": [
+    {
+      "id": "src-4",
+      "publisher": "SecurityWeek",
+      "url": "https://www.securityweek.com/over-5500-github-repositories-infected-in-megalodon-supply-chain-attack/",
+      "published_at": null,
+      "source_type": "news",
+      "role": "supporting",
+      "notes": "Fetched and extracted by the grounded source-packet builder."
+    }
+  ],
+  "source_extracts": [
+    {
+      "source_id": "src-1",
+      "status": "ok",
+      "title": "Megalodon: Mass GitHub Actions Secret Exfiltration Across 5,500+ Public Repositories - StepSecurity",
+      "extracted_at": "2026-06-23T02:46:31.852Z",
+      "extracted_text": "Megalodon: Mass GitHub Actions Secret Exfiltration Across 5,500+ Public Repositories - StepSecurity Skip to main content Solutions GitHub Actions Dev Machine Guard OSS Package Security Customers Pricing Resources Blog Documentation Product Tour GitHub Actions Advisor GitHub Actions Audit ROI Calculator Company About Us Newsroom Trust Center Request a Demo Login Solutions Github Actions Dev Machine Guard OSS Package Security Customers Pricing Resources Blog Documentation Product Tour GitHub Actions Advisor GitHub Actions Audit ROI Calculator Company About Us Newsroom Trust Center Start Free Login Back to Blog Threat Intel Megalodon: Mass GitHub Actions Secret Exfiltration Across 5,500+ Public Repositories A forged commit. A workflow file disguised as a routine CI optimization. Within 6 hours, 5,561 GitHub repositories were backdoored. Cloud credentials harvested. SSH keys stolen. OIDC tokens minted and exfiltrated before any runner finished. The attacker never touched your application code, only your pipeline. Most repositories had no idea it happened. Rohan Prabhu View LinkedIn May 22, 2026 Share on X Share on X Share on LinkedIn Share on Facebook Follow our RSS feed Table of Contents Loading nav... On May 18, 2026, a large-scale supply chain attack campaign tracked as Megalodon injected malicious GitHub Actions workflows into over 5,500 open-source repositories within a single six-hour window. The campaign targeted repositories with weak branch protection, pushing backdoored CI workflow files designed to steal secrets from every subsequent pipeline run including cloud credentials, SSH keys, API tokens, and GitHub Actions OIDC tokens. Background: The GitHub Actions Attack Surface GitHub Actions workflows run arbitrary shell commands with access to every secret injected into the CI environment. When a repository grants id-token: write permission, workflows can also mint short-lived OIDC tokens that authenticate directly to cloud providers without static credentials. This makes the CI runner a high-value target: a single workflow execution can yield AWS access keys, GCP service account tokens, Azure IMDS credentials, Kubernetes configs, and all repository secrets simultaneously. Branch protection rules are the primary gate preventing unauthorized workflow injection. Repositories without mandatory pull request reviews allow any account with write access, or any accepted PR from a public fork with weak merge controls, to land workflow changes directly on the default branch. Megalodon systematically exploited this gap at scale. Attack Technique: Poisoned Pipeline Execution (d-PPE) Megalodon is a textbook direct Poisoned Pipeline Execution (d-PPE) attack, a class of CI/CD attack where an adversary with write access to a repository injects malicious code directly into workflow definition files, causing the CI system to execute attacker-controlled commands on the next pipeline run. Unlike indirect PPE (i-PPE), which requires a pull request from a fork, d-PPE exploits direct push access to the default branch, bypassing any pull request review gate entirely. This technique maps to MITRE ATT&CK T1195.002 (Supply Chain Compromise: Compromise Software Supply Chain) and is documented in CISA&#x27;s guidance on CI/CD security risks. The attack is particularly effective because: Workflow YAML files receive far less security scrutiny than application code Bot-like commit messages blend into high-velocity repositories with no friction CI runners have broad outbound internet access by default, with no firewall to bypass Ephemeral runner environments leave minimal forensic traces after the job completes d-PPE vs. i-PPE: In d-PPE the attacker pushes directly to the target branch, with no PR needed, no review triggered. Branch protection with mandatory reviews is the primary structural control that converts a d-PPE opportunity into the harder i-PPE problem, where the attacker must trick a maintainer into merging a malicious PR. Payload Capabilities Both workflow variants contain a base64-encoded bash payload that decodes and executes inline during the CI run. The payload is functionally identical across both variants, differing only in the trigger condition. On execution, it performs the following collection and exfiltration sequence: Credential and Secret Harvesting Environment variables: Full CI environment dump, /proc/*/environ for all running processes, and PID 1 environment data Cloud credentials: AWS access keys and session tokens, GCP OAuth tokens, Azure IMDS responses and instance role credentials Authentication material: SSH private keys, Docker registry configs ( ~/.docker/config.json ), .npmrc tokens, Kubernetes configs ( ~/.kube/config ), HashiCorp Vault tokens, Terraform credentials CI/CD tokens: GitHub Actions OIDC tokens (minted via id-token: write permission), GitLab CI/CD tokens, Bitbucket pipeline tokens Source code secrets: Filesystem grep across the workspace for 30+ secret patterns — API keys, connection str"
+    },
+    {
+      "source_id": "src-2",
+      "status": "ok",
+      "title": "Supply Chain Compromises Impact Nx Console and GitHub Repositories | CISA",
+      "extracted_at": "2026-06-23T02:46:31.832Z",
+      "extracted_text": "Supply Chain Compromises Impact Nx Console and GitHub Repositories | CISA Skip to main content An official website of the United States government Here’s how you know Here’s how you know Official websites use .gov A .gov website belongs to an official government organization in the United States. Secure .gov websites use HTTPS A lock ( Lock A locked padlock ) or https:// means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites. Staying Secure at Events no-cost Cyber Services Secure by design Secure Your Business Report A Cyber Issue Search Menu Close Topics Topics Cybersecurity Best Practices Cyber Threats and Response Critical Infrastructure Security and Resilience Election Security Emergency Communications Industrial Control Systems Information and Communications Technology Supply Chain Security Partnerships and Collaboration Physical Security Risk Management How can we help? Government Educational Institutions Industry State, Local, Tribal, and Territorial Individuals and Families Small and Medium Businesses Find Help Locally Faith-Based Community Executives High-Risk Communities Spotlight Resources & Tools Resources & Tools All Resources & Tools Services Programs Resources Training Groups News & Events News & Events Directives News Events Cybersecurity Alerts & Advisories Request a CISA Speaker Congressional Testimony CISA Conferences CISA Live! Careers Careers Benefits & Perks Hiring and Recruitment New Employee Orientation & Onboarding Students & Recent Graduates Veteran and Military Spouses About About Divisions & Offices Regions Leadership Doing Business with CISA Site Links CISA GitHub CISA Central Contact Us Subscribe Transparency and Accountability Policies & Plans Staying Secure at Events no-cost Cyber Services Secure by design Secure Your Business Report A Cyber Issue Breadcrumb Home News & Events Cybersecurity Advisories Alert Supply Chain Compromises Impact Nx Console and GitHub Repositories Share: Alert Supply Chain Compromises Impact Nx Console and GitHub Repositories Release Date May 28, 2026 CISA is prioritizing the response to multiple emerging software supply chain intrusion campaigns targeting developer ecosystems Continuous Integration/Continuous Development (CI/CD) pipelines. These recent incidents, including the GitHub compromise via a malicious Nx Console Visual Studio Code (VS Code) extension and the “Megalodon” supply chain intrusion campaign, demonstrate how cyber threat actors are abusing tools and processes that support enterprise, cloud, and DevOps environments—specifically CI/CD pipelines, code extensions and workflows. Threat actors leveraged a prior compromise of Nx developer systems to compromise a GitHub employee’s device through a poisoned third-party VS Code extension, resulting in unauthorized access and exfiltration of internal GitHub repositories. The malicious extension version (18.95.0) was distributed through VS Code’s automatic update mechanism, meaning systems with Nx Console previously installed may have received the malicious build without developers taking any manual installation action. GitHub released a security advisory on this activity, and CVE-2026-48027 has been assigned to the malicious version of Nx Console and added to CISA’s Known Exploited Vulnerabilities (KEV) Catalog . Additionally, in a campaign known as “Megalodon,” a cyber threat actor injected malicious GitHub Action workflows to harvest CI/CD secrets, cloud credentials, and tokens, impacting both development and deployment pipelines in public GitHub repositories. CISA urges organizations to implement the following recommendations to detect and remediate a potential compromise: Monitor and audit workflow files and contributor activity for suspicious pull requests and direct commits, particularly those authored by automated accounts. Revert unauthorized changes, especially from automated accounts, e.g., build-bot , auto-ci , ci-bot , pipeline-bot and especially those made after May 18, 2026. If your organization discovers a compromise resulting from previously compromised GitHub or Nx Console software, CISA recommends the following steps: Conduct a forensics review of CI/CD logs, cloud audit trails, and affected developer machines. Rotate/revoke all secrets including: all credentials, tokens, and secrets accessible to CI/CD pipelines, including API keys, cloud provider credentials (Amazon Web Services, Google Cloud Platform, Microsoft Azure), SSH keys, Docker/npm/PyPI/Vault/Terraform/Kubernetes tokens, GitHub/GitLab/Bitbucket tokens, and developer or pipeline secrets. Notify proper stakeholders if necessary. CISA recommends the following best practices for using package repos: Wait at least three hours before pulling a new package. This gives the software community time to identify suspicious or malicious packages before they are widely downloaded. Pin software to specific trusted versions. Pinning software prevents pulling a malicious o"
+    },
+    {
+      "source_id": "src-3",
+      "status": "ok",
+      "title": "Megalodon: Mass CI/CD Pipeline Poisoning via GitHub Actions &#8211; Lab Space",
+      "extracted_at": "2026-06-23T02:46:31.860Z",
+      "extracted_text": "Megalodon: Mass CI/CD Pipeline Poisoning via GitHub Actions &#8211; Lab Space Skip to content Home Search Megalodon: Mass CI/CD Pipeline Poisoning via GitHub Actions Authors: Cloud Security Alliance AI Safety Initiative Published: 2026-05-24 Categories: Software Supply Chain Security, CI/CD Pipeline Security, Cloud Security Download PDF Megalodon: Mass CI/CD Pipeline Poisoning via GitHub Actions Key Takeaways On May 18, 2026, an automated campaign dubbed Megalodon pushed 5,718 malicious commits to 5,561 distinct GitHub repositories in under six hours — a scale that, per StepSecurity&#8217;s reporting, exceeded previous single-day pipeline poisoning incidents in repository count. [1][2][9][10] The attack exploited throwaway or compromised GitHub accounts to inject malicious GitHub Actions workflow files containing base64-encoded payloads capable of harvesting over 30 categories of secrets, including AWS access keys, GCP OAuth tokens, Azure instance role credentials, SSH private keys, OIDC tokens, and Kubernetes configurations. [2] Two variants were deployed: a mass &#8220;SysDiag&#8221; workflow triggered on every push and pull request for broad secret capture, and a targeted &#8220;Optimize-Build&#8221; backdoor using workflow_dispatch triggers that the attacker could activate on demand via the GitHub API. [3] At least one npm package — @tiledesk/tiledesk-server versions 2.18.6 through 2.18.12 — was unknowingly published from a poisoned repository, propagating the backdoor to downstream npm consumers without any compromise of the npm account itself. [1][2] Megalodon succeeded at scale because thousands of targeted repositories lacked branch protection on .github/workflows/ , granted broad write permissions to external contributors, and stored production secrets in over-privileged CI runner environments. [1][2][3] Organizations can substantially reduce exposure to this attack class through three durable controls: pinning all GitHub Actions references to immutable commit SHAs, enforcing minimum token permissions per workflow job, and replacing long-lived CI secrets with OIDC-based workload identity. Together these controls eliminate the most common exploitation paths and limit the value of any credentials captured from a compromised runner. Background The Expanding Attack Surface of CI/CD Pipelines Modern software development is structurally dependent on CI/CD pipelines. The same pipeline that builds application code also holds keys to cloud infrastructure, npm publishing credentials, container registry tokens, database connection strings, and signing certificates. A successful attacker who can execute arbitrary code inside a CI runner gains access to all of these simultaneously — a single point of leverage with a blast radius that can extend from source repositories into production environments and published package registries. GitHub Actions has become the most widely adopted hosted CI/CD platform for open source projects. Its deep integration with the GitHub repository model — where workflow files live inside the repository itself under .github/workflows/ — creates a powerful development convenience but also a fundamental security property that is frequently misunderstood: any actor with write access to a repository, including collaborators, can modify workflow definitions. This is categorically different from an external trigger modifying application code, because workflow modifications instruct the CI system itself what to do. Changing a workflow file is changing a build instruction, not an application file, and the distinction is consequential: workflow modifications execute in the CI system&#8217;s security context, not the application&#8217;s, and are therefore not reviewed by the same code-review gates that protect application changes. The exploitation model that Megalodon used — Direct Poisoned Pipeline Execution (d-PPE) — has been recognized by security researchers for several years. [4] In d-PPE, an adversary with repository write access modifies workflow definition files to cause the CI system to execute attacker-controlled commands the next time the pipeline runs. No vulnerability in GitHub&#8217;s platform is exploited; the attacker is operating within the intended permission model. The attack is made possible by over-permissioned access controls and the absence of code-review requirements on workflow file changes specifically. A Pattern of Escalating Incidents Megalodon did not emerge in isolation. The GitHub Actions ecosystem has faced a series of escalating supply chain incidents over the preceding 14 months that established both the attack technique and the defender response gap. In March 2025, the widely used tj-actions/changed-files action was compromised after attackers hijacked its mutable version tags, affecting an estimated 23,000 downstream repositories that had been pointing to tags rather than immutable commit SHAs. [4] In March 2026, attackers hijacked version tags in aquasecurity"
+    },
+    {
+      "source_id": "src-4",
+      "status": "ok",
+      "title": "Over 5,500 GitHub Repositories Infected in &#039;Megalodon&#039; Supply Chain Attack - SecurityWeek",
+      "extracted_at": "2026-06-23T02:46:32.006Z",
+      "extracted_text": "Over 5,500 GitHub Repositories Infected in &#039;Megalodon&#039; Supply Chain Attack - SecurityWeek SECURITYWEEK NETWORK: Cybersecurity News Webcasts Virtual Events ICS: ICS Cybersecurity Conference Malware & Threats Cyberwarfare Cybercrime Data Breaches Fraud & Identity Theft Nation-State Ransomware Vulnerabilities Security Operations Threat Intelligence Incident Response Tracking & Law Enforcement Security Architecture Application Security Cloud Security Endpoint Security Identity & Access IoT Security Mobile & Wireless Network Security Risk Management Cyber Insurance Data Protection Privacy & Compliance Supply Chain Security CISO Strategy Cyber Insurance CISO Conversations CISO Forum ICS/OT Industrial Cybersecurity ICS Cybersecurity Conference Funding/M&A Cybersecurity Funding M&A Tracker Cyber AI Cybersecurity News Webcasts Virtual Events ICS Cybersecurity Conference Connect with us Hi, what are you looking for? SecurityWeek Malware & Threats Cyberwarfare Cybercrime Data Breaches Fraud & Identity Theft Nation-State Ransomware Vulnerabilities Security Operations Threat Intelligence Incident Response Tracking & Law Enforcement Security Architecture Application Security Cloud Security Endpoint Security Identity & Access IoT Security Mobile & Wireless Network Security Risk Management Cyber Insurance Data Protection Privacy & Compliance Supply Chain Security CISO Strategy Cyber Insurance CISO Conversations CISO Forum ICS/OT Industrial Cybersecurity ICS Cybersecurity Conference Funding/M&A Cybersecurity Funding M&A Tracker Cyber AI Application Security Over 5,500 GitHub Repositories Infected in &#8216;Megalodon&#8217; Supply Chain Attack Fake automated commits injected GitHub Actions workflows containing payloads to steal credentials, CI secrets, keys, and tokens. By Ionut Arghire | May 25, 2026 (3:40 AM ET) Flipboard Reddit Whatsapp Whatsapp Email More than 5,500 GitHub repositories were infected with malware in a supply chain attack that relies on automated commits, security researchers warn. The campaign, dubbed Megalodon, relies on GitHub Actions workflows containing a payload designed to steal credentials, keys, tokens, and other secrets. The workflows, SafeDep says, were injected through over 5,700 malicious commits pushed to the impacted repositories within a six-hour window, on May 18. According to the cybersecurity firm, the attackers deployed two payloads as part of the attack. One was designed to add a new workflow that would be triggered on every push and pull request, and another that replaced existing workflows with specific triggers, creating dormant backdoors. On infected machines, the malware would exfiltrate all CI environment variables, AWS credentials, GCP access tokens, Azure credentials, SSH private keys, Docker and Kubernetes configurations, API keys, database connection strings, GitHub Actions tokens, GitLab CI/CD tokens, and dozens of other types of secrets. Megalodon, SafeDep explains, was discovered after malicious versions of the Tiledesk package, an open source live chat and chatbot platform, were identified. The infected packages were published between May 19 and May 21. Advertisement. Scroll to continue reading. “The same NPM account, eljohnny ( [email&#160;protected] ), published both the clean 2.18.5 and the compromised versions. The attacker never touched the NPM account. They compromised the GitHub repository, and the maintainer published from the poisoned source without realizing it,” SafeDep says. The malicious commit that led to the infection was pushed on May 18, authored by ‘build-bot’. SafeDep’s investigation into the associated email address uncovered a total of 2,878 commits made on the same day, along with an additional 2,841 commits made via a second email address. “All 5,718 commits landed on the same day: May 18, 2026, across a six-hour window from approximately 11:36 to 17:48 UTC, targeting 5,561 distinct repositories,” SafeDep explains. The cybersecurity firm also notes that the attackers’ choice of malicious GitHub Actions workflow, namely ‘workflow_dispatch’, ensured that the dormant backdoor could be triggered at a later date via the GitHub API, using stolen GitHub tokens. The workflow is exempted from GitHub’s anti-recursion rules, which prevent new workflow runs from being spawned via GitHub token-triggered events. Last week, NPM announced that all NPM granular access tokens with write access that bypass two-factor authentication have been invalidated to prevent supply chain attacks similar to Mini Shai-Hulud . According to Ox Security , this should prevent account hijacking, but does not resolve the underlying problem, and malicious code will continue to spread through compromised repositories. “If platforms continue allowing any type of code to be uploaded without serious vetting, the number of attacks will only increase,” Ox notes. “We’ve entered a new supply chain attack era, and TeamPCP compromising GitHub was only the beginning. What’s coming next is"
+    }
+  ],
+  "source_quality": {
+    "has_government_source": false,
+    "has_vendor_source": false,
+    "has_primary_source": true,
+    "source_sufficiency": "sufficient"
+  },
+  "key_dates": {
+    "disclosed_at": null,
+    "published_at": "2026-05-18",
+    "patched_at": null,
+    "kev_added_at": null,
+    "exploited_before_disclosure": "unknown",
+    "date_uncertainties": [
+      "Candidate queue data does not establish all article timeline dates."
+    ]
+  },
+  "affected_products": [
+    {
+      "vendor": "Unknown",
+      "product": "Megalodon GitHub Actions repository workflow poisoning campaign",
+      "versions": "unknown",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ]
+    }
+  ],
+  "cves": [
+    {
+      "id": "CVE-2026-48027",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ]
+    }
+  ],
+  "cwes": [],
+  "kev_status": {
+    "in_kev": false,
+    "source_refs": []
+  },
+  "exploit_status": {
+    "known_exploited": true,
+    "source_refs": [
+      "src-1",
+      "src-2",
+      "src-3"
+    ],
+    "notes": "Known-exploitation or malware signal is limited to classifier-backed source data in this packet."
+  },
+  "claims": [
+    {
+      "claim_id": "claim-1",
+      "claim": "Megalodon GitHub Actions repository workflow poisoning campaign is the candidate subject approved for grounded drafting.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "confidence": "high",
+      "article_section": "frontmatter"
+    },
+    {
+      "claim_id": "claim-2",
+      "claim": "The Megalodon campaign inserted malicious GitHub Actions workflows into thousands of public repositories to harvest CI/CD secrets and cloud credentials through automated commit activity.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "confidence": "medium",
+      "article_section": "summary"
+    },
+    {
+      "claim_id": "claim-3",
+      "claim": "The canonical subject identifier is SC-2026-MEGALODON.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "confidence": "high",
+      "article_section": "frontmatter"
+    },
+    {
+      "claim_id": "claim-4",
+      "claim": "The candidate is classified as current.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3",
+        "src-4"
+      ],
+      "confidence": "medium",
+      "article_section": "frontmatter"
+    },
+    {
+      "claim_id": "claim-5",
+      "claim": "The classifier work intent is create_article.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3",
+        "src-4"
+      ],
+      "confidence": "medium",
+      "article_section": "frontmatter"
+    },
+    {
+      "claim_id": "claim-6",
+      "claim": "The classifier effective active status is malware_confirmed.",
+      "claim_type": "exploitation",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "confidence": "medium",
+      "article_section": "frontmatter"
+    },
+    {
+      "claim_id": "claim-7",
+      "claim": "The source packet links this candidate to existing actor TeamPCP.",
+      "claim_type": "attribution",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3",
+        "src-4"
+      ],
+      "confidence": "low",
+      "article_section": "other"
+    },
+    {
+      "claim_id": "claim-8",
+      "claim": "The source packet links this candidate to existing campaign Megalodon Supply-Chain Intrusion Campaign in GitHub and npm.",
+      "claim_type": "attribution",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3",
+        "src-4"
+      ],
+      "confidence": "low",
+      "article_section": "other"
+    },
+    {
+      "claim_id": "claim-9",
+      "claim": "On May 18, 2026, a large-scale supply chain attack campaign tracked as Megalodon injected malicious GitHub Actions workflows into over 5,500 open-source repositories within a single six-hour window.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-1"
+      ],
+      "confidence": "medium",
+      "article_section": "technical-analysis"
+    },
+    {
+      "claim_id": "claim-10",
+      "claim": "Additionally, in a campaign known as “Megalodon,” a cyber threat actor injected malicious GitHub Action workflows to harvest CI/CD secrets, cloud credentials, and tokens, impacting both development and deployment pipelines in public GitHub repositories.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-2"
+      ],
+      "confidence": "medium",
+      "article_section": "technical-analysis"
+    },
+    {
+      "claim_id": "claim-11",
+      "claim": "[1][2] Megalodon succeeded at scale because thousands of targeted repositories lacked branch protection on .github/workflows/ , granted broad write permissions to external contributors, and stored production secrets in over-privileged CI runner environments.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-3"
+      ],
+      "confidence": "medium",
+      "article_section": "technical-analysis"
+    },
+    {
+      "claim_id": "claim-12",
+      "claim": "The campaign, dubbed Megalodon, relies on GitHub Actions workflows containing a payload designed to steal credentials, keys, tokens, and other secrets.",
+      "claim_type": "other",
+      "source_refs": [
+        "src-4"
+      ],
+      "confidence": "medium",
+      "article_section": "technical-analysis"
+    }
+  ],
+  "uncertainties": [
+    {
+      "topic": "source packet scope",
+      "reason": "This packet is built from a candidate queue item and fetched sources only.",
+      "drafting_instruction": "Do not add facts, dates, attribution, or impact figures unless they are represented in claims with source_refs."
+    },
+    {
+      "topic": "date and patch status",
+      "reason": "The candidate queue and fetched source extracts do not establish every timeline or remediation date required for publication.",
+      "drafting_instruction": "Do not claim disclosure, publication, patch, or remediation dates unless a packet claim states the date with source_refs."
+    },
+    {
+      "topic": "exploit timing",
+      "reason": "The candidate classification can indicate active signal without establishing exploitation timing relative to disclosure.",
+      "drafting_instruction": "Do not claim exploitation timing, pre-disclosure exploitation, or campaign dwell time unless a packet claim states it with source_refs."
+    }
+  ],
+  "not_supported": [
+    {
+      "claim": "Any fact not present in claims[]",
+      "reason": "B2 grounded drafting forbids model-memory additions and placeholder source recovery."
+    }
+  ],
+  "mitre_candidates": [
+    {
+      "technique_id": "T1195.002",
+      "technique_name": "Compromise Software Supply Chain",
+      "tactic": "Initial Access",
+      "source_refs": [
+        "src-1",
+        "src-2",
+        "src-3"
+      ],
+      "confidence": "medium",
+      "include_in_article": true
+    }
+  ],
+  "drafting_notes": [
+    "Draft strictly from claims[] and source_extracts[].",
+    "Every substantive article sentence must carry a claim marker.",
+    "Do not introduce URLs outside primary_sources/supporting_sources."
+  ],
+  "preflight": {
+    "status": "not_run",
+    "errors": [],
+    "warnings": []
+  }
+}

@@ -60,12 +60,20 @@ async function testGroundedPacketDraftAndFidelityPass() {
     assert.ok(packet.source_extracts.every((extract) => extract.status === 'ok'));
     assert.ok(packet.claims.length >= 5);
     assert.equal(packet.output_target.file_pattern, 'site/src/content/incidents/SC-CAND-1234abcd5678ef90.md');
+    assert.equal(packet.candidate.title, 'Fixture npm supply-chain compromise');
+    assert.equal(packet.candidate.summary, 'A malicious npm package release attempted credential theft through a package install script.');
     assert.ok(packet.uncertainties.some((item) => item.topic.includes('date')));
     assert.ok(packet.uncertainties.some((item) => item.topic.includes('exploit')));
 
     runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
     writeFileSync(draftPath, draft);
+    assert.match(draft, /^title: "Fixture npm supply-chain compromise"$/m);
+    assert.doesNotMatch(draft, /^title: "Fixture npm supply-chain compromise is the candidate subject approved for grounded drafting\."$/m);
+    assert.doesNotMatch(draft, /candidate subject approved for grounded drafting/);
+    assert.doesNotMatch(draft, /classifier work intent/);
+    assert.match(draft, /techniqueId: "T1195\.002"/);
+    assert.match(draft, /\n- \[Socket: .+\]\(https:\/\/socket\.dev\/blog\/supply-chain-fixture\) — Socket, \d{4}-\d{2}-\d{2}\n/);
     assert.match(draft, /\ndate: 2026-06-21\n/);
     assert.deepEqual(bodyH2s(draft), SCHEMA_REQUIRED_H2_BY_TYPE.incident);
     const fidelity = checkGroundedDraft(packet, draft);
@@ -175,6 +183,22 @@ function testOfficialAdvisorySourceClassification() {
     publisher: 'CVE Program',
     source_type: 'database',
   });
+  assert.deepEqual(classifySource('https://checkmarx.com/blog/ongoing-security-updates/'), {
+    publisher: 'Checkmarx',
+    source_type: 'vendor',
+  });
+  assert.deepEqual(classifySource('https://www.stepsecurity.io/blog/megalodon'), {
+    publisher: 'StepSecurity',
+    source_type: 'research',
+  });
+  assert.deepEqual(classifySource('https://labs.cloudsecurityalliance.org/research/megalodon'), {
+    publisher: 'Cloud Security Alliance',
+    source_type: 'research',
+  });
+  assert.deepEqual(classifySource('https://www.securityweek.com/over-5500-github-repositories-infected-in-megalodon-supply-chain-attack/'), {
+    publisher: 'SecurityWeek',
+    source_type: 'news',
+  });
 }
 
 async function testOutputTargetsUseCollectionNames() {
@@ -229,20 +253,11 @@ async function testDraftFrontmatterMatchesLiveSchema() {
     });
     assert.throws(() => draftFromPacket(campaignPacket, { createdAt: '2026-06-22' }), /Campaign grounded drafts require at least three packet sources/);
     addCampaignGovernmentSource(campaignPacket);
-    assert.throws(() => draftFromPacket(campaignPacket, { createdAt: '2026-06-22' }), /Campaign grounded drafts require at least one packet-backed MITRE mapping/);
-    campaignPacket.mitre_candidates = [{
-      technique_id: 'T1195',
-      technique_name: 'Supply Chain Compromise',
-      tactic: 'Initial Access',
-      source_refs: ['src-1'],
-      confidence: 'medium',
-      include_in_article: true,
-    }];
     const campaignDraft = draftFromPacket(campaignPacket, { createdAt: '2026-06-22' });
     assert.match(campaignDraft, /\nongoing: true\n/);
     assert.doesNotMatch(campaignDraft, /\nendDate:/);
     assert.match(campaignDraft, /\nmitreMappings:\n/);
-    assert.match(campaignDraft, /techniqueId: "T1195"/);
+    assert.match(campaignDraft, /techniqueId: "T1195\.002"/);
     assert.match(campaignDraft, /\n\s+publisherType: government\n/);
     assert.deepEqual(bodyH2s(campaignDraft), SCHEMA_REQUIRED_H2_BY_TYPE.campaign);
 
