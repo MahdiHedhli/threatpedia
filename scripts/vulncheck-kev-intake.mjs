@@ -409,7 +409,15 @@ function listFilesRecursive(root, predicate) {
 }
 
 function extractCvesFromText(text) {
-  return uniqueStrings([...String(text || '').matchAll(CVE_RE)].map(match => match[0].toUpperCase()));
+  const value = String(text || '');
+  const cves = [...value.matchAll(CVE_RE)].map(match => match[0].toUpperCase());
+  for (const match of value.matchAll(/\bCVE-(\d{4})-(\d{4,7})-(\d{1,7})(?=\D|$)/gi)) {
+    const [, year, baseNumber, suffix] = match;
+    if (suffix.length >= baseNumber.length) continue;
+    const expandedNumber = `${baseNumber.slice(0, baseNumber.length - suffix.length)}${suffix}`;
+    cves.push(`CVE-${year}-${expandedNumber}`.toUpperCase());
+  }
+  return uniqueStrings(cves);
 }
 
 function collectSeenCves(extra = []) {
