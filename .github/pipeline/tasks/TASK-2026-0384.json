@@ -23,7 +23,7 @@
         "CVE-2026-34910"
       ],
       "exploitId": "TP-EXP-2026-0326",
-      "type": "Command Injection",
+      "type": "Improper Input Validation",
       "platform": "Ubiquiti UniFi OS",
       "severity": "critical",
       "cisaKev": true,
