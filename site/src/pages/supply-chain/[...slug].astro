@@ -109,6 +109,24 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         <span class="graph-search-label" aria-hidden="true">Search</span>
         <span class="graph-search-shortcut" aria-hidden="true">⌘K / /</span>
       </button>
+      <button
+        class="graph-icon-button"
+        type="button"
+        data-sc-graph-zoom="in"
+        aria-label="Zoom graph in"
+        title="Zoom in"
+      >
+        <span aria-hidden="true">+</span>
+      </button>
+      <button
+        class="graph-icon-button"
+        type="button"
+        data-sc-graph-zoom="out"
+        aria-label="Zoom graph out"
+        title="Zoom out"
+      >
+        <span aria-hidden="true">-</span>
+      </button>
       {isExplore ? (
         <a
           class="graph-icon-button"
@@ -439,6 +457,37 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
           </article>
         ))}
       </section>
+
+      {page.lineageViews.length > 0 && (
+        <section class="sc-section lineage-views-section">
+          <div class="section-heading">
+            <p class="eyebrow">Lineage Views</p>
+            <h2>Malware Families</h2>
+          </div>
+          <div class="lineage-view-grid">
+            {page.lineageViews.map((family) => (
+              <a
+                class="lineage-view-card"
+                href={family.href}
+                data-graph-command={family.command.type}
+                data-graph-value={family.command.value}
+                data-graph-type={family.command.graphType}
+                data-graph-target-type={family.command.graphType}
+                data-graph-target-value={family.command.value}
+              >
+                <span>Malware Family</span>
+                <strong>{family.title}</strong>
+                <p>{family.summary}</p>
+                <div class="lineage-view-meta">
+                  <b>{family.strainCount} strains</b>
+                  <b>{family.edgeCount} lineage edges</b>
+                  {family.ecosystems.length > 0 && <b>{family.ecosystems.join(' / ')}</b>}
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section class="sc-section">
         <div class="section-heading">
@@ -1148,6 +1197,12 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     stroke-width: 1.65;
   }
 
+  .graph-icon-button span {
+    color: currentColor;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
   .graph-search-label {
     color: var(--text);
   }
@@ -1788,6 +1843,67 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     margin-bottom: 30px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
+  }
+
+  .lineage-view-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  .lineage-view-card {
+    display: grid;
+    gap: 9px;
+    min-height: 190px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text);
+    padding: 16px;
+    text-decoration: none;
+  }
+
+  .lineage-view-card:hover,
+  .lineage-view-card:focus-visible {
+    border-color: rgba(232, 160, 32, 0.72);
+    box-shadow: 0 0 0 1px rgba(232, 160, 32, 0.16), 0 12px 30px rgba(0, 0, 0, 0.24);
+    outline: none;
+  }
+
+  .lineage-view-card > span,
+  .lineage-view-meta {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .lineage-view-card > span {
+    color: var(--amber);
+  }
+
+  .lineage-view-card strong {
+    color: var(--white);
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    line-height: 1.1;
+  }
+
+  .lineage-view-card p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .lineage-view-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--muted);
+  }
+
+  .lineage-view-meta b {
+    font-weight: 500;
   }
 
   .eyebrow {

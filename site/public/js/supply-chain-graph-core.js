@@ -10,6 +10,9 @@ const INCIDENT_LABEL_Z = 1.48;
 const DEEP_LABEL_Z = 1.95;
 const TECHNIQUE_Z_THRESHOLD = 1.45;
 const ALL_INCIDENT_Z_THRESHOLD = 1.72;
+const CAMERA_Z_MIN = 0.22;
+const CAMERA_Z_MAX = 3.4;
+const CAMERA_Z_STEP = 1.28;
 const RECENT_WINDOW_DAYS = 183;
 const REST_NODE_BUDGET = 40;
 const SEVERITY_COLORS = {
@@ -730,6 +733,8 @@ class SupplyChainGraph {
     this.focusReflow = false;
     this.keyboardNodeId = null;
     this.drag = null;
+    this.activePointers = new Map();
+    this.pinch = null;
     this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.gl = this.canvas.getContext('webgl2', { antialias: true }) || this.canvas.getContext('webgl', { antialias: true });
     if (!this.gl) throw new Error('WebGL is not available');
@@ -810,6 +815,12 @@ class SupplyChainGraph {
     this.resizeObserver.observe(this.root);
     this.canvas.addEventListener('pointerdown', (event) => {
       this.canvas.setPointerCapture(event.pointerId);
+      this.activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      if (this.activePointers.size >= 2) {
+        this.drag = null;
+        this.startPinchGesture();
+        return;
+      }
       this.drag = {
         pointerId: event.pointerId,
         x: event.clientX,
@@ -820,6 +831,14 @@ class SupplyChainGraph {
       };
     });
     this.canvas.addEventListener('pointermove', (event) => {
+      if (this.activePointers.has(event.pointerId)) {
+        this.activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      }
+      if (this.pinch && this.activePointers.size >= 2) {
+        event.preventDefault();
+        this.updatePinchGesture();
+        return;
+      }
       if (!this.drag) {
         const node = this.pick(event.clientX, event.clientY);
         const nextHover = node?.id || null;
@@ -842,18 +861,26 @@ class SupplyChainGraph {
       this.hoverNodeId = null;
       this.lastLabelKey = '';
     });
-    this.canvas.addEventListener('pointerup', (event) => {
+    const endPointer = (event) => {
       const drag = this.drag;
+      this.activePointers.delete(event.pointerId);
+      if (this.pinch) {
+        if (this.activePointers.size >= 2) this.startPinchGesture();
+        else this.pinch = null;
+        this.drag = null;
+        return;
+      }
       this.drag = null;
       if (!drag || drag.moved) return;
       const node = this.pick(event.clientX, event.clientY);
       if (node) this.selectNode(node);
-    });
+    };
+    this.canvas.addEventListener('pointerup', endPointer);
+    this.canvas.addEventListener('pointercancel', endPointer);
     this.canvas.addEventListener('wheel', (event) => {
       event.preventDefault();
       const zoomFactor = Math.exp(-event.deltaY * 0.001);
-      this.setCameraTarget({ ...this.targetCamera, z: clamp(this.targetCamera.z * zoomFactor, 0.22, 3.4) });
-      this.ensureSemanticBloom();
+      this.zoomAt(event.clientX, event.clientY, zoomFactor);
     }, { passive: false });
     this.reflowButton?.addEventListener('click', () => {
       if (this.selection?.type !== 'technique') return;
@@ -868,6 +895,13 @@ class SupplyChainGraph {
         event.preventDefault();
         event.stopPropagation();
         this.openSearchPalette(searchTarget);
+        return;
+      }
+      const zoomTarget = event.target.closest('[data-sc-graph-zoom]');
+      if (zoomTarget) {
+        event.preventDefault();
+        const direction = zoomTarget.dataset.scGraphZoom;
+        this.zoomFromControl(direction === 'out' ? 1 / CAMERA_Z_STEP : CAMERA_Z_STEP);
         return;
       }
       const exploreLink = event.target.closest('[data-sc-explore-enter], [data-sc-explore-exit]');
@@ -1289,7 +1323,7 @@ class SupplyChainGraph {
   }
 
   setCameraTarget(target, immediate = false) {
-    const z = clamp(target.z, 0.22, 3.4);
+    const z = clamp(target.z, CAMERA_Z_MIN, CAMERA_Z_MAX);
     const halfWidth = this.viewport.width / z / 2;
     const halfHeight = this.viewport.height / z / 2;
     const bounds = this.activeBounds();
@@ -1301,12 +1335,81 @@ class SupplyChainGraph {
     if (immediate || this.reduceMotion) this.camera = { ...this.targetCamera };
   }
 
-  screenToWorld(clientX, clientY) {
+  screenToWorldAtCamera(clientX, clientY, camera = this.camera) {
     const rect = this.canvas.getBoundingClientRect();
     return {
-      x: (clientX - rect.left - this.viewport.width / 2) / this.camera.z + this.camera.cx,
-      y: (clientY - rect.top - this.viewport.height / 2) / this.camera.z + this.camera.cy,
+      x: (clientX - rect.left - this.viewport.width / 2) / camera.z + camera.cx,
+      y: (clientY - rect.top - this.viewport.height / 2) / camera.z + camera.cy,
     };
+  }
+
+  screenToWorld(clientX, clientY) {
+    return this.screenToWorldAtCamera(clientX, clientY);
+  }
+
+  cameraForAnchoredZoom(clientX, clientY, nextZ, camera = this.targetCamera) {
+    const rect = this.canvas.getBoundingClientRect();
+    const z = clamp(nextZ, CAMERA_Z_MIN, CAMERA_Z_MAX);
+    const world = this.screenToWorldAtCamera(clientX, clientY, camera);
+    const dx = clientX - rect.left - this.viewport.width / 2;
+    const dy = clientY - rect.top - this.viewport.height / 2;
+    return {
+      cx: world.x - dx / z,
+      cy: world.y - dy / z,
+      z,
+    };
+  }
+
+  zoomAt(clientX, clientY, factor, camera = this.targetCamera) {
+    if (!Number.isFinite(factor) || factor <= 0) return;
+    this.setCameraTarget(this.cameraForAnchoredZoom(clientX, clientY, camera.z * factor, camera));
+    this.ensureSemanticBloom();
+  }
+
+  zoomFromControl(factor) {
+    const rect = this.canvas.getBoundingClientRect();
+    this.zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, factor);
+    this.root.focus({ preventScroll: true });
+  }
+
+  pointerPair() {
+    return Array.from(this.activePointers.values()).slice(0, 2);
+  }
+
+  pinchMetrics() {
+    const [a, b] = this.pointerPair();
+    if (!a || !b) return null;
+    return {
+      distance: Math.max(1, Math.hypot(b.x - a.x, b.y - a.y)),
+      centerX: (a.x + b.x) / 2,
+      centerY: (a.y + b.y) / 2,
+    };
+  }
+
+  startPinchGesture() {
+    const metrics = this.pinchMetrics();
+    if (!metrics) return;
+    const startCamera = { ...this.targetCamera };
+    this.pinch = {
+      ...metrics,
+      startCamera,
+      startWorld: this.screenToWorldAtCamera(metrics.centerX, metrics.centerY, startCamera),
+    };
+  }
+
+  updatePinchGesture() {
+    const metrics = this.pinchMetrics();
+    if (!metrics || !this.pinch) return;
+    const rect = this.canvas.getBoundingClientRect();
+    const z = clamp(this.pinch.startCamera.z * (metrics.distance / this.pinch.distance), CAMERA_Z_MIN, CAMERA_Z_MAX);
+    const dx = metrics.centerX - rect.left - this.viewport.width / 2;
+    const dy = metrics.centerY - rect.top - this.viewport.height / 2;
+    this.setCameraTarget({
+      cx: this.pinch.startWorld.x - dx / z,
+      cy: this.pinch.startWorld.y - dy / z,
+      z,
+    });
+    this.ensureSemanticBloom();
   }
 
   worldToScreen(node) {
