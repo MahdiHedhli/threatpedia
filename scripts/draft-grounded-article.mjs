@@ -281,11 +281,23 @@ function claimLines(claims) {
   return claims.flatMap((claim) => claimLine(claim).split('\n'));
 }
 
+const ATTACK_CHAIN_CLAIM_RE = /\b(?:attack pattern|attack chain|exploit chain|access enabled|enabled the publication|used|using|through|via|injected|published|poisoned|compromised|stolen credentials?|payload|malicious code|install script|credential theft)\b/i;
+
+function attackChainClaims(groups, claimSets) {
+  const explicitClaims = [
+    ...(groups.get('attack-chain') || []),
+    ...(groups.get('exploit-chain') || []),
+  ];
+  if (explicitClaims.length) return explicitClaims;
+  return [...claimSets.summary, ...claimSets.findings]
+    .filter((claim) => ATTACK_CHAIN_CLAIM_RE.test(claim.claim || ''));
+}
+
 function fallbackLine(packet, text) {
   return `<!-- claims: ${packet.claims?.[0]?.claim_id || 'claim-1'} --> ${text}`;
 }
 
-function sectionContent(packet, heading, claimSets, fallbackDate) {
+function sectionContent(packet, heading, claimSets, fallbackDate, groups) {
   if (heading === 'Sources & References') {
     const extractTitles = new Map((packet.source_extracts || []).map((extract) => [extract.source_id, extract.title]));
     const sourceRows = allSources(packet)
@@ -305,7 +317,8 @@ function sectionContent(packet, heading, claimSets, fallbackDate) {
     return claimSets.findings.length ? claimLines(claimSets.findings) : [fallbackLine(packet, 'Available sources do not establish additional technical findings.')];
   }
   if (/attack chain|exploit chain/i.test(heading)) {
-    return [fallbackLine(packet, 'Available sources do not establish a detailed attack chain.')];
+    const claims = attackChainClaims(groups, claimSets);
+    return claims.length ? claimLines(claims) : [fallbackLine(packet, 'Available sources do not establish a detailed attack chain.')];
   }
   if (/attribution|campaign/i.test(heading)) {
     return claimSets.attribution.length ? claimLines(claimSets.attribution) : [fallbackLine(packet, 'Available sources do not establish additional attribution beyond the current classification.')];
@@ -361,7 +374,7 @@ function body(packet, createdAt) {
   };
   const lines = [];
   for (const heading of headings) {
-    lines.push(`## ${heading}`, '', ...sectionContent(packet, heading, claimSets, fallbackDate), '');
+    lines.push(`## ${heading}`, '', ...sectionContent(packet, heading, claimSets, fallbackDate, groups), '');
   }
   return lines.join('\n');
 }

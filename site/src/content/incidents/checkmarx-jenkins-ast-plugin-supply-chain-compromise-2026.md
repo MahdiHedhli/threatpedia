@@ -53,7 +53,9 @@ mitreMappings:
 
 ## Attack Chain
 
-<!-- claims: claim-1 --> Available sources do not establish a detailed attack chain.
+<!-- claims: claim-2 --> Checkmarx reported that attackers used access traced to the Trivy supply-chain attack to publish malicious developer-tooling artifacts, including a modified Jenkins AST plugin.
+<!-- claims: claim-9 --> This access enabled the publication of malicious code to a number of externally distributed artifacts, including VS Code extensions, GitHub Actions workflows, and a Jenkins plugin.
+<!-- claims: claim-11 --> Sysdig reported on 2026-03-23 that the same attack pattern subsequently appeared in a second, unrelated GitHub Action for Checkmarx&#x27;s AST.
 
 ## Impact Assessment
 
