@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Deterministic preflight for source-packet/1 zero-day packets.
+ * Deterministic preflight for source-packet/1 packets.
  */
 
 import { dirname, resolve } from 'node:path';
@@ -20,6 +20,7 @@ const SOURCE_TYPES = new Set(['government', 'vendor', 'database', 'research', 'n
 const SOURCE_ROLES = new Set(['primary', 'supporting']);
 const SUFFICIENCY = new Set(['sufficient', 'insufficient', 'needs_human_review']);
 const SOURCE_PACKET_STATUSES = new Set(['draft', 'preflight_passed', 'preflight_failed']);
+const LANES = new Set(['zero-day', 'incident', 'campaign', 'threat-actor', 'malware-family']);
 const PREFLIGHT_STATUSES = new Set(['not_run', 'pass', 'fail']);
 const CONFIDENCE = new Set(['high', 'medium', 'low']);
 const CLAIM_TYPES = new Set(['date', 'product', 'vulnerability', 'exploitation', 'impact', 'mitigation', 'attribution', 'other']);
@@ -180,10 +181,13 @@ function validatePreflight(packet) {
     return report(packet, errors, warnings);
   }
 
+  const lane = packet.lane;
+  const isZeroDay = lane === 'zero-day';
+
   if (packet.schema_version !== 'source-packet/1') add(errors, 'schema_version must be source-packet/1', '$.schema_version');
   if (!/^TASK-\d{4}-\d{4}$/.test(packet.task_id || '')) add(errors, 'task_id must match TASK-YYYY-NNNN', '$.task_id');
-  if (packet.lane !== 'zero-day') add(errors, 'lane must be zero-day for this pilot', '$.lane');
-  if (!/^sp-TASK-\d{4}-\d{4}$/.test(packet.source_packet_id || '')) add(errors, 'source_packet_id must match sp-TASK-YYYY-NNNN', '$.source_packet_id');
+  if (!LANES.has(lane)) add(errors, 'lane is invalid', '$.lane');
+  if (!/^sp-(?:TASK-\d{4}-\d{4}|SC-CAND-[a-f0-9]{16})$/.test(packet.source_packet_id || '')) add(errors, 'source_packet_id must match sp-TASK-YYYY-NNNN or sp-SC-CAND-<16 hex>', '$.source_packet_id');
   if (!ISO_RE.test(packet.created_at || '') || Number.isNaN(Date.parse(packet.created_at))) add(errors, 'created_at must be an ISO timestamp', '$.created_at');
   if (!SOURCE_PACKET_STATUSES.has(packet.source_packet_status)) add(errors, 'source_packet_status is invalid', '$.source_packet_status');
 
@@ -225,7 +229,7 @@ function validatePreflight(packet) {
   if (new Set(sourceUrls).size !== sourceUrls.length) add(errors, 'source URLs must be deduped', '$.primary_sources');
 
   const hasGovernmentOrVendorOrDatabase = sources.some(source => ['government', 'vendor', 'database'].includes(source?.source_type));
-  if (!hasGovernmentOrVendorOrDatabase) add(errors, 'zero-day packets need at least one government, vendor, or database source', '$.source_quality');
+  if (isZeroDay && !hasGovernmentOrVendorOrDatabase) add(errors, 'zero-day packets need at least one government, vendor, or database source', '$.source_quality');
 
   if (!isObject(packet.source_quality)) {
     add(errors, 'source_quality is required', '$.source_quality');
@@ -236,6 +240,53 @@ function validatePreflight(packet) {
     if (!SUFFICIENCY.has(packet.source_quality.source_sufficiency)) add(errors, 'source_sufficiency is invalid', '$.source_quality.source_sufficiency');
     if (!packet.source_quality.has_primary_source) add(errors, 'has_primary_source must be true for drafting readiness', '$.source_quality.has_primary_source');
     if (packet.source_quality.source_sufficiency !== 'sufficient') add(errors, 'source_sufficiency must be sufficient for drafting readiness', '$.source_quality.source_sufficiency');
+  }
+
+  if (packet.source_extracts !== undefined) {
+    if (!Array.isArray(packet.source_extracts)) {
+      add(errors, 'source_extracts must be an array when present', '$.source_extracts');
+    } else {
+      const okExtracts = packet.source_extracts.filter(extract => extract?.status === 'ok');
+      if (packet.grounding_contract?.drafting_mode === 'packet_claims_only' && okExtracts.length === 0) {
+        add(errors, 'grounded drafting packets need at least one successful source extract', '$.source_extracts');
+      }
+      packet.source_extracts.forEach((extract, index) => {
+        const path = `$.source_extracts[${index}]`;
+        if (!isObject(extract)) {
+          add(errors, 'source_extract must be an object', path);
+          return;
+        }
+        if (!sourceIds.has(extract.source_id)) add(errors, `unknown source_id ${JSON.stringify(extract.source_id)}`, `${path}.source_id`);
+        if (!['ok', 'failed'].includes(extract.status)) add(errors, 'status must be ok or failed', `${path}.status`);
+        if (!ISO_RE.test(extract.extracted_at || '') || Number.isNaN(Date.parse(extract.extracted_at))) add(errors, 'extracted_at must be an ISO timestamp', `${path}.extracted_at`);
+        if (extract.status === 'ok' && !isString(extract.extracted_text)) add(errors, 'ok extracts require extracted_text', `${path}.extracted_text`);
+        if (extract.status === 'failed' && !isString(extract.error)) add(errors, 'failed extracts require error', `${path}.error`);
+      });
+    }
+  }
+
+  if (packet.approval !== undefined) {
+    if (!isObject(packet.approval)) {
+      add(errors, 'approval must be an object when present', '$.approval');
+    } else {
+      for (const field of ['approved_by', 'approval_ref', 'approved_at', 'scope']) {
+        if (!isString(packet.approval[field])) add(errors, `${field} is required`, `$.approval.${field}`);
+      }
+      if (packet.approval.approved_at && (!ISO_RE.test(packet.approval.approved_at) || Number.isNaN(Date.parse(packet.approval.approved_at)))) {
+        add(errors, 'approved_at must be an ISO timestamp', '$.approval.approved_at');
+      }
+    }
+  }
+
+  if (packet.grounding_contract !== undefined) {
+    if (!isObject(packet.grounding_contract)) {
+      add(errors, 'grounding_contract must be an object when present', '$.grounding_contract');
+    } else {
+      if (packet.grounding_contract.drafting_mode !== 'packet_claims_only') add(errors, 'drafting_mode must be packet_claims_only', '$.grounding_contract.drafting_mode');
+      for (const field of ['disallow_model_memory', 'disallow_placeholder_urls', 'require_claim_markers', 'require_source_url_parity']) {
+        if (!isBool(packet.grounding_contract[field])) add(errors, `${field} must be boolean`, `$.grounding_contract.${field}`);
+      }
+    }
   }
 
   if (!isObject(packet.key_dates)) {
@@ -269,8 +320,8 @@ function validatePreflight(packet) {
     });
   }
 
-  if (!Array.isArray(packet.cves) || packet.cves.length === 0) {
-    add(errors, 'at least one CVE is required', '$.cves');
+  if (!Array.isArray(packet.cves) || (isZeroDay && packet.cves.length === 0)) {
+    add(errors, isZeroDay ? 'at least one CVE is required' : 'cves must be an array', '$.cves');
   } else {
     packet.cves.forEach((cve, index) => {
       const path = `$.cves[${index}]`;

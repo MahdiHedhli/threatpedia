@@ -177,7 +177,7 @@ jobs:
             body += '\\n### Guardrails\\n\\n';
             body += '- `drafting_enabled=false` and `auto_drafting_allowed=false` are validated.\\n';
             body += '- `kevStatusDerived` is dispatch-cycle output, not authored truth.\\n';
-            body += '- B2 grounded drafting remains the first sprint that may consume approved candidates for generation.\\n';
+            body += '- B2 grounded drafting may consume approved candidates only through source-packet preflight and grounded-draft fidelity checks.\\n';
             body += '\\n@codex review\\n/gemini review\\n';
 
             const existing = await github.rest.pulls.list({
