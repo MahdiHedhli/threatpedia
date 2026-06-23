@@ -89,9 +89,9 @@ export function classifySource(url) {
     return { publisher: 'Unknown', source_type: 'other' };
   }
   const host = parsed.hostname.toLowerCase();
-  if (host === 'cisa.gov' || host.endsWith('.cisa.gov')) return { publisher: 'CISA', source_type: 'database' };
+  if (host === 'cisa.gov' || host.endsWith('.cisa.gov')) return { publisher: 'Cybersecurity and Infrastructure Security Agency', source_type: 'database' };
+  if (host === 'nist.gov' || host.endsWith('.nist.gov')) return { publisher: 'National Vulnerability Database', source_type: 'database' };
   if (host === 'cve.org' || host.endsWith('.cve.org') || host === 'cve.mitre.org') return { publisher: 'CVE Program', source_type: 'database' };
-  if (host === 'nist.gov' || host.endsWith('.nist.gov')) return { publisher: 'NIST', source_type: 'database' };
   if (host === 'osv.dev' || host.endsWith('.osv.dev')) return { publisher: 'OSV.dev', source_type: 'database' };
   if (host === 'github.com' && parsed.pathname.startsWith('/advisories')) return { publisher: 'GitHub Advisory Database', source_type: 'database' };
   if (host === 'github.com' || host.endsWith('.github.com')) return { publisher: 'GitHub', source_type: 'research' };

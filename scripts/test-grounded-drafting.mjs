@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { buildGroundedPacket } from './build-grounded-source-packet.mjs';
 import { draftFromPacket } from './draft-grounded-article.mjs';
 import { checkGroundedDraft } from './check-grounded-draft.mjs';
-import { readJson, writeJson } from './grounded-drafting-lib.mjs';
+import { classifySource, readJson, writeJson } from './grounded-drafting-lib.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const queuePath = 'tests/fixtures/grounded_drafting/candidate_queue.json';
@@ -94,6 +94,36 @@ async function testFidelityRejectsUnmarkedClaimLine() {
   assert.equal(fidelity.pass, false);
   assert.ok(fidelity.errors.some((error) => error.message.includes('missing packet claim marker')));
   assert.ok(packet.candidates.length > 0);
+}
+
+function testFidelityHandlesCrlfFrontmatter() {
+  const draft = [
+    '---',
+    'title: "fixture"',
+    '---',
+    '',
+    '## Executive Summary',
+    '<!-- claims: claim-1 --> This line is grounded.',
+    '',
+  ].join('\r\n');
+  const fidelity = checkGroundedDraft({ claims: [{ claim_id: 'claim-1' }], primary_sources: [], supporting_sources: [] }, draft);
+  assert.equal(fidelity.pass, true);
+  assert.equal(fidelity.errors.length, 0);
+}
+
+function testOfficialAdvisorySourceClassification() {
+  assert.deepEqual(classifySource('https://www.cisa.gov/known-exploited-vulnerabilities-catalog'), {
+    publisher: 'Cybersecurity and Infrastructure Security Agency',
+    source_type: 'database',
+  });
+  assert.deepEqual(classifySource('https://nvd.nist.gov/vuln/detail/CVE-2026-12345'), {
+    publisher: 'National Vulnerability Database',
+    source_type: 'database',
+  });
+  assert.deepEqual(classifySource('https://www.cve.org/CVERecord?id=CVE-2026-12345'), {
+    publisher: 'CVE Program',
+    source_type: 'database',
+  });
 }
 
 async function testOutputTargetsUseCollectionNames() {
@@ -184,4 +214,6 @@ await testDraftFrontmatterMatchesLiveSchema();
 testCliRequiresExplicitApproval();
 await testFidelityRejectsInventedUrl();
 await testFidelityRejectsUnmarkedClaimLine();
+testFidelityHandlesCrlfFrontmatter();
+testOfficialAdvisorySourceClassification();
 console.log('Grounded drafting tests passed');
