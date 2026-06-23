@@ -95,16 +95,37 @@ function firstAffectedProduct(packet) {
   return product?.product || product?.vendor || 'Unknown';
 }
 
-function mitreFrontmatter(packet) {
-  const included = (Array.isArray(packet.mitre_candidates) ? packet.mitre_candidates : [])
-    .filter((candidate) => candidate.include_in_article && candidate.technique_id);
-  if (included.length === 0) return [];
+function mappingConfidence(value) {
+  if (value === 'high') return 'confirmed';
+  if (value === 'medium') return 'probable';
+  return 'possible';
+}
+
+function includedMitreMappings(packet) {
+  return (Array.isArray(packet.mitre_candidates) ? packet.mitre_candidates : [])
+    .filter((mapping) => mapping?.include_in_article === true && mapping.technique_id)
+    .map((mapping) => ({
+      techniqueId: mapping.technique_id,
+      techniqueName: mapping.technique_name,
+      tactic: mapping.tactic,
+      confidence: mappingConfidence(mapping.confidence),
+    }));
+}
+
+function mitreFrontmatter(packet, { required = false } = {}) {
+  const mappings = includedMitreMappings(packet);
+  if (required && mappings.length === 0) {
+    throw new Error('Campaign grounded drafts require at least one packet-backed MITRE mapping marked include_in_article=true');
+  }
+  if (mappings.length === 0) return ['mitreMappings: []'];
   return [
     'mitreMappings:',
-    ...included.flatMap((candidate) => [
-      `  - techniqueId: ${yamlString(candidate.technique_id)}`,
-      `    techniqueName: ${yamlString(candidate.technique_name)}`,
-      ...(candidate.tactic ? [`    tactic: ${yamlString(candidate.tactic)}`] : []),
+    ...mappings.flatMap((mapping) => [
+      `  - techniqueId: ${yamlString(mapping.techniqueId)}`,
+      `    techniqueName: ${yamlString(mapping.techniqueName)}`,
+      `    tactic: ${yamlString(mapping.tactic)}`,
+      `    confidence: ${mapping.confidence}`,
+      '    evidence: "Included from grounded source packet MITRE candidates."',
     ]),
   ];
 }
@@ -119,10 +140,6 @@ function frontmatter(packet, createdAt) {
   ];
 
   if (packet.lane === 'campaign') {
-    const mitreMappings = mitreFrontmatter(packet);
-    if (mitreMappings.length === 0) {
-      throw new Error('campaign packets require at least one included MITRE mapping to generate schema-valid frontmatter');
-    }
     base.push(
       `campaignId: ${yamlString(`TP-CAMP-${createdAt.slice(0, 4)}-${numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))).slice(-4)}`)}`,
       `title: ${yamlString(title)}`,
@@ -140,7 +157,7 @@ function frontmatter(packet, createdAt) {
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
       sources,
-      ...mitreMappings,
+      ...mitreFrontmatter(packet, { required: true }),
     );
   } else if (packet.lane === 'threat-actor') {
     base.push(
@@ -158,7 +175,7 @@ function frontmatter(packet, createdAt) {
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
       sources,
-      'mitreMappings: []',
+      ...mitreFrontmatter(packet),
     );
   } else if (packet.lane === 'zero-day') {
     base.push(
@@ -178,13 +195,13 @@ function frontmatter(packet, createdAt) {
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
       sources,
-      'mitreMappings: []',
+      ...mitreFrontmatter(packet),
     );
   } else {
     base.push(
       `eventId: ${yamlString(numericId(packet.source_packet_id, Number(createdAt.slice(0, 4))))}`,
       `title: ${yamlString(title)}`,
-      `date: ${yamlString(date)}`,
+      `date: ${date}`,
       'attackType: "Supply Chain"',
       'severity: medium',
       'sector: "Technology"',
@@ -199,7 +216,7 @@ function frontmatter(packet, createdAt) {
       ...tags.map((tag) => `  - ${yamlString(tag)}`),
       'sources:',
       sources,
-      'mitreMappings: []',
+      ...mitreFrontmatter(packet),
     );
   }
 

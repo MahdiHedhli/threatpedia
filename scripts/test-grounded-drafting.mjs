@@ -48,6 +48,7 @@ async function testGroundedPacketDraftAndFidelityPass() {
     runNode(['scripts/preflight-source-packet.mjs', packetPath]);
     const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
     writeFileSync(draftPath, draft);
+    assert.match(draft, /\ndate: 2026-06-21\n/);
     const fidelity = checkGroundedDraft(packet, draft);
     assert.equal(fidelity.pass, true);
     assert.equal(fidelity.errors.length, 0);
@@ -176,9 +177,20 @@ async function testDraftFrontmatterMatchesLiveSchema() {
       createdAt: '2026-06-22T00:00:00Z',
       allowFetchFailures: false,
     });
+    assert.throws(() => draftFromPacket(campaignPacket, { createdAt: '2026-06-22' }), /Campaign grounded drafts require at least one packet-backed MITRE mapping/);
+    campaignPacket.mitre_candidates = [{
+      technique_id: 'T1195',
+      technique_name: 'Supply Chain Compromise',
+      tactic: 'Initial Access',
+      source_refs: ['src-1'],
+      confidence: 'medium',
+      include_in_article: true,
+    }];
     const campaignDraft = draftFromPacket(campaignPacket, { createdAt: '2026-06-22' });
     assert.match(campaignDraft, /\nongoing: true\n/);
     assert.doesNotMatch(campaignDraft, /\nendDate:/);
+    assert.match(campaignDraft, /\nmitreMappings:\n/);
+    assert.match(campaignDraft, /techniqueId: "T1195"/);
 
     const zeroDayQueue = structuredClone(baseQueue);
     zeroDayQueue.candidates[0].proposedArchetype = 'zero-day';
@@ -208,9 +220,27 @@ async function testDraftFrontmatterMatchesLiveSchema() {
   }
 }
 
+async function testNewsSourceMapsToMediaPublisherType() {
+  const packet = await buildGroundedPacket({
+    queue: queuePath,
+    candidateId: 'SC-CAND-1234abcd5678ef90',
+    approvedBy: 'KernelK',
+    approvalRef: 'fixture-approval',
+    out: path.join(tmpdir(), 'unused.json'),
+    fixturesDir,
+    createdAt: '2026-06-22T00:00:00Z',
+    allowFetchFailures: false,
+  });
+  packet.primary_sources[0].source_type = 'news';
+  const draft = draftFromPacket(packet, { createdAt: '2026-06-22' });
+  assert.match(draft, /\n\s+publisherType: media\n/);
+  assert.doesNotMatch(draft, /\n\s+publisherType: news\n/);
+}
+
 await testGroundedPacketDraftAndFidelityPass();
 await testOutputTargetsUseCollectionNames();
 await testDraftFrontmatterMatchesLiveSchema();
+await testNewsSourceMapsToMediaPublisherType();
 testCliRequiresExplicitApproval();
 await testFidelityRejectsInventedUrl();
 await testFidelityRejectsUnmarkedClaimLine();
