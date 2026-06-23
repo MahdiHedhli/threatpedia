@@ -178,13 +178,13 @@ function escapeRegExp(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function sentenceContainsTerm(sentence, term) {
+function candidateTermRegex(term) {
   const escaped = escapeRegExp(term);
-  return new RegExp(`(^|[^a-z0-9._-])${escaped}(?=$|[^a-z0-9._-])`, 'i').test(sentence);
+  return new RegExp(`(^|[^a-z0-9._-])${escaped}(?=$|[^a-z0-9._-])`, 'i');
 }
 
 function sourceSentenceForCandidate(text, candidate) {
-  const terms = candidateTerms(candidate);
+  const termRegexes = candidateTerms(candidate).map((term) => candidateTermRegex(term));
   const sentences = String(text || '')
     .split(/(?<=[.!?])\s+/)
     .map((sentence) => sentence.trim())
@@ -195,7 +195,7 @@ function sourceSentenceForCandidate(text, candidate) {
   let best = null;
   for (const sentence of sentences) {
     const lower = sentence.toLowerCase();
-    const score = terms.reduce((total, term) => total + (sentenceContainsTerm(lower, term) ? 1 : 0), 0);
+    const score = termRegexes.reduce((total, regex) => total + (regex.test(lower) ? 1 : 0), 0);
     if (score > (best?.score || 0)) best = { sentence, score };
   }
   return best?.score > 0 ? best.sentence : sentences[0];
