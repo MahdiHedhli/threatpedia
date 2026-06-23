@@ -6,7 +6,7 @@ attackType: "Supply Chain"
 severity: medium
 sector: "Technology"
 geography: "Global"
-threatActor: "Unknown"
+threatActor: "TeamPCP"
 attributionConfidence: A6
 reviewStatus: "draft_ai"
 confidenceGrade: C
