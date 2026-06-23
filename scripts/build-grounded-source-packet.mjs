@@ -180,7 +180,7 @@ function escapeRegExp(value) {
 
 function candidateTermRegex(term) {
   const escaped = escapeRegExp(term);
-  return new RegExp(`(^|[^a-z0-9._-])${escaped}(?=$|[^a-z0-9._-])`, 'i');
+  return new RegExp(`(^|[^a-z0-9._-])${escaped}(?=$|[.!?](?=\\s|$)|[^a-z0-9._-])`, 'i');
 }
 
 function sourceSentenceForCandidate(text, candidate) {

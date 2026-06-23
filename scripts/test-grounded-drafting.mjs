@@ -277,7 +277,7 @@ async function testCandidateTermMatchingUsesBoundaries() {
             'Published: June 20, 2026',
             '',
             'A fantastic but unrelated sentence describes background activity without the selected acronym.',
-            'The AST operation changed a source control workflow and exposed developer credentials.',
+            'The source control workflow was changed by AST.',
           ].join('\n')
         : original;
       writeFileSync(path.join(tempDir, fixtureName), content);
@@ -293,7 +293,7 @@ async function testCandidateTermMatchingUsesBoundaries() {
       allowFetchFailures: false,
     });
     const renderedClaims = packet.claims.map((claim) => claim.claim).join('\n');
-    assert.match(renderedClaims, /The AST operation changed a source control workflow/);
+    assert.match(renderedClaims, /The source control workflow was changed by AST\./);
     assert.doesNotMatch(renderedClaims, /fantastic but unrelated/);
   } finally {
     rmSync(tempDir, { recursive: true, force: true });
