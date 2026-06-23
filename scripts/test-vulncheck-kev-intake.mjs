@@ -234,4 +234,72 @@ assert.deepEqual(
   ['https://vulncheck.com/xdb/compressed'],
 );
 
+const fullRangeXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'linux',
+      product: 'kernel',
+      vulnerabilityName: 'Linux Kernel vulnerability',
+      shortDescription: 'Linux Kernel CVE with full multi-CVE proof-of-concept repository name.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-6019'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'full-range',
+          xdb_url: 'https://vulncheck.com/xdb/full-range',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-6018-6019.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(fullRangeXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
+const versionSuffixXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'chrome',
+      product: 'v8',
+      vulnerabilityName: 'Version suffix is not another CVE',
+      shortDescription: 'PoC repository suffix should not be treated as a lower-numbered CVE.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-6552'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'version-suffix',
+          xdb_url: 'https://vulncheck.com/xdb/version-suffix',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-6554-2.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(versionSuffixXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 0);
+
 console.log('vulncheck-kev-intake tests passed');
