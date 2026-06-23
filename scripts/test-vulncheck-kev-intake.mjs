@@ -311,7 +311,7 @@ const versionSuffixXdb = buildRecentIntake({
       shortDescription: 'PoC repository suffix should not be treated as a lower-numbered CVE.',
       required_action: 'Patch.',
       knownRansomwareCampaignUse: 'Unknown',
-      cve: ['CVE-2025-6552'],
+      cve: ['CVE-2025-0417'],
       cwes: [],
       vulncheck_xdb: [
         {
@@ -319,7 +319,7 @@ const versionSuffixXdb = buildRecentIntake({
           xdb_url: 'https://vulncheck.com/xdb/version-suffix',
           date_added: '2025-06-05T00:00:00Z',
           exploit_type: 'initial-access',
-          clone_ssh_url: 'git@github.com:example/CVE-2025-6554-2.git',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-0411-7-Zip.git',
         },
       ],
       vulncheck_reported_exploitation: [],

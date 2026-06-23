@@ -409,24 +409,32 @@ function listFilesRecursive(root, predicate) {
 }
 
 function extractCvesFromText(text) {
+  return uniqueStrings([...String(text || '').matchAll(CVE_RE)].map(match => match[0].toUpperCase()));
+}
+
+function compressedCveChainIncludes(text, targetCve) {
+  const target = /^CVE-(\d{4})-(\d{4,7})$/i.exec(String(targetCve || ''));
+  if (!target) return false;
+  const [, targetYear, targetNumber] = target;
+
   const value = String(text || '');
-  const cves = [...value.matchAll(CVE_RE)].map(match => match[0].toUpperCase());
   for (const match of value.matchAll(/\bCVE-(\d{4})-(\d{4,7})((?:-\d{1,7})+)(?=\D|$)/gi)) {
     const [, year, baseNumber, suffixChain] = match;
+    if (year !== targetYear) continue;
     for (const suffix of suffixChain.split('-').filter(Boolean)) {
       let expandedNumber = null;
       if (suffix.length >= 4 && suffix.length <= 7) {
         expandedNumber = suffix;
-      } else if (suffix.length < baseNumber.length) {
+      } else if (baseNumber.length > 4 && suffix.length < baseNumber.length) {
         const baseTail = baseNumber.slice(baseNumber.length - suffix.length);
         if (Number.parseInt(suffix, 10) <= Number.parseInt(baseTail, 10)) continue;
         expandedNumber = `${baseNumber.slice(0, baseNumber.length - suffix.length)}${suffix}`;
       }
       if (!expandedNumber || Number.parseInt(expandedNumber, 10) <= Number.parseInt(baseNumber, 10)) continue;
-      cves.push(`CVE-${year}-${expandedNumber}`.toUpperCase());
+      if (expandedNumber === targetNumber) return true;
     }
   }
-  return uniqueStrings(cves);
+  return false;
 }
 
 function collectSeenCves(extra = []) {
@@ -498,9 +506,11 @@ function sourceRefsFor(record) {
 function xdbEntriesFor(record) {
   const cves = new Set(uniqueStrings(record?.cve));
   return (Array.isArray(record?.vulncheck_xdb) ? record.vulncheck_xdb : []).filter((item) => {
-    const cloneCves = extractCvesFromText(item?.clone_ssh_url || '');
+    const cloneUrl = item?.clone_ssh_url || '';
+    const cloneCves = extractCvesFromText(cloneUrl);
     if (!cloneCves.length) return true;
-    return cloneCves.some((cve) => cves.has(cve));
+    return cloneCves.some((cve) => cves.has(cve))
+      || [...cves].some((cve) => compressedCveChainIncludes(cloneUrl, cve));
   });
 }
 
