@@ -404,4 +404,38 @@ const versionSuffixXdb = buildRecentIntake({
 
 assert.equal(versionSuffixXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 0);
 
+const dotVersionSuffixXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'example',
+      product: 'app',
+      vulnerabilityName: 'Dot version suffix is not another CVE',
+      shortDescription: 'PoC repository version suffix starting with dot should not be treated as a CVE suffix.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2024-34103'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'dot-version-suffix',
+          xdb_url: 'https://vulncheck.com/xdb/dot-version-suffix',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2024-34102-3.9.20.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(dotVersionSuffixXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 0);
+
 console.log('vulncheck-kev-intake tests passed');

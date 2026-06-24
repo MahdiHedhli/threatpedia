@@ -424,6 +424,9 @@ function compressedCveChainIncludes(text, targetCve) {
 
     const matchEndIndex = match.index + match[0].length;
     const remaining = value.slice(matchEndIndex);
+    if (/^\.\d/.test(remaining)) {
+      continue;
+    }
     if (/^-[a-z]/i.test(remaining) && !/^-(?:exploit|poc|bypass|vuln|rce|lpe|oob|writeup|patch|fix)/i.test(remaining)) {
       continue;
     }
