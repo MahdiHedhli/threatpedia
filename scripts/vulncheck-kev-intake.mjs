@@ -433,12 +433,12 @@ function compressedCveChainIncludes(text, targetCve) {
 
     for (const suffix of suffixChain.split('-').filter(Boolean)) {
       let expandedNumber = null;
-      if (suffix.length >= 4 && suffix.length <= 7) {
-        expandedNumber = suffix;
-      } else if (suffix.length < baseNumber.length) {
+      if (suffix.length < baseNumber.length) {
         const baseTail = baseNumber.slice(baseNumber.length - suffix.length);
         if (Number.parseInt(suffix, 10) <= Number.parseInt(baseTail, 10)) continue;
         expandedNumber = `${baseNumber.slice(0, baseNumber.length - suffix.length)}${suffix}`;
+      } else if (suffix.length >= 4 && suffix.length <= 7) {
+        expandedNumber = suffix;
       }
       if (!expandedNumber || Number.parseInt(expandedNumber, 10) <= Number.parseInt(baseNumber, 10)) continue;
       if (expandedNumber === targetNumber) return true;

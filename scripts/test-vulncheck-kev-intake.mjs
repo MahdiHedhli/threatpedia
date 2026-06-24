@@ -336,6 +336,40 @@ const singleDigitSuffixRangeXdb = buildRecentIntake({
 
 assert.equal(singleDigitSuffixRangeXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
 
+const fourDigitAbbreviatedSuffixXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'example',
+      product: 'example',
+      vulnerabilityName: 'Five-digit CVE with four-digit compressed suffix',
+      shortDescription: 'Repository name abbreviates a neighboring five-digit CVE with four suffix digits.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2024-12346'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'four-digit-abbreviated-suffix',
+          xdb_url: 'https://vulncheck.com/xdb/four-digit-abbreviated-suffix',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2024-12345-2346.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(fourDigitAbbreviatedSuffixXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
 const chainedMultiCveXdb = buildRecentIntake({
   data: [
     {
