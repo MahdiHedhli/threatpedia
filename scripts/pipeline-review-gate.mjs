@@ -128,7 +128,9 @@ function reviewedCommitFromBody(body) {
 function matchesHeadSha(candidateSha, headSha) {
   const candidate = String(candidateSha || '').toLowerCase();
   const head = String(headSha || '').toLowerCase();
-  return candidate.length >= 7 && (candidate === head || head.startsWith(candidate) || candidate.startsWith(head));
+  return candidate.length >= 7
+    && head.length >= 7
+    && (candidate === head || head.startsWith(candidate) || candidate.startsWith(head));
 }
 
 function isCurrentHeadNoFeedbackAiComment(comment, headSha, aiLogins) {
