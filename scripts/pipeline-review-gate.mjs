@@ -22,6 +22,7 @@ const CONTENT_FILE_RE = /^site\/src\/content\/(?:incidents|campaigns|threat-acto
 const PUBLIC_SITE_FILE_RE = /^site\/(?:src\/|package(?:-lock)?\.json$|astro\.config\.)/;
 const SOURCE_PACKET_FILE_RE = /^\.github\/pipeline\/source-packets\/.+\.json$/;
 const PIPELINE_FILE_RE = /^(?:scripts\/|\.github\/workflows\/|\.github\/pipeline\/config\.yml$|docs\/PIPELINE\.md$|site\/src\/content\.config\.ts$)/;
+const REVIEWED_COMMIT_PATTERN = /Reviewed commit\*{0,2}\s*:\s*\*{0,2}\s*`?([0-9a-f]{7,64})`?/gi;
 
 function parseArgs(argv) {
   const parsed = {
@@ -116,8 +117,12 @@ function hasNoFeedbackBody(body) {
 }
 
 function reviewedCommitFromBody(body) {
-  const match = String(body || '').match(/Reviewed commit\*{0,2}\s*:\s*\*{0,2}\s*`?([0-9a-f]{7,40})`?/i);
-  return match ? match[1].toLowerCase() : null;
+  REVIEWED_COMMIT_PATTERN.lastIndex = 0;
+  for (const match of String(body || '').matchAll(REVIEWED_COMMIT_PATTERN)) {
+    const candidate = match[1]?.toLowerCase();
+    if (candidate) return candidate;
+  }
+  return null;
 }
 
 function matchesHeadSha(candidateSha, headSha) {
