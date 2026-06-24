@@ -172,7 +172,8 @@ jobs:
             body += '|---:|---|---|---|---|---|\\n';
             for (const candidate of top) {
               const title = String(candidate.title || '').replace(/\\|/g, '\\\\|').slice(0, 100);
-              body += `| ${candidate.rank} | ${candidate.classification.leadClass} | ${candidate.classification.workIntent} | \\`${candidate.canonicalSubjectId}\\` | ${title} | ${candidate.sources.join(', ')} |\\n`;
+              const subject = `\`${String(candidate.canonicalSubjectId || '').replace(/`/g, '')}\``;
+              body += `| ${candidate.rank} | ${candidate.classification.leadClass} | ${candidate.classification.workIntent} | ${subject} | ${title} | ${candidate.sources.join(', ')} |\\n`;
             }
             body += '\\n### Guardrails\\n\\n';
             body += '- `drafting_enabled=false` and `auto_drafting_allowed=false` are validated.\\n';
