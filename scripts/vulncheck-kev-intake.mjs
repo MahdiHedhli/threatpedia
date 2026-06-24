@@ -626,7 +626,7 @@ function makePrefill(rawRecord) {
       knownRansomwareCampaignUse: rawRecord.knownRansomwareCampaignUse || null,
       reported_exploited_by_vulncheck_canaries: rawRecord.reported_exploited_by_vulncheck_canaries === true,
       vulncheck_reported_exploitation: Array.isArray(rawRecord.vulncheck_reported_exploitation) ? rawRecord.vulncheck_reported_exploitation : [],
-      vulncheck_xdb: xdbEntriesFor(rawRecord),
+      vulncheck_xdb: Array.isArray(rawRecord.vulncheck_xdb) ? rawRecord.vulncheck_xdb : [],
       date_added: rawRecord.date_added || null,
       cisa_date_added: rawRecord.cisa_date_added || null,
       dueDate: rawRecord.dueDate || null,

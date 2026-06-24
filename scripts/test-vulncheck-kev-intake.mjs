@@ -193,7 +193,7 @@ assert.deepEqual(
 );
 assert.deepEqual(
   filteredXdb.candidates[0].source_packet_prefill.preserved_vulncheck_fields.vulncheck_xdb.map(item => item.xdb_id),
-  ['ec52bbb216f8'],
+  ['ec52bbb216f8', 'ee72a50e36ee'],
 );
 
 const compressedMultiCveXdb = buildRecentIntake({
