@@ -27,7 +27,7 @@
       "platform": "Lantronix EDS5000",
       "severity": "critical",
       "cisaKev": true,
-      "disclosedDate": "2026-06-23",
+      "disclosedDate": "2026-03-11",
       "cwes": [
         "CWE-94"
       ],

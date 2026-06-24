@@ -30,6 +30,10 @@ const DEFAULT_CANDIDATE_INDEX_PATH = '.github/pipeline/source-packets/vulncheck-
 const DEFAULT_SIBLING_LIMIT = 4;
 const CVE_RE = /\bCVE-\d{4}-\d{4,}\b/gi;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const PRODUCT_NORMALIZATION_BY_CVE = new Map([
+  ['CVE-2025-12352', { vendorProject: 'rocketgenius', product: 'gravityforms' }],
+  ['CVE-2026-6433', { vendorProject: 'custom_css_js_php_project', product: 'custom_css_js_php' }],
+]);
 
 export function usage() {
   console.log([
@@ -408,6 +412,41 @@ function extractCvesFromText(text) {
   return uniqueStrings([...String(text || '').matchAll(CVE_RE)].map(match => match[0].toUpperCase()));
 }
 
+function compressedCveChainIncludes(text, targetCve) {
+  const target = /^CVE-(\d{4})-(\d{4,7})$/i.exec(String(targetCve || ''));
+  if (!target) return false;
+  const [, targetYear, targetNumber] = target;
+
+  const value = String(text || '');
+  for (const match of value.matchAll(/\bCVE-(\d{4})-(\d{4,7})((?:-\d{1,7})+)(?=\D|$)/gi)) {
+    const [, year, baseNumber, suffixChain] = match;
+    if (year !== targetYear) continue;
+
+    const matchEndIndex = match.index + match[0].length;
+    const remaining = value.slice(matchEndIndex);
+    if (/^\.\d/.test(remaining)) {
+      continue;
+    }
+    if (/^-[a-z]/i.test(remaining) && !/^-(?:exploit|poc|bypass|vuln|rce|lpe|oob|writeup|patch|fix)/i.test(remaining)) {
+      continue;
+    }
+
+    for (const suffix of suffixChain.split('-').filter(Boolean)) {
+      let expandedNumber = null;
+      if (suffix.length < baseNumber.length) {
+        const baseTail = baseNumber.slice(baseNumber.length - suffix.length);
+        if (Number.parseInt(suffix, 10) <= Number.parseInt(baseTail, 10)) continue;
+        expandedNumber = `${baseNumber.slice(0, baseNumber.length - suffix.length)}${suffix}`;
+      } else if (suffix.length >= 4 && suffix.length <= 7) {
+        expandedNumber = suffix;
+      }
+      if (!expandedNumber || Number.parseInt(expandedNumber, 10) <= Number.parseInt(baseNumber, 10)) continue;
+      if (expandedNumber === targetNumber) return true;
+    }
+  }
+  return false;
+}
+
 function collectSeenCves(extra = []) {
   const seen = new Set(extra.map(cve => cve.toUpperCase()));
   const files = [
@@ -468,22 +507,32 @@ function sourceRefsFor(record) {
   for (const item of Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : []) {
     if (typeof item?.url === 'string' && item.url.startsWith('http')) urls.push(item.url);
   }
-  for (const item of Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb : []) {
+  for (const item of xdbEntriesFor(record)) {
     if (typeof item?.xdb_url === 'string' && item.xdb_url.startsWith('http')) urls.push(item.xdb_url);
   }
   return uniqueStrings(urls);
 }
 
+function xdbEntriesFor(record) {
+  const cves = new Set(uniqueStrings(record?.cve));
+  return (Array.isArray(record?.vulncheck_xdb) ? record.vulncheck_xdb : []).filter((item) => {
+    const cloneUrl = item?.clone_ssh_url || '';
+    const cloneCves = extractCvesFromText(cloneUrl);
+    if (!cloneCves.length) return true;
+    return cloneCves.some((cve) => cves.has(cve))
+      || [...cves].some((cve) => compressedCveChainIncludes(cloneUrl, cve));
+  });
+}
+
 function exploitTypes(record) {
-  return uniqueStrings((Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb : [])
-    .map(item => item?.exploit_type));
+  return uniqueStrings(xdbEntriesFor(record).map(item => item?.exploit_type));
 }
 
 function priorityScore(record, addedDate) {
   let score = 0;
   const reasons = [];
   const reported = Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation.length : 0;
-  const xdb = Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb.length : 0;
+  const xdb = xdbEntriesFor(record).length;
 
   if (addedDate) {
     score += 30;
@@ -513,7 +562,22 @@ function priorityScore(record, addedDate) {
   return { score, reasons };
 }
 
-function makePrefill(record) {
+function normalizeKnownProductFields(record) {
+  const cves = uniqueStrings(record?.cve);
+  for (const cve of cves) {
+    const normalized = PRODUCT_NORMALIZATION_BY_CVE.get(cve);
+    if (!normalized) continue;
+    return {
+      ...record,
+      vendorProject: record.vendorProject || normalized.vendorProject,
+      product: record.product || normalized.product,
+    };
+  }
+  return record;
+}
+
+function makePrefill(rawRecord) {
+  const record = normalizeKnownProductFields(rawRecord);
   const cves = uniqueStrings(record.cve);
   const cwes = uniqueStrings(record.cwes);
   const refs = sourceRefsFor(record);
@@ -527,7 +591,7 @@ function makePrefill(record) {
     drafting_allowed: false,
     authority_boundary: {
       cve_identity_authority: 'CVE.org / MITRE CVE Program',
-      official_cisa_kev_authority: 'CISA',
+      official_cisa_kev_authority: 'Cybersecurity and Infrastructure Security Agency',
       vulncheck_role: 'non-authoritative exploitation signal and supporting source',
       instruction: 'Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication.',
     },
@@ -564,18 +628,18 @@ function makePrefill(record) {
     cves: cves.map(id => ({ id, source_refs: [vulncheckSourceId] })),
     cwes: cwes.map(id => ({ id, name: 'Unknown', source_refs: [vulncheckSourceId] })),
     preserved_vulncheck_fields: {
-      vendorProject: record.vendorProject || null,
-      product: record.product || null,
-      vulnerabilityName: record.vulnerabilityName || null,
-      shortDescription: record.shortDescription || null,
-      required_action: record.required_action || null,
-      knownRansomwareCampaignUse: record.knownRansomwareCampaignUse || null,
-      reported_exploited_by_vulncheck_canaries: record.reported_exploited_by_vulncheck_canaries === true,
-      vulncheck_reported_exploitation: Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : [],
-      vulncheck_xdb: Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb : [],
-      date_added: record.date_added || null,
-      cisa_date_added: record.cisa_date_added || null,
-      dueDate: record.dueDate || null,
+      vendorProject: rawRecord.vendorProject || null,
+      product: rawRecord.product || null,
+      vulnerabilityName: rawRecord.vulnerabilityName || null,
+      shortDescription: rawRecord.shortDescription || null,
+      required_action: rawRecord.required_action || null,
+      knownRansomwareCampaignUse: rawRecord.knownRansomwareCampaignUse || null,
+      reported_exploited_by_vulncheck_canaries: rawRecord.reported_exploited_by_vulncheck_canaries === true,
+      vulncheck_reported_exploitation: Array.isArray(rawRecord.vulncheck_reported_exploitation) ? rawRecord.vulncheck_reported_exploitation : [],
+      vulncheck_xdb: Array.isArray(rawRecord.vulncheck_xdb) ? rawRecord.vulncheck_xdb : [],
+      date_added: rawRecord.date_added || null,
+      cisa_date_added: rawRecord.cisa_date_added || null,
+      dueDate: rawRecord.dueDate || null,
     },
     not_supported: [
       {
@@ -591,6 +655,8 @@ function makePrefill(record) {
 }
 
 function toCandidate(record, seenCves, recencyBucket = 'recent') {
+  const rawRecord = record;
+  record = normalizeKnownProductFields(record);
   const cves = uniqueStrings(record.cve);
   const addedDate = normalizeDate(record.date_added);
   const seenMatches = cves.filter(cve => seenCves.has(cve));
@@ -623,11 +689,11 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
       known_ransomware_campaign_use: record.knownRansomwareCampaignUse || 'Unknown',
       reported_exploited_by_vulncheck_canaries: record.reported_exploited_by_vulncheck_canaries === true,
       reported_exploitation_count: Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation.length : 0,
-      xdb_count: Array.isArray(record.vulncheck_xdb) ? record.vulncheck_xdb.length : 0,
+      xdb_count: xdbEntriesFor(record).length,
       xdb_exploit_types: exploitTypes(record),
       evidence_urls: sourceRefsFor(record),
     },
-    source_packet_prefill: makePrefill(record),
+    source_packet_prefill: makePrefill(rawRecord),
     drafting_allowed: false,
   };
 }
