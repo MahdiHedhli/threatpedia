@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-06-23T19:53:54.898Z",
   "updated": "2026-06-24T17:24:33.654Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "Danger Mouse Bot",
-  "locked_at": "2026-06-24T16:14:55.789Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Ubiquiti UniFi OS Improper Access Control Vulnerability (CVE-2026-34908)",
     "sources": [
@@ -94,6 +94,14 @@
       "note": "Locked for execution"
     },
     {
+      "timestamp": "2026-06-24T16:20:28.871Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1297"
+    },
+    {
       "timestamp": "2026-06-24T17:24:33.654Z",
       "action": "dispatch_skipped",
       "from": "pending",
@@ -101,5 +109,7 @@
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #1297 already covers this task."
     }
-  ]
+  ],
+  "pr_number": 1297,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1297"
 }
