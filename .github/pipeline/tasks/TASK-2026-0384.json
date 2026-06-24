@@ -27,7 +27,7 @@
       "platform": "Ubiquiti UniFi OS",
       "severity": "critical",
       "cisaKev": true,
-      "disclosedDate": "2026-06-23",
+      "disclosedDate": "2026-05-21",
       "cwes": [
         "CWE-20"
       ],

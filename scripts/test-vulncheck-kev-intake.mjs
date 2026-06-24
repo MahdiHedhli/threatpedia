@@ -117,4 +117,359 @@ const includeSeen = buildRecentIntake(fixture, {
 assert.deepEqual(includeSeen.candidates.map(candidate => candidate.cves[0]), ['CVE-2026-0003', 'CVE-2026-0002']);
 assert.equal(includeSeen.candidates[1].already_seen, true);
 
+const productNormalized = buildRecentIntake({
+  data: [
+    {
+      vendorProject: null,
+      product: null,
+      vulnerabilityName: ' Unrestricted Upload of File with Dangerous Type',
+      shortDescription: 'The Gravity Forms plugin for WordPress is vulnerable to arbitrary file uploads.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-12352'],
+      cwes: [],
+      vulncheck_xdb: [],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+const normalizedPrefill = productNormalized.candidates[0].source_packet_prefill;
+assert.equal(normalizedPrefill.affected_products[0].vendor, 'rocketgenius');
+assert.equal(normalizedPrefill.affected_products[0].product, 'gravityforms');
+assert.equal(normalizedPrefill.preserved_vulncheck_fields.vendorProject, null);
+assert.equal(normalizedPrefill.preserved_vulncheck_fields.product, null);
+
+const filteredXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'simplefilelist',
+      product: 'simple_file_list',
+      vulnerabilityName: 'simplefilelist simple_file_list Unrestricted Upload of File with Dangerous Type',
+      shortDescription: 'Simple File List WordPress plugin remote code execution.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2020-36847'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'ec52bbb216f8',
+          xdb_url: 'https://vulncheck.com/xdb/ec52bbb216f8',
+          date_added: '2025-08-23T02:22:58Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:137f/PoC-CVE-2020-36847-WordPress-Plugin-4.2.2-RCE.git',
+        },
+        {
+          xdb_id: 'ee72a50e36ee',
+          xdb_url: 'https://vulncheck.com/xdb/ee72a50e36ee',
+          date_added: '2026-02-10T10:46:55Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:0xGunrunner/CVE-2025-34085.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(filteredXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+assert.deepEqual(
+  filteredXdb.candidates[0].vulncheck_exploitation_signal.evidence_urls,
+  ['https://vulncheck.com/xdb/ec52bbb216f8'],
+);
+assert.deepEqual(
+  filteredXdb.candidates[0].source_packet_prefill.preserved_vulncheck_fields.vulncheck_xdb.map(item => item.xdb_id),
+  ['ec52bbb216f8', 'ee72a50e36ee'],
+);
+
+const compressedMultiCveXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'linux',
+      product: 'kernel',
+      vulnerabilityName: 'Linux Kernel vulnerability',
+      shortDescription: 'Linux Kernel CVE with compressed multi-CVE proof-of-concept repository name.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2024-42009'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'compressed',
+          xdb_url: 'https://vulncheck.com/xdb/compressed',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:Foxer131/CVE-2024-42008-9-exploit.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(compressedMultiCveXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+assert.deepEqual(
+  compressedMultiCveXdb.candidates[0].vulncheck_exploitation_signal.evidence_urls,
+  ['https://vulncheck.com/xdb/compressed'],
+);
+
+const fullRangeXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'linux',
+      product: 'kernel',
+      vulnerabilityName: 'Linux Kernel vulnerability',
+      shortDescription: 'Linux Kernel CVE with full multi-CVE proof-of-concept repository name.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-6019'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'full-range',
+          xdb_url: 'https://vulncheck.com/xdb/full-range',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-6018-6019.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(fullRangeXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
+const shortSuffixRangeXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'linux',
+      product: 'kernel',
+      vulnerabilityName: 'Linux Kernel vulnerability',
+      shortDescription: 'Linux Kernel CVE with short suffix proof-of-concept repository name.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-6019'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'short-suffix-range',
+          xdb_url: 'https://vulncheck.com/xdb/short-suffix-range',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-6018-19.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(shortSuffixRangeXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
+const singleDigitSuffixRangeXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'example',
+      product: 'example',
+      vulnerabilityName: 'Four-digit CVE with single-digit compressed suffix',
+      shortDescription: 'Repository name abbreviates a neighboring four-digit CVE with one digit.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2024-5442'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'single-digit-suffix-range',
+          xdb_url: 'https://vulncheck.com/xdb/single-digit-suffix-range',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2024-5441-2.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(singleDigitSuffixRangeXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
+const fourDigitAbbreviatedSuffixXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'example',
+      product: 'example',
+      vulnerabilityName: 'Five-digit CVE with four-digit compressed suffix',
+      shortDescription: 'Repository name abbreviates a neighboring five-digit CVE with four suffix digits.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2024-12346'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'four-digit-abbreviated-suffix',
+          xdb_url: 'https://vulncheck.com/xdb/four-digit-abbreviated-suffix',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2024-12345-2346.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(fourDigitAbbreviatedSuffixXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
+const chainedMultiCveXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'example',
+      product: 'appliance',
+      vulnerabilityName: 'Chained multi-CVE proof-of-concept repository',
+      shortDescription: 'Repository name lists several CVEs in one hyphenated chain.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-32395'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'chained-range',
+          xdb_url: 'https://vulncheck.com/xdb/chained-range',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-30208-31125-31486-32395.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(chainedMultiCveXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 1);
+
+const versionSuffixXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'chrome',
+      product: 'v8',
+      vulnerabilityName: 'Version suffix is not another CVE',
+      shortDescription: 'PoC repository suffix should not be treated as a lower-numbered CVE.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2025-0417'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'version-suffix',
+          xdb_url: 'https://vulncheck.com/xdb/version-suffix',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2025-0411-7-Zip.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(versionSuffixXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 0);
+
+const dotVersionSuffixXdb = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'example',
+      product: 'app',
+      vulnerabilityName: 'Dot version suffix is not another CVE',
+      shortDescription: 'PoC repository version suffix starting with dot should not be treated as a CVE suffix.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2024-34103'],
+      cwes: [],
+      vulncheck_xdb: [
+        {
+          xdb_id: 'dot-version-suffix',
+          xdb_url: 'https://vulncheck.com/xdb/dot-version-suffix',
+          date_added: '2025-06-05T00:00:00Z',
+          exploit_type: 'initial-access',
+          clone_ssh_url: 'git@github.com:example/CVE-2024-34102-3.9.20.git',
+        },
+      ],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-06-23T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-06-23',
+  seenCves: new Set(),
+});
+
+assert.equal(dotVersionSuffixXdb.candidates[0].vulncheck_exploitation_signal.xdb_count, 0);
+
 console.log('vulncheck-kev-intake tests passed');
