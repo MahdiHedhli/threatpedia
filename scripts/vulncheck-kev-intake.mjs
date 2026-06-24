@@ -425,7 +425,7 @@ function compressedCveChainIncludes(text, targetCve) {
       let expandedNumber = null;
       if (suffix.length >= 4 && suffix.length <= 7) {
         expandedNumber = suffix;
-      } else if (baseNumber.length > 4 && suffix.length < baseNumber.length) {
+      } else if ((baseNumber.length > 4 || suffix.length >= 2) && suffix.length < baseNumber.length) {
         const baseTail = baseNumber.slice(baseNumber.length - suffix.length);
         if (Number.parseInt(suffix, 10) <= Number.parseInt(baseTail, 10)) continue;
         expandedNumber = `${baseNumber.slice(0, baseNumber.length - suffix.length)}${suffix}`;
