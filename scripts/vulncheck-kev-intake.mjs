@@ -421,11 +421,18 @@ function compressedCveChainIncludes(text, targetCve) {
   for (const match of value.matchAll(/\bCVE-(\d{4})-(\d{4,7})((?:-\d{1,7})+)(?=\D|$)/gi)) {
     const [, year, baseNumber, suffixChain] = match;
     if (year !== targetYear) continue;
+
+    const matchEndIndex = match.index + match[0].length;
+    const remaining = value.slice(matchEndIndex);
+    if (/^-[a-z]/i.test(remaining) && !/^-(?:exploit|poc|bypass|vuln|rce|lpe|oob|writeup|patch|fix)/i.test(remaining)) {
+      continue;
+    }
+
     for (const suffix of suffixChain.split('-').filter(Boolean)) {
       let expandedNumber = null;
       if (suffix.length >= 4 && suffix.length <= 7) {
         expandedNumber = suffix;
-      } else if ((baseNumber.length > 4 || suffix.length >= 2) && suffix.length < baseNumber.length) {
+      } else if (suffix.length < baseNumber.length) {
         const baseTail = baseNumber.slice(baseNumber.length - suffix.length);
         if (Number.parseInt(suffix, 10) <= Number.parseInt(baseTail, 10)) continue;
         expandedNumber = `${baseNumber.slice(0, baseNumber.length - suffix.length)}${suffix}`;
