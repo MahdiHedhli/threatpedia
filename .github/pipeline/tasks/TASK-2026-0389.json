@@ -1,0 +1,76 @@
+{
+  "task_id": "TASK-2026-0389",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P2",
+  "status": "pending",
+  "created": "2026-06-26T02:44:47.838Z",
+  "updated": "2026-06-26T02:44:47.838Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Photo ZIP campaign targeting hospitality industry delivers Node.js implant for persistent access",
+    "sources": [
+      "https://www.microsoft.com/en-us/security/blog/2026/06/25/photo-zip-campaign-targeting-hospitality-industry-delivers-node-js-implant-persistent-access"
+    ],
+    "candidate_data": {
+      "discovery_type": "incident",
+      "candidate_key": "incident:microsoft_security_blog:https://www.microsoft.com/en-us/security/blog/2026/06/25/photo-zip-campaign-targeting-hospitality-industry-delivers-node-js-implant-persistent-access",
+      "source_url": "https://www.microsoft.com/en-us/security/blog/2026/06/25/photo-zip-campaign-targeting-hospitality-industry-delivers-node-js-implant-persistent-access",
+      "source_feed": "microsoft_security_blog",
+      "source_label": "Microsoft Security Blog",
+      "published_at": "2026-06-25T22:30:29.000Z",
+      "discovered_signals": [
+        "intrusion"
+      ],
+      "boundary_signals": [
+        "targets/against"
+      ],
+      "feed_categories": [
+        "Phishing"
+      ]
+    },
+    "notes": "Auto-discovered from Microsoft Security Blog on 2026-06-25. Source summary: Microsoft Threat Intelligence identified an active multi-stage intrusion campaign targeting hospitality organizations in Europe and Asia. The campaign uses photo-themed ZIP archives and fake image shortcut files to deliver a persistent Node.js implant and evade detection. The post Photo ZIP campaign targeting hospitali… Incident signals: intrusion. Boundary signals: targets/against. Treat this as incident intake first: keep the article grounded in the concrete event described by the sources, and only elevate to a campaign or actor follow-on if the evidence supports it. Discovery score: 60/100."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/photo-zip-campaign-targeting-hospitality-industry-delivers-node-js-impla-2026.md",
+    "branch": "pipeline/TASK-2026-0389",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "microsoft_security_blog",
+    "score": 60,
+    "auto_certify": false,
+    "discovered_at": "2026-06-26T02:44:47.838Z",
+    "published_at": "2026-06-25T22:30:29.000Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-06-26T02:44:47.838Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered incident candidate from Microsoft Security Blog (score: 60)"
+    }
+  ]
+}
