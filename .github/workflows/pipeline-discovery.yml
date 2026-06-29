@@ -173,9 +173,30 @@ jobs:
             echo "::error::VULNCHECKAPI secret is not configured; VulnCheck production intake cannot run safely."
             exit 1
           fi
+
+          CONFIG_JSON="$(node scripts/pipeline-config.mjs)"
+          PER_RUN_LIMIT="$(node -e 'const c = JSON.parse(process.argv[1]); console.log(c.discovery_sources?.vulncheck_kev?.max_candidates || 30);' "$CONFIG_JSON")"
+          PENDING_CAP="$(node -e 'const c = JSON.parse(process.argv[1]); console.log(c.queues?.source_packets?.max_pending || c.queues?.supply_chain_candidates?.max_pending || c.queues?.draft_ready?.max_pending || 40);' "$CONFIG_JSON")"
+          PENDING_PREFILLS="$(
+            git diff --name-only origin/main...HEAD -- '.github/pipeline/source-packets/vulncheck-kev/*.json' \
+              | awk '!/\/latest\.json$/ { count += 1 } END { print count + 0 }'
+          )"
+          HEADROOM=$((PENDING_CAP - PENDING_PREFILLS))
+
+          if [ "$HEADROOM" -le 0 ]; then
+            echo "VulnCheck KEV source-packet cap reached (${PENDING_PREFILLS}/${PENDING_CAP}); skipping intake until the discovery PR is reviewed."
+            exit 0
+          fi
+
+          RUN_LIMIT="$PER_RUN_LIMIT"
+          if [ "$RUN_LIMIT" -gt "$HEADROOM" ]; then
+            RUN_LIMIT="$HEADROOM"
+          fi
+
+          echo "VulnCheck KEV source-packet headroom: ${PENDING_PREFILLS}/${PENDING_CAP}; running intake with --max-candidates ${RUN_LIMIT}."
           node scripts/vulncheck-kev-intake.mjs \
             --execute \
-            --max-candidates 30 \
+            --max-candidates "$RUN_LIMIT" \
             --cache "$RUNNER_TEMP/vulncheck-kev-backup.json" \
             --out "$RUNNER_TEMP/vulncheck-kev-intake-result.json"
 

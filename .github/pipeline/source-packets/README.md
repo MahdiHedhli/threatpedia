@@ -87,7 +87,10 @@ Use the label `VulnCheck KEV` near any user-visible data derived from this
 source.
 
 Live artifacts are written under `.github/pipeline/source-packets/vulncheck-kev/`
-and staged in the normal discovery PR. They are candidate/source-packet queue
+and staged in the normal discovery PR. The discovery workflow caps branch-only
+VulnCheck prefills at `queues.source_packets.max_pending`; when the open
+discovery PR already has enough pending prefills, intake is skipped until the
+batch is reviewed. They are candidate/source-packet queue
 items, not article draft tasks.
 
 Production use is controlled by the `discovery_sources.vulncheck_kev.enabled`
