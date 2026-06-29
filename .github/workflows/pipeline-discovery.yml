@@ -425,6 +425,7 @@ jobs:
           BASE_BRANCH="${VULNCHECK_PREFILL_BRANCH_PREFIX}"
           BRANCH="${BASE_BRANCH}"
           OPEN_PREFILL_JSON="$RUNNER_TEMP/open-vulncheck-prefill-prs.json"
+          SEEN_PREFILL_PATHS="$RUNNER_TEMP/open-vulncheck-prefill-paths.txt"
 
           branch_prefill_count() {
             local ref="$1"
@@ -483,18 +484,22 @@ jobs:
             git checkout -B "$BASE_BRANCH" origin/main
           fi
 
-          SEEN_PREFILL_CVES="$(
-            for candidate_branch in "${OPEN_PREFILL_BRANCHES[@]}"; do
-              git fetch origin "$candidate_branch" >/dev/null 2>&1 || continue
-              git diff --name-only origin/main..."origin/${candidate_branch}" -- '.github/pipeline/source-packets/vulncheck-kev/*.json'
-            done | python3 - <<'PY'
+          : > "$SEEN_PREFILL_PATHS"
+          for candidate_branch in "${OPEN_PREFILL_BRANCHES[@]}"; do
+            git fetch origin "$candidate_branch" >/dev/null 2>&1 || continue
+            git diff --name-only origin/main..."origin/${candidate_branch}" -- '.github/pipeline/source-packets/vulncheck-kev/*.json' \
+              >> "$SEEN_PREFILL_PATHS"
+          done
+
+          SEEN_PREFILL_CVES="$(python3 - "$SEEN_PREFILL_PATHS" <<'PY'
           import re
           import sys
           cves = set()
-          for line in sys.stdin:
-              match = re.search(r'prefill-(cve-\d{4}-\d{4,})-', line, re.I)
-              if match:
-                  cves.add(match.group(1).upper())
+          with open(sys.argv[1], encoding='utf-8') as handle:
+              for line in handle:
+                  match = re.search(r'prefill-(cve-\d{4}-\d{4,})-', line, re.I)
+                  if match:
+                      cves.add(match.group(1).upper())
           print(','.join(sorted(cves)))
           PY
           )"
