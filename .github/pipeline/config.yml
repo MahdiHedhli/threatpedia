@@ -88,7 +88,7 @@ discovery_sources:
     enabled: true               # Live source-packet/candidate prefill only; set false for rollback
     backup_url: "https://api.vulncheck.com/v3/backup/vulncheck-kev"
     lookback_days: 30
-    max_candidates: 30          # Per-run ceiling, subject to queues.source_packets.max_pending headroom
+    max_candidates: 30          # Per-run ceiling, subject to bounded VulnCheck prefill PR headroom
     backlog_fill: true          # After recent items, continue older unhandled newest-to-oldest
     sibling_limit_per_vendor_product_day: 4
     local_throttle_ms: 250      # 240/minute; intentionally below the 1,000/minute community limit

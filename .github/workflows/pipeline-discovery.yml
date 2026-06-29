@@ -64,6 +64,7 @@ on:
 env:
   DISCOVERY_BRANCH: pipeline/discovery
   DISCOVERY_LABEL: pipeline/discovery
+  VULNCHECK_PREFILL_BRANCH_PREFIX: pipeline/vulncheck-prefill
 
 jobs:
   discover:
@@ -162,50 +163,12 @@ jobs:
 
           node scripts/pipeline-discover.mjs ${ARGS}
 
-      - name: Run VulnCheck KEV source-packet intake
-        id: vulncheck
-        if: ${{ inputs.execute != 'false' && (inputs.mode == '' || inputs.mode == 'all' || inputs.mode == 'zero-day') }}
-        env:
-          VULNCHECKAPI: ${{ secrets.VULNCHECKAPI }}
-        run: |
-          set -euo pipefail
-          if [ -z "${VULNCHECKAPI:-}" ]; then
-            echo "::error::VULNCHECKAPI secret is not configured; VulnCheck production intake cannot run safely."
-            exit 1
-          fi
-
-          CONFIG_JSON="$(node scripts/pipeline-config.mjs)"
-          PER_RUN_LIMIT="$(node -e 'const c = JSON.parse(process.argv[1]); console.log(c.discovery_sources?.vulncheck_kev?.max_candidates || 30);' "$CONFIG_JSON")"
-          PENDING_CAP="$(node -e 'const c = JSON.parse(process.argv[1]); console.log(c.queues?.source_packets?.max_pending || c.queues?.supply_chain_candidates?.max_pending || c.queues?.draft_ready?.max_pending || 40);' "$CONFIG_JSON")"
-          PENDING_PREFILLS="$(
-            git diff --name-only origin/main...HEAD -- '.github/pipeline/source-packets/vulncheck-kev/*.json' \
-              | awk '!/\/latest\.json$/ { count += 1 } END { print count + 0 }'
-          )"
-          HEADROOM=$((PENDING_CAP - PENDING_PREFILLS))
-
-          if [ "$HEADROOM" -le 0 ]; then
-            echo "VulnCheck KEV source-packet cap reached (${PENDING_PREFILLS}/${PENDING_CAP}); skipping intake until the discovery PR is reviewed."
-            exit 0
-          fi
-
-          RUN_LIMIT="$PER_RUN_LIMIT"
-          if [ "$RUN_LIMIT" -gt "$HEADROOM" ]; then
-            RUN_LIMIT="$HEADROOM"
-          fi
-
-          echo "VulnCheck KEV source-packet headroom: ${PENDING_PREFILLS}/${PENDING_CAP}; running intake with --max-candidates ${RUN_LIMIT}."
-          node scripts/vulncheck-kev-intake.mjs \
-            --execute \
-            --max-candidates "$RUN_LIMIT" \
-            --cache "$RUNNER_TEMP/vulncheck-kev-backup.json" \
-            --out "$RUNNER_TEMP/vulncheck-kev-intake-result.json"
-
-      - name: Commit new tasks and source-packet prefills to branch
+      - name: Commit new tasks to branch
         id: commit
         if: ${{ inputs.execute != 'false' }}
         run: |
           set -euo pipefail
-          git add .github/pipeline/tasks/ .github/pipeline/source-packets/vulncheck-kev/
+          git add .github/pipeline/tasks/
           if git diff --cached --quiet; then
             echo "No new discoveries this run — branch unchanged."
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
@@ -242,9 +205,10 @@ jobs:
               }
             }
 
-            // ── Enumerate task and source-packet prefill files currently on
-            //    the branch but not on main. These are pending human review in
-            //    this PR before landing on main.
+            // ── Enumerate task files currently on the discovery branch but
+            //    not on main. VulnCheck source-packet prefills are normally
+            //    staged through their own bounded PR lane; packet enumeration
+            //    remains here only so legacy discovery branches are visible.
             let taskPaths = [];
             let packetPaths = [];
             try {
@@ -349,8 +313,9 @@ jobs:
 
             let body = `## Automated Discovery — pending queue\n\n`;
             body += `This PR accumulates task candidates produced by the scheduled discovery workflow `;
-            body += `(\`.github/workflows/pipeline-discovery.yml\`). Tasks and source-packet prefills here are staged for your review `;
+            body += `(\`.github/workflows/pipeline-discovery.yml\`). Task candidates here are staged for your review `;
             body += `on the \`${BRANCH}\` branch before landing on \`main\`.\n\n`;
+            body += `VulnCheck KEV source-packet prefills are staged in separate bounded PRs once their queue has branch headroom.\n\n`;
             body += `**Merge** to accept the whole batch. **Close** (without merging) to discard this staged batch.\n`;
             body += `For a durable veto across future discovery runs, use the rejection-memory workflow and merge its PR.\n`;
             body += `Nothing auto-merges from this PR.\n\n`;
@@ -438,3 +403,187 @@ jobs:
             --repo "${GITHUB_REPOSITORY}" \
             --workflow "pipeline-validate-tasks.yml" \
             --wait-seconds 30
+
+      - name: Run VulnCheck KEV source-packet intake branch
+        id: vulncheck
+        if: ${{ inputs.execute != 'false' && (inputs.mode == '' || inputs.mode == 'all' || inputs.mode == 'zero-day') }}
+        env:
+          VULNCHECKAPI: ${{ secrets.VULNCHECKAPI }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          set -euo pipefail
+          if [ -z "${VULNCHECKAPI:-}" ]; then
+            echo "::error::VULNCHECKAPI secret is not configured; VulnCheck production intake cannot run safely."
+            exit 1
+          fi
+
+          CONFIG_JSON="$(node scripts/pipeline-config.mjs)"
+          PER_RUN_LIMIT="$(node -e 'const c = JSON.parse(process.argv[1]); console.log(c.discovery_sources?.vulncheck_kev?.max_candidates || 30);' "$CONFIG_JSON")"
+          PENDING_CAP="$(node -e 'const c = JSON.parse(process.argv[1]); console.log(c.queues?.source_packets?.max_pending || c.queues?.supply_chain_candidates?.max_pending || c.queues?.draft_ready?.max_pending || 40);' "$CONFIG_JSON")"
+          BASE_BRANCH="${VULNCHECK_PREFILL_BRANCH_PREFIX}"
+          BRANCH="${BASE_BRANCH}"
+
+          branch_prefill_count() {
+            local ref="$1"
+            git diff --name-only origin/main..."$ref" -- '.github/pipeline/source-packets/vulncheck-kev/*.json' \
+              | awk '!/\/latest\.json$/ { count += 1 } END { print count + 0 }'
+          }
+
+          if git ls-remote --exit-code --heads origin "$BASE_BRANCH" >/dev/null 2>&1; then
+            git fetch origin "$BASE_BRANCH"
+            OPEN_PRS=$(curl -sSf \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BASE_BRANCH}&per_page=5" \
+              | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
+
+            if [ "$OPEN_PRS" = "0" ]; then
+              echo "No open VulnCheck PR on ${BASE_BRANCH}; resetting reusable branch to origin/main."
+              git checkout -B "$BASE_BRANCH" origin/main
+              git push --force-with-lease origin "$BASE_BRANCH"
+            else
+              PENDING_PREFILLS="$(branch_prefill_count "origin/${BASE_BRANCH}")"
+              if [ "$PENDING_PREFILLS" -ge "$PENDING_CAP" ]; then
+                BRANCH="${BASE_BRANCH}-${GITHUB_RUN_ID}"
+                echo "Existing VulnCheck PR has ${PENDING_PREFILLS}/${PENDING_CAP} prefills; rolling over to ${BRANCH}."
+                git checkout -B "$BRANCH" origin/main
+              else
+                echo "Existing VulnCheck PR has ${PENDING_PREFILLS}/${PENDING_CAP} prefills; adding to ${BASE_BRANCH}."
+                git checkout -B "$BASE_BRANCH" "origin/${BASE_BRANCH}"
+              fi
+            fi
+          else
+            echo "Creating reusable VulnCheck prefill branch ${BASE_BRANCH}."
+            git checkout -B "$BASE_BRANCH" origin/main
+          fi
+
+          PENDING_PREFILLS="$(branch_prefill_count HEAD)"
+          HEADROOM=$((PENDING_CAP - PENDING_PREFILLS))
+          if [ "$HEADROOM" -le 0 ]; then
+            BRANCH="${BASE_BRANCH}-${GITHUB_RUN_ID}"
+            echo "Active VulnCheck branch is full; rolling over to ${BRANCH}."
+            git checkout -B "$BRANCH" origin/main
+            PENDING_PREFILLS=0
+            HEADROOM="$PENDING_CAP"
+          fi
+
+          RUN_LIMIT="$PER_RUN_LIMIT"
+          if [ "$RUN_LIMIT" -gt "$HEADROOM" ]; then
+            RUN_LIMIT="$HEADROOM"
+          fi
+
+          echo "VulnCheck KEV source-packet headroom on ${BRANCH}: ${PENDING_PREFILLS}/${PENDING_CAP}; running intake with --max-candidates ${RUN_LIMIT}."
+          node scripts/vulncheck-kev-intake.mjs \
+            --execute \
+            --max-candidates "$RUN_LIMIT" \
+            --cache "$RUNNER_TEMP/vulncheck-kev-backup.json" \
+            --out "$RUNNER_TEMP/vulncheck-kev-intake-result.json"
+
+          git add .github/pipeline/source-packets/vulncheck-kev/
+          if git diff --cached --quiet; then
+            echo "No new VulnCheck source-packet prefills this run."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "chore(pipeline): VulnCheck source-packet prefill $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push --force-with-lease origin "$BRANCH"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update VulnCheck source-packet PR
+        if: ${{ inputs.execute != 'false' && steps.vulncheck.outputs.has_changes == 'true' }}
+        uses: actions/github-script@v8
+        env:
+          VULNCHECK_BRANCH: ${{ steps.vulncheck.outputs.branch }}
+          VULNCHECK_LABEL: pipeline/discovery
+        with:
+          script: |
+            const { execSync } = require('child_process');
+            const fs = require('fs');
+
+            const BRANCH = process.env.VULNCHECK_BRANCH;
+            const LABEL = process.env.VULNCHECK_LABEL;
+            const REVIEWERS = ['MahdiHedhli', 'dangermouse-bot', 'ernestpenfold-bot'];
+            const { owner, repo } = context.repo;
+
+            const packetDiffOut = execSync(
+              `git diff --name-only origin/main...HEAD -- '.github/pipeline/source-packets/vulncheck-kev/*.json'`,
+              { encoding: 'utf8' },
+            );
+            const packetPaths = packetDiffOut.split('\n').map(s => s.trim()).filter(Boolean);
+            const packets = [];
+            for (const p of packetPaths) {
+              if (p.endsWith('/latest.json')) continue;
+              try {
+                const packet = JSON.parse(fs.readFileSync(p, 'utf8'));
+                const candidate = packet.candidate || {};
+                const prefill = packet.source_packet_prefill || {};
+                const product = (prefill.affected_products && prefill.affected_products[0]) || {};
+                packets.push({
+                  path: p,
+                  cves: Array.isArray(candidate.cves) ? candidate.cves : [],
+                  bucket: candidate.recency_bucket || '—',
+                  date: candidate.vulncheck_exploitation_signal?.date_added || '—',
+                  score: candidate.priority_score ?? null,
+                  officialCisa: !!candidate.official_cisa_kev?.listed,
+                  canary: !!candidate.vulncheck_exploitation_signal?.reported_exploited_by_vulncheck_canaries,
+                  vendor: product.vendor || '—',
+                  product: product.product || '—',
+                });
+              } catch (e) {
+                console.log(`Failed to parse ${p}: ${e.message}`);
+              }
+            }
+
+            packets.sort((a, b) => {
+              if (a.date !== b.date) return String(b.date).localeCompare(String(a.date));
+              return (b.score ?? 0) - (a.score ?? 0);
+            });
+
+            const title = `Pipeline discovery — ${packets.length} VulnCheck prefill${packets.length === 1 ? '' : 's'} pending`;
+            let body = `## VulnCheck KEV Source-Packet Prefill Batch\n\n`;
+            body += `This PR stages a bounded VulnCheck KEV source-packet prefill batch from \`${BRANCH}\` for review before landing on \`main\`.\n\n`;
+            body += `These are prioritization/source-packet artifacts only. They do not create article drafts, do not mark official CISA KEV membership, and require prominent VulnCheck KEV attribution if surfaced.\n`;
+            body += `When the active VulnCheck prefill PR reaches the configured pending cap, scheduled discovery rolls over to a separate PR instead of overfilling the current one.\n\n`;
+            body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\n\n`;
+            body += `| CVE | Date added | Bucket | Score | CISA date present | Canary signal | Vendor / product | Artifact |\n`;
+            body += `|---|---|---|---:|:-:|:-:|---|---|\n`;
+            for (const packet of packets) {
+              const cveCell = packet.cves.length > 0 ? packet.cves.map(cve => `\`${cve}\``).join(', ') : '—';
+              const artifact = packet.path.replace(/^\.\//, '');
+              body += `| ${cveCell} | ${packet.date} | ${packet.bucket} | ${packet.score == null ? '—' : packet.score} | ${packet.officialCisa ? '✓' : '—'} | ${packet.canary ? '✓' : '—'} | ${`${packet.vendor} / ${packet.product}`.replace(/\|/g, '\\|')} | \`${artifact}\` |\n`;
+            }
+            body += `\n---\n\n`;
+            body += `_Last updated: ${new Date().toISOString()} · Run [${context.runId}](${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}) · See [docs/PIPELINE.md](${context.serverUrl}/${owner}/${repo}/blob/main/docs/PIPELINE.md) for the end-to-end flow._\n`;
+
+            const { data: existing } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              head: `${owner}:${BRANCH}`,
+              per_page: 5,
+            });
+
+            let pr;
+            if (existing.length > 0) {
+              pr = existing[0];
+              await github.rest.pulls.update({ owner, repo, pull_number: pr.number, title, body });
+            } else {
+              const created = await github.rest.pulls.create({ owner, repo, head: BRANCH, base: 'main', title, body });
+              pr = created.data;
+              try {
+                await github.rest.issues.addLabels({ owner, repo, issue_number: pr.number, labels: [LABEL] });
+              } catch (e) {
+                console.log(`Could not add label ${LABEL} to PR #${pr.number}: ${e.message}`);
+              }
+            }
+
+            try {
+              await github.rest.pulls.requestReviewers({ owner, repo, pull_number: pr.number, reviewers: REVIEWERS });
+            } catch (e) {
+              console.log(`Could not request all reviewers on PR #${pr.number}: ${e.message}`);
+            }
