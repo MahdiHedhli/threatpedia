@@ -424,6 +424,7 @@ jobs:
           PENDING_CAP="$(node -e 'const c = JSON.parse(process.argv[1]); console.log(c.queues?.source_packets?.max_pending || c.queues?.supply_chain_candidates?.max_pending || c.queues?.draft_ready?.max_pending || 40);' "$CONFIG_JSON")"
           BASE_BRANCH="${VULNCHECK_PREFILL_BRANCH_PREFIX}"
           BRANCH="${BASE_BRANCH}"
+          OPEN_PREFILL_JSON="$RUNNER_TEMP/open-vulncheck-prefill-prs.json"
 
           branch_prefill_count() {
             local ref="$1"
@@ -431,33 +432,72 @@ jobs:
               | awk '!/\/latest\.json$/ { count += 1 } END { print count + 0 }'
           }
 
-          if git ls-remote --exit-code --heads origin "$BASE_BRANCH" >/dev/null 2>&1; then
-            git fetch origin "$BASE_BRANCH"
-            OPEN_PRS=$(curl -sSf \
-              -H "Authorization: token ${GH_TOKEN}" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BASE_BRANCH}&per_page=5" \
-              | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
+          curl -sSf \
+            -H "Authorization: token ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${REPO}/pulls?state=open&per_page=100" \
+            > "$OPEN_PREFILL_JSON"
 
-            if [ "$OPEN_PRS" = "0" ]; then
-              echo "No open VulnCheck PR on ${BASE_BRANCH}; resetting reusable branch to origin/main."
-              git checkout -B "$BASE_BRANCH" origin/main
-              git push --force-with-lease origin "$BASE_BRANCH"
-            else
-              PENDING_PREFILLS="$(branch_prefill_count "origin/${BASE_BRANCH}")"
-              if [ "$PENDING_PREFILLS" -ge "$PENDING_CAP" ]; then
-                BRANCH="${BASE_BRANCH}-${GITHUB_RUN_ID}"
-                echo "Existing VulnCheck PR has ${PENDING_PREFILLS}/${PENDING_CAP} prefills; rolling over to ${BRANCH}."
-                git checkout -B "$BRANCH" origin/main
-              else
-                echo "Existing VulnCheck PR has ${PENDING_PREFILLS}/${PENDING_CAP} prefills; adding to ${BASE_BRANCH}."
-                git checkout -B "$BASE_BRANCH" "origin/${BASE_BRANCH}"
-              fi
+          mapfile -t OPEN_PREFILL_BRANCHES < <(python3 - "$OPEN_PREFILL_JSON" "$BASE_BRANCH" <<'PY'
+          import json
+          import sys
+          path, prefix = sys.argv[1], sys.argv[2]
+          with open(path, encoding='utf-8') as handle:
+              pulls = json.load(handle)
+          branches = []
+          for pr in pulls:
+              ref = (pr.get('head') or {}).get('ref') or ''
+              if ref == prefix or ref.startswith(f'{prefix}-'):
+                  branches.append(ref)
+          for ref in sorted(set(branches), key=lambda item: (item != prefix, item)):
+              print(ref)
+          PY
+          )
+
+          SELECTED_BRANCH=""
+          for candidate_branch in "${OPEN_PREFILL_BRANCHES[@]}"; do
+            git fetch origin "$candidate_branch"
+            PENDING_PREFILLS="$(branch_prefill_count "origin/${candidate_branch}")"
+            if [ "$PENDING_PREFILLS" -lt "$PENDING_CAP" ]; then
+              SELECTED_BRANCH="$candidate_branch"
+              echo "Reusing open VulnCheck prefill branch ${SELECTED_BRANCH} with ${PENDING_PREFILLS}/${PENDING_CAP} prefills."
+              break
             fi
+            echo "Open VulnCheck prefill branch ${candidate_branch} is full (${PENDING_PREFILLS}/${PENDING_CAP})."
+          done
+
+          if [ -n "$SELECTED_BRANCH" ]; then
+            BRANCH="$SELECTED_BRANCH"
+            git checkout -B "$BRANCH" "origin/${BRANCH}"
+          elif git ls-remote --exit-code --heads origin "$BASE_BRANCH" >/dev/null 2>&1 \
+              && ! printf '%s\n' "${OPEN_PREFILL_BRANCHES[@]}" | grep -qx "$BASE_BRANCH"; then
+            echo "No open VulnCheck PR on ${BASE_BRANCH}; resetting reusable branch to origin/main."
+            git checkout -B "$BASE_BRANCH" origin/main
+            git push --force-with-lease origin "$BASE_BRANCH"
+          elif [ "${#OPEN_PREFILL_BRANCHES[@]}" -gt 0 ]; then
+            BRANCH="${BASE_BRANCH}-${GITHUB_RUN_ID}"
+            echo "All open VulnCheck prefill PRs are full; rolling over to ${BRANCH}."
+            git checkout -B "$BRANCH" origin/main
           else
             echo "Creating reusable VulnCheck prefill branch ${BASE_BRANCH}."
             git checkout -B "$BASE_BRANCH" origin/main
           fi
+
+          SEEN_PREFILL_CVES="$(
+            for candidate_branch in "${OPEN_PREFILL_BRANCHES[@]}"; do
+              git fetch origin "$candidate_branch" >/dev/null 2>&1 || continue
+              git diff --name-only origin/main..."origin/${candidate_branch}" -- '.github/pipeline/source-packets/vulncheck-kev/*.json'
+            done | python3 - <<'PY'
+          import re
+          import sys
+          cves = set()
+          for line in sys.stdin:
+              match = re.search(r'prefill-(cve-\d{4}-\d{4,})-', line, re.I)
+              if match:
+                  cves.add(match.group(1).upper())
+          print(','.join(sorted(cves)))
+          PY
+          )"
 
           PENDING_PREFILLS="$(branch_prefill_count HEAD)"
           HEADROOM=$((PENDING_CAP - PENDING_PREFILLS))
@@ -475,9 +515,14 @@ jobs:
           fi
 
           echo "VulnCheck KEV source-packet headroom on ${BRANCH}: ${PENDING_PREFILLS}/${PENDING_CAP}; running intake with --max-candidates ${RUN_LIMIT}."
+          SEEN_ARGS=()
+          if [ -n "$SEEN_PREFILL_CVES" ]; then
+            SEEN_ARGS=(--seen-cves "$SEEN_PREFILL_CVES")
+          fi
           node scripts/vulncheck-kev-intake.mjs \
             --execute \
             --max-candidates "$RUN_LIMIT" \
+            "${SEEN_ARGS[@]}" \
             --cache "$RUNNER_TEMP/vulncheck-kev-backup.json" \
             --out "$RUNNER_TEMP/vulncheck-kev-intake-result.json"
 
