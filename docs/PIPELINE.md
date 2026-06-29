@@ -88,8 +88,9 @@ discovery queues are open, validated, and stable.
         requests the VulnCheck KEV backup descriptor, follows the published
         backup payload URL, selects records by top-level `date_added`
         newest-first, emits up to 30 source-packet prefill artifacts per run,
-        and stages them in the discovery PR. It fills from the recent window
-        first, then older unhandled records newest-to-oldest. It does not
+        and stages them in bounded VulnCheck prefill PRs separate from the
+        task discovery PR. It fills from the recent window first, then older
+        unhandled records newest-to-oldest. It does not
         create draft tasks or article drafts. CISA remains authoritative for
         official CISA KEV membership; VulnCheck fields are non-authoritative
         exploitation signals and supporting evidence with required VulnCheck
@@ -214,8 +215,10 @@ discovery queues are open, validated, and stable.
      secret `VULNCHECKAPI` and fail closed if it is missing. The helper fetches
      the VulnCheck KEV backup once per run, emits newest unhandled records
      first, fills from older unhandled records newest-to-oldest only after the
-     recent window is exhausted, and applies seen-CVE filtering and sibling
-     dampening before writing artifacts. Do not treat the config flag alone as a
+     recent window is exhausted, applies seen-CVE filtering and sibling
+     dampening before writing artifacts, and rolls over to a separate bounded
+     prefill PR when the active VulnCheck prefill PR reaches configured
+     capacity. Do not treat the config flag alone as a
      scheduled rollback: until the workflow/helper are changed to skip the step
      when disabled, rollback requires pausing or reverting the VulnCheck
      workflow/helper path, or manually dispatching discovery with
@@ -364,6 +367,7 @@ same queue/validation path as discovery-generated tasks.
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 20 tasks | Workflow input |
 | Discovery lane selection | workflow env `MODE` → `--mode` | `all` | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
+| VulnCheck source-packet PR rollover | `pipeline-discovery.yml` via `queues.source_packets.max_pending` | 40 branch-only prefills per active prefill PR | `config.yml`; intake shrinks to remaining headroom or rolls over to a separate PR when full |
 | Supply Chain B1 live queue | `.github/workflows/supply-chain-live-discovery.yml` → `scripts/supply-chain-live-discovery.mjs` | 30-minute cron; writes `.github/pipeline/supply-chain-candidates/latest.json`; no task or draft emission | Workflow + script |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | Task PR validation | `pipeline-validate-tasks.yml` + `scripts/validate-pipeline-tasks.mjs` + `scripts/pipeline-discovery-validation-dispatch.mjs` | Validates changed `.github/pipeline/tasks/*.json`; new task files must use canonical `acceptance_criteria`, pending-state metadata, matching filenames, and valid source URLs; discovery PRs explicitly dispatch validation and fall back to local validation plus a PR-head status if dispatch cannot be observed | Workflow + script |

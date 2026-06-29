@@ -25,6 +25,8 @@ queues:
     max_candidates: 400      # Maximum unprocessed discovery candidates
   draft_ready:
     max_pending: 60          # Maximum triaged candidates awaiting draft generation; advisory until consumed by dispatcher code
+  source_packets:
+    max_pending: 40          # Maximum branch-only source-packet prefills awaiting review
   supply_chain_candidates:
     max_pending: 40          # B1 discovery/classification queue only; no drafting dispatch consumes this yet
 
@@ -86,7 +88,7 @@ discovery_sources:
     enabled: true               # Live source-packet/candidate prefill only; set false for rollback
     backup_url: "https://api.vulncheck.com/v3/backup/vulncheck-kev"
     lookback_days: 30
-    max_candidates: 30          # 30 per 3-hour run = 240/day candidate prefill ceiling
+    max_candidates: 30          # Per-run ceiling, subject to bounded VulnCheck prefill PR headroom
     backlog_fill: true          # After recent items, continue older unhandled newest-to-oldest
     sibling_limit_per_vendor_product_day: 4
     local_throttle_ms: 250      # 240/minute; intentionally below the 1,000/minute community limit

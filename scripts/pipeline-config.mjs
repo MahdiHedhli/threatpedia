@@ -49,6 +49,7 @@ export const DEFAULTS = Object.freeze({
     },
     discovery: { max_candidates: 400 },
     draft_ready: { max_pending: 60 },
+    source_packets: { max_pending: 40 },
     supply_chain_candidates: { max_pending: 40 },
   },
   scheduling: {
