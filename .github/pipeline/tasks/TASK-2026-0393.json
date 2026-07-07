@@ -1,0 +1,82 @@
+{
+  "task_id": "TASK-2026-0393",
+  "stage": "draft",
+  "type": "zero-day",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-07-07T19:46:42.156Z",
+  "updated": "2026-07-07T19:46:42.156Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Langflow Authorization Bypass Through User-Controlled Key Vulnerability (CVE-2026-55255)",
+    "sources": [
+      "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "https://nvd.nist.gov/vuln/detail/CVE-2026-55255",
+      "https://github.com/langflow-ai/langflow/security/advisories/GHSA-qrpv-q767-xqq2"
+    ],
+    "candidate_data": {
+      "cve": "CVE-2026-55255",
+      "cves": [
+        "CVE-2026-55255"
+      ],
+      "exploitId": "TP-EXP-2026-0334",
+      "type": "Unclassified",
+      "platform": "Langflow Langflow",
+      "severity": "critical",
+      "cisaKev": true,
+      "disclosedDate": "2026-07-07",
+      "cwes": [
+        "CWE-639"
+      ],
+      "knownRansomwareUse": false
+    },
+    "notes": "CISA KEV entry added 2026-07-07. Required action by 2026-07-10. CVSS 3.1: 9.9 (CRITICAL). Discovery score: 100/100 (auto-certify eligible)."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/zero-days/langflow-langflow-cve-2026-55255.md",
+    "branch": "pipeline/TASK-2026-0393",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "CISA_KEV",
+    "score": 100,
+    "auto_certify": true,
+    "cvss": {
+      "score": 9.9,
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:L",
+      "version": "3.1"
+    },
+    "discovered_at": "2026-07-07T19:46:42.156Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-07-07T19:46:42.156Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered from CISA KEV (score: 100)"
+    }
+  ]
+}
