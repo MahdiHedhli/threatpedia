@@ -75,8 +75,12 @@ assert.equal(result.candidates[0].recency_bucket, 'recent');
 assert.equal(result.candidates[1].cves[0], 'CVE-2026-0001');
 assert.equal(result.candidates[1].recency_bucket, 'backlog');
 assert.equal(result.candidates[0].drafting_allowed, false);
-assert.equal(result.candidates[0].official_cisa_kev.listed, true);
-assert.equal(result.candidates[0].official_cisa_kev.date_added, '2026-06-11');
+assert.equal(result.candidates[0].official_cisa_kev.listed, false);
+assert.equal(result.candidates[0].official_cisa_kev.date_added, null);
+assert.equal(result.candidates[0].source_packet_prefill.key_dates.cisa_kev_added_at_from_vulncheck_record, '2026-06-11');
+assert.ok(result.candidates[0].priority_reasons.includes('recent VulnCheck date_added'));
+assert.ok(result.candidates[1].priority_reasons.includes('VulnCheck date_added present'));
+assert.ok(!result.candidates[1].priority_reasons.includes('recent VulnCheck date_added'));
 assert.equal(result.candidates[0].vulncheck_exploitation_signal.non_authoritative, true);
 assert.equal(result.candidates[0].vulncheck_exploitation_signal.xdb_exploit_types[0], 'info-leak');
 assert.equal(result.candidates[0].source_packet_prefill.status, 'prefill_only');
@@ -146,6 +150,65 @@ assert.equal(normalizedPrefill.affected_products[0].vendor, 'rocketgenius');
 assert.equal(normalizedPrefill.affected_products[0].product, 'gravityforms');
 assert.equal(normalizedPrefill.preserved_vulncheck_fields.vendorProject, null);
 assert.equal(normalizedPrefill.preserved_vulncheck_fields.product, null);
+
+const correctedProduct = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'GNU',
+      product: 'grub2',
+      vulnerabilityName: 'GNU grub2 OS Command Injection',
+      shortDescription: 'Cockpit remote login passes user-controlled values to SSH without validation.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2026-4631'],
+      cwes: ['CWE-78'],
+      vulncheck_xdb: [],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-07-08T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-07-09',
+  seenCves: new Set(),
+});
+
+assert.equal(correctedProduct.candidates[0].vendorProject, 'Red Hat');
+assert.equal(correctedProduct.candidates[0].product, 'cockpit');
+assert.equal(correctedProduct.candidates[0].source_packet_prefill.affected_products[0].vendor, 'Red Hat');
+assert.equal(correctedProduct.candidates[0].source_packet_prefill.affected_products[0].product, 'cockpit');
+assert.equal(correctedProduct.candidates[0].source_packet_prefill.preserved_vulncheck_fields.vendorProject, 'Red Hat');
+assert.equal(correctedProduct.candidates[0].source_packet_prefill.preserved_vulncheck_fields.product, 'cockpit');
+
+const escapedMetadata = buildRecentIntake({
+  data: [
+    {
+      vendorProject: 'icegram',
+      product: 'email_subscribers_\\&_newsletters',
+      vulnerabilityName: 'icegram email_subscribers_\\&_newsletters Missing Authorization',
+      shortDescription: 'Email Subscribers & Newsletters vulnerability.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2019-19985'],
+      cwes: [],
+      vulncheck_xdb: [],
+      vulncheck_reported_exploitation: [],
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2019-11-13T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-07-09',
+  seenCves: new Set(),
+});
+
+assert.equal(escapedMetadata.candidates[0].product, 'email_subscribers_&_newsletters');
+assert.equal(escapedMetadata.candidates[0].source_packet_prefill.affected_products[0].product, 'email_subscribers_&_newsletters');
+assert.equal(escapedMetadata.candidates[0].source_packet_prefill.preserved_vulncheck_fields.product, 'email_subscribers_&_newsletters');
 
 const filteredXdb = buildRecentIntake({
   data: [

@@ -33,6 +33,13 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const PRODUCT_NORMALIZATION_BY_CVE = new Map([
   ['CVE-2025-12352', { vendorProject: 'rocketgenius', product: 'gravityforms' }],
   ['CVE-2026-6433', { vendorProject: 'custom_css_js_php_project', product: 'custom_css_js_php' }],
+  // VulnCheck currently carries unrelated GNU/grub2 fields; Red Hat's CVE
+  // record identifies the affected package as Cockpit.
+  ['CVE-2026-4631', {
+    vendorProject: 'Red Hat',
+    product: 'cockpit',
+    overrideExisting: true,
+  }],
 ]);
 
 export function usage() {
@@ -528,7 +535,7 @@ function exploitTypes(record) {
   return uniqueStrings(xdbEntriesFor(record).map(item => item?.exploit_type));
 }
 
-function priorityScore(record, addedDate) {
+function priorityScore(record, addedDate, recencyBucket) {
   let score = 0;
   const reasons = [];
   const reported = Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation.length : 0;
@@ -536,7 +543,7 @@ function priorityScore(record, addedDate) {
 
   if (addedDate) {
     score += 30;
-    reasons.push('recent VulnCheck date_added');
+    reasons.push(recencyBucket === 'recent' ? 'recent VulnCheck date_added' : 'VulnCheck date_added present');
   }
   if (record.cisa_date_added) {
     score += 20;
@@ -562,22 +569,43 @@ function priorityScore(record, addedDate) {
   return { score, reasons };
 }
 
+function normalizeVulnCheckText(value) {
+  if (typeof value !== 'string') return value;
+  return value.replace(/\\([&|])/g, '$1');
+}
+
+function forcedProductNormalization(record) {
+  for (const cve of uniqueStrings(record?.cve)) {
+    const normalized = PRODUCT_NORMALIZATION_BY_CVE.get(cve);
+    if (normalized?.overrideExisting) return normalized;
+  }
+  return null;
+}
+
 function normalizeKnownProductFields(record) {
+  const cleaned = {
+    ...record,
+    vendorProject: normalizeVulnCheckText(record?.vendorProject),
+    product: normalizeVulnCheckText(record?.product),
+    vulnerabilityName: normalizeVulnCheckText(record?.vulnerabilityName),
+    shortDescription: normalizeVulnCheckText(record?.shortDescription),
+  };
   const cves = uniqueStrings(record?.cve);
   for (const cve of cves) {
     const normalized = PRODUCT_NORMALIZATION_BY_CVE.get(cve);
     if (!normalized) continue;
     return {
-      ...record,
-      vendorProject: record.vendorProject || normalized.vendorProject,
-      product: record.product || normalized.product,
+      ...cleaned,
+      vendorProject: normalized.overrideExisting ? normalized.vendorProject : cleaned.vendorProject || normalized.vendorProject,
+      product: normalized.overrideExisting ? normalized.product : cleaned.product || normalized.product,
     };
   }
-  return record;
+  return cleaned;
 }
 
 function makePrefill(rawRecord) {
   const record = normalizeKnownProductFields(rawRecord);
+  const forcedNormalization = forcedProductNormalization(rawRecord);
   const cves = uniqueStrings(record.cve);
   const cwes = uniqueStrings(record.cwes);
   const refs = sourceRefsFor(record);
@@ -628,10 +656,10 @@ function makePrefill(rawRecord) {
     cves: cves.map(id => ({ id, source_refs: [vulncheckSourceId] })),
     cwes: cwes.map(id => ({ id, name: 'Unknown', source_refs: [vulncheckSourceId] })),
     preserved_vulncheck_fields: {
-      vendorProject: rawRecord.vendorProject || null,
-      product: rawRecord.product || null,
-      vulnerabilityName: rawRecord.vulnerabilityName || null,
-      shortDescription: rawRecord.shortDescription || null,
+      vendorProject: forcedNormalization ? record.vendorProject : normalizeVulnCheckText(rawRecord.vendorProject) || null,
+      product: forcedNormalization ? record.product : normalizeVulnCheckText(rawRecord.product) || null,
+      vulnerabilityName: normalizeVulnCheckText(rawRecord.vulnerabilityName) || null,
+      shortDescription: normalizeVulnCheckText(rawRecord.shortDescription) || null,
       required_action: rawRecord.required_action || null,
       knownRansomwareCampaignUse: rawRecord.knownRansomwareCampaignUse || null,
       reported_exploited_by_vulncheck_canaries: rawRecord.reported_exploited_by_vulncheck_canaries === true,
@@ -660,7 +688,7 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
   const cves = uniqueStrings(record.cve);
   const addedDate = normalizeDate(record.date_added);
   const seenMatches = cves.filter(cve => seenCves.has(cve));
-  const priority = priorityScore(record, addedDate);
+  const priority = priorityScore(record, addedDate, recencyBucket);
 
   return {
     candidate_key: candidateKey(record),
@@ -678,9 +706,9 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
     priority_reasons: priority.reasons,
     official_cisa_kev: {
       status_source: 'cisa_date_added field from VulnCheck record; verify against CISA before official labeling',
-      listed: Boolean(record.cisa_date_added),
-      date_added: normalizeDate(record.cisa_date_added),
-      due_date: normalizeDate(record.dueDate),
+      listed: false,
+      date_added: null,
+      due_date: null,
     },
     vulncheck_exploitation_signal: {
       source: 'VulnCheck KEV',
