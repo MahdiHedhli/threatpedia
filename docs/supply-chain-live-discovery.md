@@ -90,6 +90,11 @@ node scripts/supply-chain-live-discovery.mjs --check
 
 `.github/workflows/supply-chain-live-discovery.yml` runs every 30 minutes and can be manually dispatched. It opens or updates a PR from `pipeline/supply-chain-live-discovery`, requests review from Kernel K, DangerMouse, and Ernest Penfold, and includes `@codex review` plus `/gemini review`.
 
+Each run rebuilds the generated branch from current `main` under an explicit
+remote-head lease. When an open queue PR exists, the pending candidate queue is
+carried forward before fresh collection. Generated snapshots are never merged
+into each other, so a stale queue cannot permanently wedge later scheduled runs.
+
 The workflow commits only:
 
 - `.github/pipeline/supply-chain-candidates/**`

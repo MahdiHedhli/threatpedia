@@ -66,6 +66,10 @@ env:
   DISCOVERY_LABEL: pipeline/discovery
   VULNCHECK_PREFILL_BRANCH_PREFIX: pipeline/vulncheck-prefill
 
+concurrency:
+  group: pipeline-discovery-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   discover:
     runs-on: ubuntu-latest
@@ -269,7 +273,7 @@ jobs:
                   bucket: candidate.recency_bucket || '—',
                   date: candidate.vulncheck_exploitation_signal?.date_added || '—',
                   score: candidate.priority_score ?? null,
-                  officialCisa: !!candidate.official_cisa_kev?.listed,
+                  cisaDatePresent: !!prefill.key_dates?.cisa_kev_added_at_from_vulncheck_record,
                   canary: !!candidate.vulncheck_exploitation_signal?.reported_exploited_by_vulncheck_canaries,
                   vendor: product.vendor || '—',
                   product: product.product || '—',
@@ -344,7 +348,7 @@ jobs:
               for (const packet of packets) {
                 const cveCell = packet.cves.length > 0 ? packet.cves.map(cve => `\`${cve}\``).join(', ') : '—';
                 const artifact = packet.path.replace(/^\.\//, '');
-                body += `| ${cveCell} | ${packet.date} | ${packet.bucket} | ${packet.score == null ? '—' : packet.score} | ${packet.officialCisa ? '✓' : '—'} | ${packet.canary ? '✓' : '—'} | ${`${packet.vendor} / ${packet.product}`.replace(/\|/g, '\\|')} | \`${artifact}\` |\n`;
+                body += `| ${cveCell} | ${packet.date} | ${packet.bucket} | ${packet.score == null ? '—' : packet.score} | ${packet.cisaDatePresent ? '✓' : '—'} | ${packet.canary ? '✓' : '—'} | ${`${packet.vendor} / ${packet.product}`.replace(/\|/g, '\\|')} | \`${artifact}\` |\n`;
               }
               body += `\n`;
             }
@@ -433,11 +437,36 @@ jobs:
               | awk '!/\/latest\.json$/ { count += 1 } END { print count + 0 }'
           }
 
-          curl -sSf \
-            -H "Authorization: token ${GH_TOKEN}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${REPO}/pulls?state=open&per_page=100" \
-            > "$OPEN_PREFILL_JSON"
+          echo '[]' > "$OPEN_PREFILL_JSON"
+          OPEN_PREFILL_PAGE=1
+          while true; do
+            PAGE_JSON="${OPEN_PREFILL_JSON%.json}-page-${OPEN_PREFILL_PAGE}.json"
+            curl --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 30 -sSf \
+              -H "Authorization: token ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${REPO}/pulls?state=open&per_page=100&page=${OPEN_PREFILL_PAGE}" \
+              > "$PAGE_JSON"
+            PAGE_COUNT="$(python3 - "$OPEN_PREFILL_JSON" "$PAGE_JSON" <<'PY'
+          import json
+          import sys
+          combined_path, page_path = sys.argv[1], sys.argv[2]
+          with open(combined_path, encoding='utf-8') as handle:
+              combined = json.load(handle)
+          with open(page_path, encoding='utf-8') as handle:
+              page = json.load(handle)
+          if not isinstance(combined, list) or not isinstance(page, list):
+              raise SystemExit('GitHub open pull request response must be a JSON array')
+          combined.extend(page)
+          with open(combined_path, 'w', encoding='utf-8') as handle:
+              json.dump(combined, handle)
+          print(len(page))
+          PY
+            )"
+            if [ "$PAGE_COUNT" -lt 100 ]; then
+              break
+            fi
+            OPEN_PREFILL_PAGE=$((OPEN_PREFILL_PAGE + 1))
+          done
 
           mapfile -t OPEN_PREFILL_BRANCHES < <(python3 - "$OPEN_PREFILL_JSON" "$BASE_BRANCH" <<'PY'
           import json
@@ -455,9 +484,35 @@ jobs:
           PY
           )
 
-          SELECTED_BRANCH=""
+          FETCHED_PREFILL_BRANCHES=()
+          : > "$SEEN_PREFILL_PATHS"
           for candidate_branch in "${OPEN_PREFILL_BRANCHES[@]}"; do
-            git fetch origin "$candidate_branch"
+            if ! git fetch origin "refs/heads/${candidate_branch}:refs/remotes/origin/${candidate_branch}" >/dev/null 2>&1; then
+              echo "::warning::Could not fetch open VulnCheck prefill branch ${candidate_branch}; pausing intake because global backlog state is incomplete."
+              continue
+            fi
+            FETCHED_PREFILL_BRANCHES+=("$candidate_branch")
+            git diff --name-only origin/main..."origin/${candidate_branch}" -- '.github/pipeline/source-packets/vulncheck-kev/*.json' \
+              >> "$SEEN_PREFILL_PATHS"
+          done
+
+          if [ "${#FETCHED_PREFILL_BRANCHES[@]}" -ne "${#OPEN_PREFILL_BRANCHES[@]}" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "branch=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          sort -u "$SEEN_PREFILL_PATHS" -o "$SEEN_PREFILL_PATHS"
+
+          TOTAL_PENDING_PREFILLS="$(awk '!/\/latest\.json$/ { count += 1 } END { print count + 0 }' "$SEEN_PREFILL_PATHS")"
+          if [ "$TOTAL_PENDING_PREFILLS" -ge "$PENDING_CAP" ]; then
+            echo "::notice::VulnCheck source-packet queue is at global capacity (${TOTAL_PENDING_PREFILLS}/${PENDING_CAP}); pausing intake until an open prefill PR is merged or closed."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "branch=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          SELECTED_BRANCH=""
+          for candidate_branch in "${FETCHED_PREFILL_BRANCHES[@]}"; do
             PENDING_PREFILLS="$(branch_prefill_count "origin/${candidate_branch}")"
             if [ "$PENDING_PREFILLS" -lt "$PENDING_CAP" ]; then
               SELECTED_BRANCH="$candidate_branch"
@@ -473,23 +528,17 @@ jobs:
           elif git ls-remote --exit-code --heads origin "$BASE_BRANCH" >/dev/null 2>&1 \
               && ! printf '%s\n' "${OPEN_PREFILL_BRANCHES[@]}" | grep -qx "$BASE_BRANCH"; then
             echo "No open VulnCheck PR on ${BASE_BRANCH}; resetting reusable branch to origin/main."
+            git fetch origin "refs/heads/${BASE_BRANCH}:refs/remotes/origin/${BASE_BRANCH}"
             git checkout -B "$BASE_BRANCH" origin/main
-            git push --force-with-lease origin "$BASE_BRANCH"
           elif [ "${#OPEN_PREFILL_BRANCHES[@]}" -gt 0 ]; then
-            BRANCH="${BASE_BRANCH}-${GITHUB_RUN_ID}"
-            echo "All open VulnCheck prefill PRs are full; rolling over to ${BRANCH}."
-            git checkout -B "$BRANCH" origin/main
+            echo "::warning::Open VulnCheck prefill PRs exist but none has capacity; pausing instead of creating another backlog PR."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "branch=" >> "$GITHUB_OUTPUT"
+            exit 0
           else
             echo "Creating reusable VulnCheck prefill branch ${BASE_BRANCH}."
             git checkout -B "$BASE_BRANCH" origin/main
           fi
-
-          : > "$SEEN_PREFILL_PATHS"
-          for candidate_branch in "${OPEN_PREFILL_BRANCHES[@]}"; do
-            git fetch origin "$candidate_branch" >/dev/null 2>&1 || continue
-            git diff --name-only origin/main..."origin/${candidate_branch}" -- '.github/pipeline/source-packets/vulncheck-kev/*.json' \
-              >> "$SEEN_PREFILL_PATHS"
-          done
 
           SEEN_PREFILL_CVES="$(python3 - "$SEEN_PREFILL_PATHS" <<'PY'
           import re
@@ -504,22 +553,14 @@ jobs:
           PY
           )"
 
-          PENDING_PREFILLS="$(branch_prefill_count HEAD)"
-          HEADROOM=$((PENDING_CAP - PENDING_PREFILLS))
-          if [ "$HEADROOM" -le 0 ]; then
-            BRANCH="${BASE_BRANCH}-${GITHUB_RUN_ID}"
-            echo "Active VulnCheck branch is full; rolling over to ${BRANCH}."
-            git checkout -B "$BRANCH" origin/main
-            PENDING_PREFILLS=0
-            HEADROOM="$PENDING_CAP"
-          fi
+          HEADROOM=$((PENDING_CAP - TOTAL_PENDING_PREFILLS))
 
           RUN_LIMIT="$PER_RUN_LIMIT"
           if [ "$RUN_LIMIT" -gt "$HEADROOM" ]; then
             RUN_LIMIT="$HEADROOM"
           fi
 
-          echo "VulnCheck KEV source-packet headroom on ${BRANCH}: ${PENDING_PREFILLS}/${PENDING_CAP}; running intake with --max-candidates ${RUN_LIMIT}."
+          echo "VulnCheck KEV global source-packet headroom: ${TOTAL_PENDING_PREFILLS}/${PENDING_CAP}; using ${BRANCH} with --max-candidates ${RUN_LIMIT}."
           SEEN_ARGS=()
           if [ -n "$SEEN_PREFILL_CVES" ]; then
             SEEN_ARGS=(--seen-cves "$SEEN_PREFILL_CVES")
@@ -579,7 +620,7 @@ jobs:
                   bucket: candidate.recency_bucket || '—',
                   date: candidate.vulncheck_exploitation_signal?.date_added || '—',
                   score: candidate.priority_score ?? null,
-                  officialCisa: !!candidate.official_cisa_kev?.listed,
+                  cisaDatePresent: !!prefill.key_dates?.cisa_kev_added_at_from_vulncheck_record,
                   canary: !!candidate.vulncheck_exploitation_signal?.reported_exploited_by_vulncheck_canaries,
                   vendor: product.vendor || '—',
                   product: product.product || '—',
@@ -598,14 +639,14 @@ jobs:
             let body = `## VulnCheck KEV Source-Packet Prefill Batch\n\n`;
             body += `This PR stages a bounded VulnCheck KEV source-packet prefill batch from \`${BRANCH}\` for review before landing on \`main\`.\n\n`;
             body += `These are prioritization/source-packet artifacts only. They do not create article drafts, do not mark official CISA KEV membership, and require prominent VulnCheck KEV attribution if surfaced.\n`;
-            body += `When the active VulnCheck prefill PR reaches the configured pending cap, scheduled discovery rolls over to a separate PR instead of overfilling the current one.\n\n`;
+            body += `Scheduled discovery pauses at the configured global pending cap, so review backlog cannot create additional prefill PRs.\n\n`;
             body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\n\n`;
             body += `| CVE | Date added | Bucket | Score | CISA date present | Canary signal | Vendor / product | Artifact |\n`;
             body += `|---|---|---|---:|:-:|:-:|---|---|\n`;
             for (const packet of packets) {
               const cveCell = packet.cves.length > 0 ? packet.cves.map(cve => `\`${cve}\``).join(', ') : '—';
               const artifact = packet.path.replace(/^\.\//, '');
-              body += `| ${cveCell} | ${packet.date} | ${packet.bucket} | ${packet.score == null ? '—' : packet.score} | ${packet.officialCisa ? '✓' : '—'} | ${packet.canary ? '✓' : '—'} | ${`${packet.vendor} / ${packet.product}`.replace(/\|/g, '\\|')} | \`${artifact}\` |\n`;
+              body += `| ${cveCell} | ${packet.date} | ${packet.bucket} | ${packet.score == null ? '—' : packet.score} | ${packet.cisaDatePresent ? '✓' : '—'} | ${packet.canary ? '✓' : '—'} | ${`${packet.vendor} / ${packet.product}`.replace(/\|/g, '\\|')} | \`${artifact}\` |\n`;
             }
             body += `\n---\n\n`;
             body += `_Last updated: ${new Date().toISOString()} · Run [${context.runId}](${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}) · See [docs/PIPELINE.md](${context.serverUrl}/${owner}/${repo}/blob/main/docs/PIPELINE.md) for the end-to-end flow._\n`;
