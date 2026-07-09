@@ -23,6 +23,10 @@ env:
   DISCOVERY_LABEL: pipeline/supply-chain-discovery
   QUEUE_PATH: .github/pipeline/supply-chain-candidates/latest.json
 
+concurrency:
+  group: supply-chain-live-discovery-${{ github.repository }}
+  cancel-in-progress: false
+
 jobs:
   discover:
     runs-on: ubuntu-latest
@@ -62,24 +66,58 @@ jobs:
         run: |
           set -euo pipefail
           BRANCH="${DISCOVERY_BRANCH}"
+          PREVIOUS_QUEUE="$RUNNER_TEMP/supply-chain-previous-queue.json"
+          PREVIOUS_PACKET_DIR="$RUNNER_TEMP/supply-chain-previous-vulncheck-packets"
+          VULNCHECK_PACKET_DIR=".github/pipeline/source-packets/vulncheck-kev"
+          PRESERVED_PACKET_COUNT=0
+          REMOTE_HEAD=""
+
+          git fetch origin main
           if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
-            OPEN_PRS=$(curl -sSf \
+            git fetch origin "refs/heads/${BRANCH}:refs/remotes/origin/${BRANCH}"
+            REMOTE_HEAD="$(git rev-parse "origin/${BRANCH}")"
+            OPEN_PRS=$(curl --retry 3 --retry-all-errors --retry-delay 2 --connect-timeout 10 --max-time 30 -sSf \
               -H "Authorization: token ${GH_TOKEN}" \
               -H "Accept: application/vnd.github+json" \
               "https://api.github.com/repos/${REPO}/pulls?state=open&head=${OWNER}:${BRANCH}&per_page=5" \
               | python3 -c 'import sys,json; print(len(json.loads(sys.stdin.read(), strict=False)))')
-            if [ "$OPEN_PRS" = "0" ]; then
-              git fetch origin main
-              git checkout -B "$BRANCH" origin/main
-              git push --force-with-lease origin "$BRANCH"
-            else
-              git fetch origin "$BRANCH"
-              git checkout -B "$BRANCH" "origin/$BRANCH"
-              git merge --no-edit origin/main
+
+            if [ "$OPEN_PRS" != "0" ]; then
+              if git cat-file -e "origin/${BRANCH}:${QUEUE_PATH}" 2>/dev/null; then
+                git show "origin/${BRANCH}:${QUEUE_PATH}" > "$PREVIOUS_QUEUE"
+                echo "Preserving the pending candidate queue while rebuilding from current main."
+              fi
+
+              mkdir -p "$PREVIOUS_PACKET_DIR"
+              while IFS= read -r packet_path; do
+                [ -n "$packet_path" ] || continue
+                if git cat-file -e "origin/main:${packet_path}" 2>/dev/null; then
+                  continue
+                fi
+                relative_path="${packet_path#${VULNCHECK_PACKET_DIR}/}"
+                mkdir -p "$PREVIOUS_PACKET_DIR/$(dirname "$relative_path")"
+                git show "origin/${BRANCH}:${packet_path}" > "$PREVIOUS_PACKET_DIR/$relative_path"
+                PRESERVED_PACKET_COUNT=$((PRESERVED_PACKET_COUNT + 1))
+              done < <(
+                git diff --name-only --diff-filter=A origin/main..."origin/${BRANCH}" -- "${VULNCHECK_PACKET_DIR}/*.json" \
+                  | awk '!/\/latest\.json$/'
+              )
+              echo "Preserving ${PRESERVED_PACKET_COUNT} branch-only VulnCheck source packets."
             fi
-          else
-            git checkout -b "$BRANCH"
           fi
+
+          # Generated branches are rebuilt, not merged. Merging two generated
+          # snapshots makes any conflict permanent and wedges every later run.
+          git checkout -B "$BRANCH" origin/main
+          if [ -s "$PREVIOUS_QUEUE" ]; then
+            mkdir -p "$(dirname "$QUEUE_PATH")"
+            cp "$PREVIOUS_QUEUE" "$QUEUE_PATH"
+          fi
+          if [ "$PRESERVED_PACKET_COUNT" -gt 0 ]; then
+            mkdir -p "$VULNCHECK_PACKET_DIR"
+            cp -R "$PREVIOUS_PACKET_DIR"/. "$VULNCHECK_PACKET_DIR"/
+          fi
+          echo "DISCOVERY_REMOTE_HEAD=${REMOTE_HEAD}" >> "$GITHUB_ENV"
 
       - name: Run VulnCheck KEV source-packet intake
         if: ${{ inputs.execute != 'false' }}
@@ -126,14 +164,18 @@ jobs:
         if: ${{ inputs.execute != 'false' }}
         run: |
           set -euo pipefail
+          LEASE="--force-with-lease=refs/heads/${DISCOVERY_BRANCH}:${DISCOVERY_REMOTE_HEAD:-}"
           git add .github/pipeline/supply-chain-candidates/ .github/pipeline/source-packets/vulncheck-kev/
           if git diff --cached --quiet; then
             echo "No candidate queue changes this run."
+            if [ -n "${DISCOVERY_REMOTE_HEAD:-}" ]; then
+              git push "$LEASE" origin "HEAD:refs/heads/${DISCOVERY_BRANCH}"
+            fi
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "chore(pipeline): update supply chain candidate queue $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push --force-with-lease origin "${DISCOVERY_BRANCH}"
+          git push "$LEASE" origin "HEAD:refs/heads/${DISCOVERY_BRANCH}"
           echo "has_changes=true" >> "$GITHUB_OUTPUT"
 
       - name: Create or update candidate queue PR
