@@ -265,7 +265,7 @@ discovery queues are open, validated, and stable.
      `node scripts/pipeline-review-gate.mjs --pr <number>` against live
      GitHub state for public content, site, and pipeline PRs.
    - The workflow runs automatically for configured AI reviewer PR review
-     events, including Gemini Code Assist, `dangermouse-bot`, or
+     events, including Gemini Code Assist, CodeRabbit, `dangermouse-bot`, or
      `ernestpenfold-bot` review submission and dismissal. It skips worker/human
      review submissions because
      those often record disposition or remediation notes before current-head AI
@@ -367,12 +367,12 @@ same queue/validation path as discovery-generated tasks.
 | Discovery per-run cap | workflow env `LIMIT` → `--limit` | 20 tasks | Workflow input |
 | Discovery lane selection | workflow env `MODE` → `--mode` | `all` | Workflow input |
 | Discovery publishes via | `pipeline/discovery` branch + auto-PR | labeled `pipeline/discovery`, no direct push to `main` | Workflow |
-| VulnCheck source-packet PR rollover | `pipeline-discovery.yml` via `queues.source_packets.max_pending` | 40 branch-only prefills per active prefill PR | `config.yml`; intake shrinks to remaining headroom or rolls over to a separate PR when full |
+| VulnCheck source-packet backpressure | `pipeline-discovery.yml` via `queues.source_packets.max_pending` | 40 unique prefills across all open prefill PRs | `config.yml`; intake shrinks to global headroom and pauses at the cap instead of opening another backlog PR |
 | Supply Chain B1 live queue | `.github/workflows/supply-chain-live-discovery.yml` → `scripts/supply-chain-live-discovery.mjs` | 30-minute cron; writes `.github/pipeline/supply-chain-candidates/latest.json`; no task or draft emission | Workflow + script |
 | Dispatcher publishes via | `pipeline/dispatcher` branch + auto-PR | labeled `pipeline/dispatcher`, no direct push to `main`; skips duplicate `pipeline/ready` Issues when one is already open | Workflow |
 | Task PR validation | `pipeline-validate-tasks.yml` + `scripts/validate-pipeline-tasks.mjs` + `scripts/pipeline-discovery-validation-dispatch.mjs` | Validates changed `.github/pipeline/tasks/*.json`; new task files must use canonical `acceptance_criteria`, pending-state metadata, matching filenames, and valid source URLs; discovery PRs explicitly dispatch validation and fall back to local validation plus a PR-head status if dispatch cannot be observed | Workflow + script |
 | PR batch review | Human merge (not auto-merge) | Nothing lands on `main` without review | Workflow + branch protection |
-| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist, `dangermouse-bot`, or `ernestpenfold-bot`, and zero unresolved current AI review threads from configured reviewer logins. Automated review findings are triaged by severity for remediation priority, but any unresolved current AI review thread keeps the live gate red until fixed, answered, or resolved. Automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
+| Review readiness gate | `pipeline-review-gate.yml` + `pipeline-review-gate.mjs` | Current-head validation for content PRs, current-head AI second review from Gemini Code Assist, CodeRabbit, `dangermouse-bot`, or `ernestpenfold-bot`, and zero unresolved current AI review threads from configured reviewer logins. Automated review findings are triaged by severity for remediation priority, but any unresolved current AI review thread keeps the live gate red until fixed, answered, or resolved. Automatic PR-review runs are limited to configured AI reviewer logins; issue-comment runs require `/review-gate` or `/pipeline review-gate` | Live GitHub state |
 | Editorial queue backpressure (hysteresis) | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`); state tracked via labeled GitHub Issue (`pipeline/backpressure`) | Pause at 100 pending · stay paused until queue < 80 (auto-resume + Issue auto-close) | `config.yml` (`queues.editorial.max_pending` / `backpressure_resume`) |
 | Stale-lock timeout | `pipeline-dispatcher.yml` (via `scripts/pipeline-config.mjs`) | 30 minutes | `config.yml` (`scheduling.stale_lock_minutes`) |
 | Ready-Issue stall alert | `pipeline-dispatcher.yml` | Warn after 60 minutes; alert after 180 minutes, or 60 minutes for P0 | `config.yml` (`ready_issue.*`) |
