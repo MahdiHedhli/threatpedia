@@ -206,22 +206,22 @@ jobs:
 
             const top = (queue.candidates || []).slice(0, 10);
             let body = '## Supply Chain B1 candidate queue\n\n';
-            body += 'This PR updates the live Supply Chain discovery/classification queue. It is candidate review only: no article tasks, no drafts, and no corpus records are created by this lane.\\n\\n';
-            body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\\n\\n`;
-            body += `Summary: ${queue.summary.candidates_emitted} emitted candidates, ${queue.summary.current_candidates} current, ${queue.summary.matched_existing} matched existing corpus subjects.\\n`;
-            body += `Currency: latest corpus ${queue.currency.latest_corpus_incident_at || 'unknown'}, latest discovery ${queue.currency.latest_discovery_signal_at || 'none'}, pending ${queue.currency.pending_candidate_count}.\\n\\n`;
-            body += '| Rank | Class | Intent | Subject | Title | Sources |\\n';
-            body += '|---:|---|---|---|---|---|\\n';
+            body += 'This PR updates the live Supply Chain discovery/classification queue. It is candidate review only: no article tasks, no drafts, and no corpus records are created by this lane.\n\n';
+            body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\n\n`;
+            body += `Summary: ${queue.summary.candidates_emitted} emitted candidates, ${queue.summary.current_candidates} current, ${queue.summary.matched_existing} matched existing corpus subjects.\n`;
+            body += `Currency: latest corpus ${queue.currency.latest_corpus_incident_at || 'unknown'}, latest discovery ${queue.currency.latest_discovery_signal_at || 'none'}, pending ${queue.currency.pending_candidate_count}.\n\n`;
+            body += '| Rank | Class | Intent | Subject | Title | Sources |\n';
+            body += '|---:|---|---|---|---|---|\n';
             for (const candidate of top) {
-              const title = String(candidate.title || '').replace(/\\|/g, '\\\\|').slice(0, 100);
+              const title = String(candidate.title || '').replace(/\|/g, '\\|').slice(0, 100);
               const subject = `\`${String(candidate.canonicalSubjectId || '').replace(/`/g, '')}\``;
-              body += `| ${candidate.rank} | ${candidate.classification.leadClass} | ${candidate.classification.workIntent} | ${subject} | ${title} | ${candidate.sources.join(', ')} |\\n`;
+              body += `| ${candidate.rank} | ${candidate.classification.leadClass} | ${candidate.classification.workIntent} | ${subject} | ${title} | ${candidate.sources.join(', ')} |\n`;
             }
-            body += '\\n### Guardrails\\n\\n';
-            body += '- `drafting_enabled=false` and `auto_drafting_allowed=false` are validated.\\n';
-            body += '- `kevStatusDerived` is dispatch-cycle output, not authored truth.\\n';
-            body += '- B2 grounded drafting may consume approved candidates only through source-packet preflight and grounded-draft fidelity checks.\\n';
-            body += '\\n@codex review\\n/gemini review\\n';
+            body += '\n### Guardrails\n\n';
+            body += '- `drafting_enabled=false` and `auto_drafting_allowed=false` are validated.\n';
+            body += '- `kevStatusDerived` is dispatch-cycle output, not authored truth.\n';
+            body += '- B2 grounded drafting may consume approved candidates only through source-packet preflight and grounded-draft fidelity checks.\n';
+            body += '\n@codex review\n/gemini review\n';
 
             const existing = await github.rest.pulls.list({
               owner,
