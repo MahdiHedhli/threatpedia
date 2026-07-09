@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-07-07T19:46:42.157Z",
-  "updated": "2026-07-09T23:49:22.522Z",
+  "updated": "2026-07-09T23:52:27.603Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "kernel-k",
-  "locked_at": "2026-07-09T23:49:22.521Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Adobe ColdFusion Path Traversal Vulnerability (CVE-2026-48282)",
     "sources": [
@@ -92,6 +92,16 @@
       "to": "locked",
       "agent": "kernel-k",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-07-09T23:52:27.602Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "kernel-k",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1422"
     }
-  ]
+  ],
+  "pr_number": 1422,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1422"
 }
