@@ -104,8 +104,8 @@
     {
       "timestamp": "2026-06-24T17:24:33.654Z",
       "action": "dispatch_skipped",
-      "from": "pending",
-      "to": "pending",
+      "from": "pr_open",
+      "to": "pr_open",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #1297 already covers this task."
     }
