@@ -15,6 +15,8 @@ const DEFAULT_AI_REVIEW_LOGINS = [
   'chatgpt-codex-connector[bot]',
   'gemini-code-assist',
   'gemini-code-assist[bot]',
+  'coderabbitai',
+  'coderabbitai[bot]',
   'dangermouse-bot',
   'ernestpenfold-bot',
 ];
