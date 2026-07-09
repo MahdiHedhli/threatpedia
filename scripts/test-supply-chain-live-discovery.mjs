@@ -7,6 +7,7 @@ import {
   buildPurl,
   buildCandidateQueue,
   classifyLeads,
+  collectVulncheckLeads,
   loadCorpusIndex,
   validateCandidateQueue,
 } from './supply-chain-live-discovery.mjs';
@@ -544,8 +545,33 @@ async function testVulncheckKevFeedsDerivedKevStatus() {
             reported_exploited_by_vulncheck_canaries: true,
           },
         },
+        {
+          candidate_key: 'CVE-2026-54321',
+          cves: ['CVE-2026-54321'],
+          vulnerabilityName: 'Stale non-authoritative KEV fixture',
+          shortDescription: 'A supply-chain fixture with an unlisted legacy CISA date.',
+          vulncheck_date_added: '2026-06-20',
+          official_cisa_kev: {
+            listed: false,
+            date_added: '2026-06-19',
+            due_date: '2026-07-09',
+          },
+          vulncheck_exploitation_signal: {
+            evidence_urls: ['https://example.invalid/vulncheck-stale'],
+            reported_exploited_by_vulncheck_canaries: false,
+          },
+        },
       ],
     }));
+
+    const leads = collectVulncheckLeads(vulncheckIndex);
+    const lead = leads.find((item) => item.advisoryId === 'CVE-2026-12345');
+    assert.equal(lead.databaseSpecific.cisaDatePresent, true);
+    assert.equal(lead.kev.kevAddedAt, '2026-06-20');
+    assert.equal(lead.kev.kevDueAt, '2026-07-10');
+    const unlistedLead = leads.find((item) => item.advisoryId === 'CVE-2026-54321');
+    assert.equal(unlistedLead.databaseSpecific.cisaDatePresent, false);
+    assert.equal(unlistedLead.kev, null);
 
     const out = path.join(tempDir, 'queue.json');
     const queue = await buildCandidateQueue({

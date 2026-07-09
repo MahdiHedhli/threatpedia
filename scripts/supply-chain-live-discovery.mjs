@@ -707,7 +707,7 @@ async function collectGhsaLeads(config, fixturesDir) {
     });
 }
 
-function collectVulncheckLeads(indexPath) {
+export function collectVulncheckLeads(indexPath) {
   if (!indexPath || !existsSync(path.resolve(repoRoot, indexPath))) return [];
   const index = readJson(indexPath);
   const candidates = Array.isArray(index.candidates)
@@ -720,11 +720,10 @@ function collectVulncheckLeads(indexPath) {
       : null;
     const prefillDates = candidate.source_packet_prefill?.key_dates;
     const cisaAddedAt = prefillDates?.cisa_kev_added_at_from_vulncheck_record
-      || officialKev?.date_added
+      || (officialKev?.listed === true ? officialKev.date_added : null)
       || null;
     const cisaDueAt = prefillDates?.cisa_due_date_from_vulncheck_record
-      || officialKev?.due_date
-      || officialKev?.dueDate
+      || (officialKev?.listed === true ? (officialKev.due_date || officialKev.dueDate) : null)
       || null;
     return vulnerabilityLead({
       source: 'vulncheck-kev',
