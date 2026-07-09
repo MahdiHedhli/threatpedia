@@ -590,14 +590,22 @@ function normalizeKnownProductFields(record) {
     vulnerabilityName: normalizeVulnCheckText(record?.vulnerabilityName),
     shortDescription: normalizeVulnCheckText(record?.shortDescription),
   };
+  const forcedNormalization = forcedProductNormalization(record);
+  if (forcedNormalization) {
+    return {
+      ...cleaned,
+      vendorProject: forcedNormalization.vendorProject,
+      product: forcedNormalization.product,
+    };
+  }
   const cves = uniqueStrings(record?.cve);
   for (const cve of cves) {
     const normalized = PRODUCT_NORMALIZATION_BY_CVE.get(cve);
     if (!normalized) continue;
     return {
       ...cleaned,
-      vendorProject: normalized.overrideExisting ? normalized.vendorProject : cleaned.vendorProject || normalized.vendorProject,
-      product: normalized.overrideExisting ? normalized.product : cleaned.product || normalized.product,
+      vendorProject: cleaned.vendorProject || normalized.vendorProject,
+      product: cleaned.product || normalized.product,
     };
   }
   return cleaned;

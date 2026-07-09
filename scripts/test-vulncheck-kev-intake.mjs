@@ -164,7 +164,7 @@ const correctedProduct = buildRecentIntake({
       shortDescription: 'Cockpit remote login passes user-controlled values to SSH without validation.',
       required_action: 'Patch.',
       knownRansomwareCampaignUse: 'Unknown',
-      cve: ['CVE-2026-4631'],
+      cve: ['CVE-2025-12352', 'CVE-2026-4631'],
       cwes: ['CWE-78'],
       vulncheck_xdb: [],
       vulncheck_reported_exploitation: [],
