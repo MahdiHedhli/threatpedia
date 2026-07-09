@@ -528,8 +528,16 @@ async function testVulncheckKevFeedsDerivedKevStatus() {
           shortDescription: 'A supply-chain exploited package fixture for KEV derivation.',
           vulncheck_date_added: '2026-06-20',
           official_cisa_kev: {
-            date_added: '2026-06-20',
-            dueDate: '2026-07-10',
+            status_source: 'not inferred from VulnCheck; verify CISA KEV membership against CISA before official labeling',
+            listed: false,
+            date_added: null,
+            due_date: null,
+          },
+          source_packet_prefill: {
+            key_dates: {
+              cisa_kev_added_at_from_vulncheck_record: '2026-06-20',
+              cisa_due_date_from_vulncheck_record: '2026-07-10',
+            },
           },
           vulncheck_exploitation_signal: {
             evidence_urls: ['https://example.invalid/vulncheck'],

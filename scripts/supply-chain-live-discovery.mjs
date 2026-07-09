@@ -718,6 +718,14 @@ function collectVulncheckLeads(indexPath) {
     const officialKev = candidate.official_cisa_kev && typeof candidate.official_cisa_kev === 'object'
       ? candidate.official_cisa_kev
       : null;
+    const prefillDates = candidate.source_packet_prefill?.key_dates;
+    const cisaAddedAt = prefillDates?.cisa_kev_added_at_from_vulncheck_record
+      || officialKev?.date_added
+      || null;
+    const cisaDueAt = prefillDates?.cisa_due_date_from_vulncheck_record
+      || officialKev?.due_date
+      || officialKev?.dueDate
+      || null;
     return vulnerabilityLead({
       source: 'vulncheck-kev',
       id: cves[0] || candidate.candidate_key,
@@ -733,14 +741,14 @@ function collectVulncheckLeads(indexPath) {
       })),
       databaseSpecific: {
         non_authoritative: true,
-        cisaDatePresent: Boolean(officialKev?.date_added),
+        cisaDatePresent: Boolean(cisaAddedAt),
         reportedExploitedByCanaries: Boolean(candidate.vulncheck_exploitation_signal?.reported_exploited_by_vulncheck_canaries),
       },
-      kev: officialKev ? {
+      kev: cisaAddedAt ? {
         isKev: true,
-        kevAddedAt: officialKev.date_added,
-        kevUpdatedAt: officialKev.date_added,
-        kevDueAt: officialKev.dueDate,
+        kevAddedAt: cisaAddedAt,
+        kevUpdatedAt: cisaAddedAt,
+        kevDueAt: cisaDueAt,
       } : null,
       raw: candidate,
     });
