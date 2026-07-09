@@ -77,6 +77,10 @@ assert.equal(result.candidates[1].recency_bucket, 'backlog');
 assert.equal(result.candidates[0].drafting_allowed, false);
 assert.equal(result.candidates[0].official_cisa_kev.listed, false);
 assert.equal(result.candidates[0].official_cisa_kev.date_added, null);
+assert.equal(
+  result.candidates[0].official_cisa_kev.status_source,
+  'not inferred from VulnCheck; verify CISA KEV membership against CISA before official labeling',
+);
 assert.equal(result.candidates[0].source_packet_prefill.key_dates.cisa_kev_added_at_from_vulncheck_record, '2026-06-11');
 assert.ok(result.candidates[0].priority_reasons.includes('recent VulnCheck date_added'));
 assert.ok(result.candidates[1].priority_reasons.includes('VulnCheck date_added present'));

@@ -15,9 +15,13 @@ assert.match(supplyChainWorkflow, /refs\/heads\/\$\{BRANCH\}:refs\/remotes\/orig
 
 assert.match(discoveryWorkflow, /TOTAL_PENDING_PREFILLS/);
 assert.match(discoveryWorkflow, /"\$TOTAL_PENDING_PREFILLS" -ge "\$PENDING_CAP"/);
+assert.match(discoveryWorkflow, /FETCHED_PREFILL_BRANCHES/);
+assert.match(discoveryWorkflow, /global backlog state is incomplete/);
 assert.doesNotMatch(discoveryWorkflow, /\$\{BASE_BRANCH\}-\$\{GITHUB_RUN_ID\}/);
 assert.match(discoveryWorkflow, /pauses at the configured global pending cap/);
 assert.match(discoveryWorkflow, /refs\/heads\/\$\{candidate_branch\}:refs\/remotes\/origin\/\$\{candidate_branch\}/);
+
+assert.match(supplyChainWorkflow, /--retry 3 --retry-all-errors/);
 
 assert.match(reviewGateWorkflow, /coderabbitai/);
 assert.match(reviewGateScript, /'coderabbitai'/);

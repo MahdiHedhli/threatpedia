@@ -705,7 +705,7 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
     priority_score: priority.score,
     priority_reasons: priority.reasons,
     official_cisa_kev: {
-      status_source: 'cisa_date_added field from VulnCheck record; verify against CISA before official labeling',
+      status_source: 'not inferred from VulnCheck; verify CISA KEV membership against CISA before official labeling',
       listed: false,
       date_added: null,
       due_date: null,
