@@ -12,6 +12,10 @@ assert.doesNotMatch(supplyChainWorkflow, /git merge --no-edit origin\/main/);
 assert.match(supplyChainWorkflow, /DISCOVERY_REMOTE_HEAD/);
 assert.match(supplyChainWorkflow, /--force-with-lease=refs\/heads\/\$\{DISCOVERY_BRANCH\}/);
 assert.match(supplyChainWorkflow, /refs\/heads\/\$\{BRANCH\}:refs\/remotes\/origin\/\$\{BRANCH\}/);
+assert.ok(supplyChainWorkflow.includes('PREVIOUS_PACKET_DIR="$RUNNER_TEMP/supply-chain-previous-vulncheck-packets"'));
+assert.ok(supplyChainWorkflow.includes('git diff --name-only --diff-filter=A origin/main..."origin/${BRANCH}"'));
+assert.ok(supplyChainWorkflow.includes('git cat-file -e "origin/main:${packet_path}"'));
+assert.ok(supplyChainWorkflow.includes('cp -R "$PREVIOUS_PACKET_DIR"/. "$VULNCHECK_PACKET_DIR"/'));
 
 assert.match(discoveryWorkflow, /TOTAL_PENDING_PREFILLS/);
 assert.match(discoveryWorkflow, /"\$TOTAL_PENDING_PREFILLS" -ge "\$PENDING_CAP"/);
@@ -20,6 +24,9 @@ assert.match(discoveryWorkflow, /global backlog state is incomplete/);
 assert.doesNotMatch(discoveryWorkflow, /\$\{BASE_BRANCH\}-\$\{GITHUB_RUN_ID\}/);
 assert.match(discoveryWorkflow, /pauses at the configured global pending cap/);
 assert.match(discoveryWorkflow, /refs\/heads\/\$\{candidate_branch\}:refs\/remotes\/origin\/\$\{candidate_branch\}/);
+assert.ok(discoveryWorkflow.includes('OPEN_PREFILL_PAGE=1'));
+assert.ok(discoveryWorkflow.includes('pulls?state=open&per_page=100&page=${OPEN_PREFILL_PAGE}'));
+assert.ok(discoveryWorkflow.includes('OPEN_PREFILL_PAGE=$((OPEN_PREFILL_PAGE + 1))'));
 
 assert.match(supplyChainWorkflow, /--retry 3 --retry-all-errors/);
 
