@@ -409,10 +409,11 @@ function releaseLead({ source, ecosystem, name, version, publishedAt, url, feedC
 }
 
 function vulnerabilityLead({ source, id, aliases, title, summary, modifiedAt, publishedAt, url, affected, severity, databaseSpecific, kev, raw }) {
-  const text = `${id} ${aliases?.join(' ') || ''} ${title || ''} ${summary || ''}`;
-  const ids = extractIds(text);
+  const authoritativeIdentifiers = uniqueStrings([id, aliases || []]);
+  const ids = extractIds(authoritativeIdentifiers.join(' '));
+  const leadIdentityText = `${authoritativeIdentifiers.join(' ')} ${title || ''} ${summary || ''}`;
   return {
-    leadRef: `${source}:${id || sha(text)}`,
+    leadRef: `${source}:${id || sha(leadIdentityText)}`,
     source,
     kind: 'advisory',
     advisoryId: id,
@@ -425,7 +426,7 @@ function vulnerabilityLead({ source, id, aliases, title, summary, modifiedAt, pu
     url,
     cves: ids.cves,
     ghsas: ids.ghsas,
-    osvIds: uniqueStrings([id, ids.osvIds]),
+    osvIds: ids.osvIds,
     affected: Array.isArray(affected) ? affected : [],
     severity,
     databaseSpecific: databaseSpecific || null,

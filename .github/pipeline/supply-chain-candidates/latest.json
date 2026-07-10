@@ -1,6 +1,6 @@
 {
   "schema_version": "threatpedia-supply-chain-candidate-queue/1",
-  "generated_at": "2026-07-10T01:54:37.224Z",
+  "generated_at": "2026-07-10T02:06:09.962Z",
   "mode": "live",
   "drafting_enabled": false,
   "auto_drafting_allowed": false,
@@ -21,9 +21,9 @@
     "queue_path": ".github/pipeline/supply-chain-candidates/latest.json"
   },
   "summary": {
-    "raw_leads_loaded": 240,
-    "deduped_subjects": 232,
-    "rejected_low_relevance": 80,
+    "raw_leads_loaded": 239,
+    "deduped_subjects": 231,
+    "rejected_low_relevance": 79,
     "classifier_candidates": 152,
     "candidates_emitted": 40,
     "candidates_carried_forward": 29,
@@ -40,362 +40,355 @@
   },
   "feed_cursors": {
     "go": {
-      "cursor": "2026-06-24T10:46:18.010501Z",
+      "cursor": "2026-06-24T10:46:51.525319Z",
       "boundary_keys": [
-        "buf.build/gen/go/xmtp/proto/protocolbuffers/go\tv1.36.0-20260618223123-e61687448568.2\t2026-06-24T10:46:18.010501Z"
+        "github.com/automazeio/vibeproxy\tv1.8.209\t2026-06-24T10:46:51.525319Z"
       ]
     }
   },
   "collector_errors": [],
   "rejected": [
     {
-      "canonicalSubjectId": "pkg:npm/barrysolomon/mobile-react-native@0.5.2-alpha",
+      "canonicalSubjectId": "pkg:npm/free-email-domains@1.9.61",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:3a9163af77bc"
+        "npm-registry:0a9a93dcbed4"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/docstore-cf-hyperdrive@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:npm/waveform-playlist/recording@13.0.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:8b5780383d9f"
+        "npm-registry:f624697e7b9a"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/nice-code/common-errors@0.53.0",
+      "canonicalSubjectId": "pkg:npm/waveform-playlist/ui-components@13.1.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:9dcc6f9dd32b"
+        "npm-registry:f637c14f1e01"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/nice-code/util@0.54.0",
+      "canonicalSubjectId": "pkg:npm/waveform-playlist/browser@15.3.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:5a1880ca0f8f"
+        "npm-registry:2397ceca4469"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/stacksjs/browser@0.70.54",
+      "canonicalSubjectId": "pkg:npm/waveform-playlist/midi@13.0.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:f7f313932d72"
+        "npm-registry:7f3b95151bd5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/muibook/components@20.2.0",
+      "canonicalSubjectId": "pkg:npm/waveform-playlist/playout@12.5.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:e6d1b2a70064"
+        "npm-registry:bd3455b32bb4"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/docstore-cf-do@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:npm/waveform-playlist/annotations@12.0.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:a671ea8d552c"
+        "npm-registry:e7230aee54ce"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/nice-code/devtools-core@0.54.0",
+      "canonicalSubjectId": "pkg:npm/dawcore/midi@0.0.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:583abc47aaf4"
+        "npm-registry:7c1796c8a971"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/docstore-cf-d1@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:npm/domphy/ui@0.18.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:85d61b270002"
+        "npm-registry:59d4a8e6d80c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/stacksjs/push@0.70.54",
+      "canonicalSubjectId": "pkg:npm/dofe/infra-workspace@0.1.89",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:bbf37bdb71f5"
+        "npm-registry:1c6aef1a8a12"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/nice-code/error@0.54.0",
+      "canonicalSubjectId": "pkg:npm/dofe/infra-web-runtime@0.1.89",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:a3c3241f303b"
+        "npm-registry:c6a3cfe77bb3"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/docstore-sqlite-base@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:npm/bms-chat-engine@0.3.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:5deb1488cf92"
+        "npm-registry:f3b005fe3cd8"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/eth-chainlist@0.0.790",
+      "canonicalSubjectId": "pkg:npm/dofe/infra-vector@0.1.89",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:5b751df48c27"
+        "npm-registry:9acaee5ab692"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/eai-cli@3.7.2",
+      "canonicalSubjectId": "pkg:npm/wangeditor-next/editor@5.7.16",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:98f87fa5766c"
+        "npm-registry:406c680c0e07"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/runtime-base@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:npm/wangeditor-next/plugin-ctrl-enter@2.0.16",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:8837fce24583"
+        "npm-registry:403a71db8832"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/stacksjs/socials@0.70.54",
+      "canonicalSubjectId": "pkg:npm/wangeditor-next/plugin-attachment@2.0.16",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:fb3932e47786"
+        "npm-registry:582970c2baf6"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/chaos_team/chaos-ui@1.1.2",
+      "canonicalSubjectId": "pkg:npm/wangeditor-next/table-module@3.0.7",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:a30ef41a40dd"
+        "npm-registry:afb61a44498e"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/adhdev/daemon-standalone@0.9.81",
+      "canonicalSubjectId": "pkg:npm/rapidrest/cli@0.10.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:86a0b6ccf5b7"
+        "npm-registry:969041ace755"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/lydianpay/lydianconnect-catalog@1.2.1",
+      "canonicalSubjectId": "pkg:npm/dofe/infra-utils@0.1.89",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:4c1f154f648a"
+        "npm-registry:8bba2255ceb1"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/cloud-api@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:npm/atlassian-test-staging/synth-check@1.0.106106",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:8b9aa20c8e88"
+        "npm-registry:13d3d730c36e"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/curless/agentbank-merchant-mcp@0.0.39",
+      "canonicalSubjectId": "pkg:npm/millsydotdev/ceoinabox@1.3.29",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:0e43d24487a7"
+        "npm-registry:41d6e2fa8fd1"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/stacksjs/orm@0.70.54",
+      "canonicalSubjectId": "pkg:npm/dofe/sso-browser@0.1.89",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:afa3c8fc54c5"
+        "npm-registry:d8f5700f6dfd"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/brand@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:npm/tetsuo-ai/protocol@0.3.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:eec5e441ecea"
+        "npm-registry:332ae87f2cb3"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/enterpriseai/cli@3.7.2",
+      "canonicalSubjectId": "pkg:npm/dofe/infra-shared-services@0.1.89",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:44073406ae7a"
+        "npm-registry:036445e6aeac"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/concavejs/blobstore-cf-r2@0.0.1-alpha.18",
+      "canonicalSubjectId": "pkg:golang/github.com/automadcms/automad-standard-lite@v0.0.0-20260621154657-051adde9478a",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:6f5527946c35"
+        "go-index:946e007df91c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/cloudquery/cloudquery-platform-api-go/v2@v2.0.2-0.20260624104252-778ef8cd6f9f",
+      "canonicalSubjectId": "pkg:golang/github.com/authorturker/sec-analyzer-ai@v0.0.0-20260615140320-aabfd18f1836",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:352a084afa18"
+        "go-index:a37f63c1ebc8"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/atmosphere/atmosphere@v0.0.0-20260624000717-3e172303e0a6",
+      "canonicalSubjectId": "pkg:golang/github.com/authorjapps/zerocode@v0.0.0-20260615220932-d0c9f82a92f4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:15ad3ab040c8"
+        "go-index:d83be7b6e31b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/tx7do/go-wind-plugins/log/zap@v0.0.2-0.20260619052353-6c0b771184ef",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.36.7-20260619064626-e5e95b496fc2.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:490c789d61f2"
+        "go-index:05ed3f3927dc"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/k8s.io/cloud-provider-azure@v1.30.16",
+      "canonicalSubjectId": "pkg:golang/github.com/grafana/gcx@v0.4.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:c4150f0c2ab8"
+        "go-index:678ba0565a71"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/anaregdesign/lantern/core@v0.14.1-0.20260624073956-2b098d9a5f40",
+      "canonicalSubjectId": "pkg:golang/github.com/autonomy/talos@v1.14.0-alpha.1.0.20260623180559-6447d854f20d",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:4f2e86d01cf1"
+        "go-index:5020027f0cfb"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/openclaw/openclaw@v0.0.0-20260624102956-bfffc77bfc86",
+      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v1.0.0-rc.3",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:93a401ae2118"
+        "go-index:3a3078586c6c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v1.0.1-rc.14",
+      "canonicalSubjectId": "pkg:golang/github.com/pingcap/tiflow@v0.0.0-20260624104526-42ad8a6dc462",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:9931667665c9"
+        "go-index:bb3de292484f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v9.33.65%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/tx7do/go-wind-plugins/log@v0.0.2-0.20260619052353-6c0b771184ef",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:fd8a0841d849"
+        "go-index:c7445dd44e01"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana@v0.0.0-20260624104315-fd443127ae31",
+      "canonicalSubjectId": "pkg:golang/k8s.io/cloud-provider-azure@v1.34.1-0.20260624060434-d47c89ad7ce7",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6d399290ad89"
+        "go-index:c83045540372"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.33.0-20260619064626-e5e95b496fc2.1",
+      "canonicalSubjectId": "pkg:golang/github.com/nats-io/natscli@v0.4.1-0.20260623145357-565da5e43bc5",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:ecdff2e1d4f5"
+        "go-index:2f4b7d4b0a99"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/smplkit/go-sdk/v3@v3.0.158",
+      "canonicalSubjectId": "pkg:golang/github.com/FriendsOfShopware/shopware-cli@v0.0.0-20260624051905-35209bfc80a6",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:98757b914861"
+        "go-index:e21044793ccb"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/audreyt/ethercalc@v0.0.0-20260619165608-8b467defe0af",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.7.1%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:e958d0e74ed1"
+        "go-index:35df98401226"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/augustalabs/arcus-artifacts@v0.0.0-20260623214514-2485bb27c27c",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/protocolbuffers/go@v1.36.8-20260618223123-e61687448568.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:7ca24b780780"
+        "go-index:1db0914857f9"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v1.0.1-rc.13",
+      "canonicalSubjectId": "pkg:golang/github.com/aspect-build/aspect-workflows-template@v2026.25.6%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:49906b327d39"
+        "go-index:320357be30ac"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/yugabyte/yugabyte-db/docs@v0.0.0-20260624101347-d5f0962cd107",
+      "canonicalSubjectId": "pkg:golang/github.com/friendsofshopware/shopware-static-data@v0.0.0-20260624050040-f50ba74ad69c",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:49c1f562c09f"
+        "go-index:afb8efa7fab7"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/e2b-dev/infra/packages/orchestrator@v0.0.0-20260624092724-09d040ee4ebe",
+      "canonicalSubjectId": "pkg:golang/github.com/autowarefoundation/autoware@v0.0.0-20260623140229-484781976065",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:bdd15138818e"
+        "go-index:7ba5247ac1a6"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/astronomer/astro-cli/pkg/telemetry@v0.0.0-20260623165435-6cc17bb9362f",
+      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v1.0.3-alpha.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:0737026ce542"
+        "go-index:425600b5948b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mpdf/mpdf@v0.0.0-20260311105844-2a454ec33410",
+      "canonicalSubjectId": "pkg:golang/github.com/automattic/pocket-casts-ios@v0.0.0-20260624094329-026d7aa37d91",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:814525b9ed47"
+        "go-index:3ecfe10e84d5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/ashishsharma1203/rideflow/api@v0.0.0-20260621141451-431fda36790d",
+      "canonicalSubjectId": "pkg:golang/github.com/gardener/gardener@v1.73.1-0.20260624093825-d3ce5b21831f",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:f18259b74237"
+        "go-index:16863ec230f6"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.5.225%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v1.0.1-rc.4",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:f4757df9f276"
+        "go-index:cd075767a7ba"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/audunarn/ANYstructure@v0.0.0-20260624090441-f10137ee72af",
+      "canonicalSubjectId": "pkg:golang/github.com/autonomys/subspace@v0.0.0-20260623150108-68cbca48a673",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6117c5af211f"
+        "go-index:d21f9eec9472"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mpdf/psr-http-message-shim@v0.0.0-20231002143403-f25a0153d645",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.5.226%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:4aecedf3968f"
+        "go-index:6c8d0666b08f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/aurracloud/openbroker-monitoring@v0.0.0-20260623135058-3eb7198086e2",
+      "canonicalSubjectId": "pkg:golang/github.com/hashicorp/consul@v1.11.0-alpha.0.20260624102253-d8054696e622",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:46fce42e3073"
+        "go-index:f4d9a6230413"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v0.4.0-alpha.1",
+      "canonicalSubjectId": "pkg:golang/github.com/automazeio/vibeproxy@v1.8.209",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:df1ca82f0722"
-      ]
-    },
-    {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/protocolbuffers/go@v1.36.0-20260618223123-e61687448568.2",
-      "reason": "not_supply_chain_relevant",
-      "mergedLeadRefs": [
-        "go-index:33279b0c8f94"
+        "go-index:9a0640c552fe"
       ]
     },
     {
@@ -671,7 +664,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1117,7 +1110,7 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "subjectAliases": [],
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z"
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z"
     },
     {
       "candidateId": "SC-CAND-7cb9b53fbd538087",
@@ -1175,7 +1168,7 @@
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "subjectAliases": [],
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z"
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z"
     },
     {
       "candidateId": "SC-CAND-80a78ad7629e7231",
@@ -1232,7 +1225,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1290,7 +1283,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1348,7 +1341,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1406,7 +1399,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1464,7 +1457,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1522,7 +1515,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1580,7 +1573,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1638,7 +1631,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1696,7 +1689,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1754,7 +1747,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1812,7 +1805,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1870,7 +1863,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1928,7 +1921,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -1986,7 +1979,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -2047,7 +2040,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-GWX3-MRCV-2C26"
       ]
@@ -2110,7 +2103,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-HMX8-MH72-WJ54"
       ]
@@ -2173,7 +2166,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-7J3Q-2RPH-CWF8"
       ]
@@ -2236,7 +2229,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-29Q5-MM45-3XM3"
       ]
@@ -2299,7 +2292,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-HQCJ-4R96-9WJ6"
       ]
@@ -2362,7 +2355,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-H98V-2HWG-56FX"
       ]
@@ -2425,7 +2418,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-J4V3-8CW4-PG32"
       ]
@@ -2488,7 +2481,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-474V-72PF-X6Q5"
       ]
@@ -2548,7 +2541,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -2609,7 +2602,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": [
         "GHSA-M9CG-QM5P-9PVQ"
       ]
@@ -2669,7 +2662,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
@@ -2727,14 +2720,13 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "carriedForwardAt": "2026-07-10T02:06:07.215Z",
       "subjectAliases": []
     },
     {
-      "candidateId": "SC-CAND-eb653dc14753c520",
-      "canonicalSubjectId": "CVE-2025-62718",
+      "candidateId": "SC-CAND-5ca0ec34e5185a78",
+      "canonicalSubjectId": "CVE-2026-44492",
       "subjectAliases": [
-        "CVE-2026-44492",
         "GHSA-PJWM-PJ3P-43MV"
       ],
       "subjectType": "cve",

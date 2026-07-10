@@ -111,6 +111,50 @@ function testAliasBridgeDeduplicatesOsvAndGhsaLeads() {
   ]);
 }
 
+async function testContextualCveDoesNotBecomeSubjectAlias() {
+  const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-contextual-cve-'));
+  try {
+    writeFileSync(path.join(tempDir, 'npm_changes.json'), JSON.stringify({ results: [] }));
+    writeFileSync(path.join(tempDir, 'pypi_updates.xml'), '<rss><channel></channel></rss>');
+    writeFileSync(path.join(tempDir, 'go_index.jsonl'), '');
+    writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), 'not-a-date,no-record\n');
+    writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), JSON.stringify([{
+      ghsa_id: 'GHSA-pjwm-pj3p-43mv',
+      cve_id: 'CVE-2026-44492',
+      summary: 'Supply-chain proxy bypass: incomplete fix for CVE-2025-62718',
+      description: 'The new advisory references an earlier vulnerability for context.',
+      type: 'reviewed',
+      severity: 'medium',
+      published_at: '2026-07-09T15:00:00Z',
+      updated_at: '2026-07-09T15:32:13Z',
+      html_url: 'https://github.com/advisories/GHSA-pjwm-pj3p-43mv',
+      vulnerabilities: [{ package: { ecosystem: 'npm', name: 'axios' } }],
+    }]));
+
+    const queuePath = path.join(tempDir, 'queue.json');
+    const queue = await buildCandidateQueue({
+      execute: false,
+      out: queuePath,
+      queuePath,
+      fixturesDir: tempDir,
+      asOf: '2026-07-10T00:00:00Z',
+      maxCandidates: 20,
+      maxPerSource: 5,
+      sinceHours: 72,
+      vulncheckIndex: path.join(tempDir, 'missing-vulncheck.json'),
+      check: false,
+      includeLowSignal: true,
+    });
+
+    const candidate = queue.candidates.find(item => item.canonicalSubjectId === 'CVE-2026-44492');
+    assert.ok(candidate, 'the advisory CVE should remain the canonical subject');
+    assert.deepEqual(candidate.subjectAliases, ['GHSA-PJWM-PJ3P-43MV']);
+    assert.ok(!candidate.subjectAliases.includes('CVE-2025-62718'));
+  } finally {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+}
+
 async function testOsvAscendingCsvAndMalformedGoLinesAreSafe() {
   const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-osv-'));
   try {
@@ -797,6 +841,7 @@ function testSupplyChainCveRoutesAsIncidentWithoutKev() {
 testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
 testAliasBridgeDeduplicatesOsvAndGhsaLeads();
+await testContextualCveDoesNotBecomeSubjectAlias();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
 await testOsvDescendingCsvCollectsRecentRows();
 await testGoIndexAdvancesSequentiallyWithoutSkippingRows();
