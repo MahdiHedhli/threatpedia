@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-23T19:53:54.897Z",
-  "updated": "2026-06-23T22:43:43.863Z",
+  "updated": "2026-07-10T00:39:28.406Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "kernel-k",
+  "locked_at": "2026-07-10T00:39:28.405Z",
   "input": {
     "topic": "Lantronix EDS5000 Code Injection Vulnerability (CVE-2025-67038)",
     "sources": [
@@ -85,6 +85,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1284"
+    },
+    {
+      "timestamp": "2026-07-10T00:39:28.406Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "kernel-k",
+      "note": "Locked for execution"
     }
   ]
 }
