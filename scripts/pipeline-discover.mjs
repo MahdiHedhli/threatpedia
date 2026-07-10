@@ -142,8 +142,12 @@ function textValue(value) {
   return '';
 }
 
-function stripHtml(html) {
+export function stripHtml(html) {
   return String(html || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201c\u201d]/g, '"')
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
     .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')

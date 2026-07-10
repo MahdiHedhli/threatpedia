@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
-import { evaluateIncidentItem } from './pipeline-discover.mjs';
+import { evaluateIncidentItem, stripHtml } from './pipeline-discover.mjs';
+
+assert.equal(stripHtml('AI\u2011related \u201csearch\u201d'), 'AI-related "search"');
 
 const currentFeedCases = [
   {
