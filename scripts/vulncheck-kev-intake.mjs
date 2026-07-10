@@ -564,6 +564,9 @@ function sourceMetadataForUrl(value) {
   if (host === 'nvd.nist.gov' || host.endsWith('.nvd.nist.gov')) {
     return { publisher: 'National Vulnerability Database', source_type: 'database' };
   }
+  if (host === 'msrc.microsoft.com' || host.endsWith('.msrc.microsoft.com')) {
+    return { publisher: 'Microsoft', source_type: 'vendor' };
+  }
   if (host === 'cyber.gov.au' || host.endsWith('.cyber.gov.au')) {
     return { publisher: 'Australian Cyber Security Centre', source_type: 'government' };
   }
@@ -610,7 +613,7 @@ function supportingSourcesFor(record, dateAdded) {
         url,
         published_at: null,
         source_type: metadata.source_type,
-        role: 'supporting',
+        role: metadata.source_type === 'vendor' ? 'primary' : 'supporting',
         notes: options.observedByVulnCheck === false
           ? notes
           : `${notes} VulnCheck observed this reference on ${normalizeDate(item?.date_added) || 'an unknown date'}.`,
@@ -796,7 +799,7 @@ function makePrefill(rawRecord) {
     source_quality: {
       has_government_source: supportingSources.some(source => source.source_type === 'government'),
       has_vendor_source: true,
-      has_primary_source: false,
+      has_primary_source: supportingSources.some(source => source.role === 'primary'),
       source_sufficiency: 'needs_human_review',
     },
     key_dates: {
@@ -835,7 +838,7 @@ function makePrefill(rawRecord) {
       },
       {
         claim: 'Article-ready source sufficiency',
-        reason: 'This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting.',
+        reason: 'This prefill may include direct primary references, but every carried reference remains unverified and requires human review plus authoritative cross-checking before drafting.',
       },
     ],
   };
