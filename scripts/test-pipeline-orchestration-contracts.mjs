@@ -7,6 +7,7 @@ const supplyChainValidationWorkflow = readFileSync(new URL('../.github/workflows
 const discoveryWorkflow = readFileSync(new URL('../.github/workflows/pipeline-discovery.yml', import.meta.url), 'utf8');
 const reviewGateWorkflow = readFileSync(new URL('../.github/workflows/pipeline-review-gate.yml', import.meta.url), 'utf8');
 const reviewGateScript = readFileSync(new URL('./pipeline-review-gate.mjs', import.meta.url), 'utf8');
+const taskSchema = JSON.parse(readFileSync(new URL('../.github/pipeline/schema/task-schema.json', import.meta.url), 'utf8'));
 
 assert.match(supplyChainWorkflow, /git checkout -B "\$BRANCH" origin\/main/);
 assert.doesNotMatch(supplyChainWorkflow, /git merge --no-edit origin\/main/);
@@ -40,6 +41,16 @@ assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-graph
 assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-malware-families-stix.json'));
 assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-search-index.json'));
 assert.ok(supplyChainValidationWorkflow.includes('node scripts/build-supply-chain-graph.mjs --check'));
+
+assert.ok(taskSchema.properties.stage.enum.includes('generation'));
+assert.ok(taskSchema.properties.status.enum.includes('pr_open'));
+assert.ok(taskSchema.properties.acceptance_criteria);
+assert.ok(taskSchema.properties.acceptance);
+assert.ok(!taskSchema.required.includes('stage'));
+assert.ok(taskSchema.properties.source.enum.includes('historical_corpus_backlog'));
+assert.ok(taskSchema.properties.output.properties.pr.type.includes('null'));
+assert.ok(taskSchema.anyOf.some((rule) => rule.required?.includes('acceptance_criteria')));
+assert.ok(taskSchema.anyOf.some((rule) => rule.required?.includes('acceptance')));
 
 assert.match(reviewGateWorkflow, /coderabbitai/);
 assert.match(reviewGateScript, /'coderabbitai'/);
