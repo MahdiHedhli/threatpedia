@@ -1,6 +1,6 @@
 {
   "schema_version": "threatpedia-supply-chain-candidate-queue/1",
-  "generated_at": "2026-07-10T01:10:20.901Z",
+  "generated_at": "2026-07-10T01:54:37.224Z",
   "mode": "live",
   "drafting_enabled": false,
   "auto_drafting_allowed": false,
@@ -21,381 +21,381 @@
     "queue_path": ".github/pipeline/supply-chain-candidates/latest.json"
   },
   "summary": {
-    "raw_leads_loaded": 238,
-    "deduped_subjects": 226,
+    "raw_leads_loaded": 240,
+    "deduped_subjects": 232,
     "rejected_low_relevance": 80,
-    "classifier_candidates": 146,
-    "candidates_emitted": 36,
-    "candidates_carried_forward": 27,
-    "current_candidates": 36,
-    "matched_existing": 0,
+    "classifier_candidates": 152,
+    "candidates_emitted": 40,
+    "candidates_carried_forward": 29,
+    "current_candidates": 40,
+    "matched_existing": 1,
     "collector_errors": 0
   },
   "currency": {
     "latest_corpus_incident_at": "2026-05-28T00:00:00.000Z",
     "latest_discovery_signal_at": "2026-07-09T23:47:01.172Z",
-    "pending_candidate_count": 36,
-    "pending_current_count": 36,
+    "pending_candidate_count": 40,
+    "pending_current_count": 40,
     "graph_latest_reflects": "discovery"
   },
   "feed_cursors": {
     "go": {
-      "cursor": "2026-06-24T10:45:46.244794Z",
+      "cursor": "2026-06-24T10:46:18.010501Z",
       "boundary_keys": [
-        "github.com/kubernetes-sigs/cluster-api-provider-openstack\tv0.14.0-rc.0.0.20260624051619-9394678da375\t2026-06-24T10:45:46.244794Z"
+        "buf.build/gen/go/xmtp/proto/protocolbuffers/go\tv1.36.0-20260618223123-e61687448568.2\t2026-06-24T10:46:18.010501Z"
       ]
     }
   },
   "collector_errors": [],
   "rejected": [
     {
-      "canonicalSubjectId": "pkg:npm/voobase/cli@0.1.0-nonprod.1819",
+      "canonicalSubjectId": "pkg:npm/barrysolomon/mobile-react-native@0.5.2-alpha",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:5f986f3a0eb1"
+        "npm-registry:3a9163af77bc"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/freeroll/sdk@0.2.2",
+      "canonicalSubjectId": "pkg:npm/concavejs/docstore-cf-hyperdrive@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:54cd038f3283"
+        "npm-registry:8b5780383d9f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/atlassian-test-prod/synth-check@1.0.102670",
+      "canonicalSubjectId": "pkg:npm/nice-code/common-errors@0.53.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:f030fb07b2d9"
+        "npm-registry:9dcc6f9dd32b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/yqform-h5@0.2.32",
+      "canonicalSubjectId": "pkg:npm/nice-code/util@0.54.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:121623358282"
+        "npm-registry:5a1880ca0f8f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/ui@1.25.2",
+      "canonicalSubjectId": "pkg:npm/stacksjs/browser@0.70.54",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:4ef3013e225f"
+        "npm-registry:f7f313932d72"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/torlnk@1.4.0",
+      "canonicalSubjectId": "pkg:npm/muibook/components@20.2.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:a3813acf1eb8"
+        "npm-registry:e6d1b2a70064"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/bonnard/mcp-charts@0.1.3",
+      "canonicalSubjectId": "pkg:npm/concavejs/docstore-cf-do@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:e12f2aac2e33"
+        "npm-registry:a671ea8d552c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/vue@2.4.14",
+      "canonicalSubjectId": "pkg:npm/nice-code/devtools-core@0.54.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:bd884da7e974"
+        "npm-registry:583abc47aaf4"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/shared@4.25.2",
+      "canonicalSubjectId": "pkg:npm/concavejs/docstore-cf-d1@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:95e800517920"
+        "npm-registry:85d61b270002"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/credithub/cli@0.1.2",
+      "canonicalSubjectId": "pkg:npm/stacksjs/push@0.70.54",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:9286591bd494"
+        "npm-registry:bbf37bdb71f5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/jacques_gordon/expo-mapbox-navigation@3.3.3",
+      "canonicalSubjectId": "pkg:npm/nice-code/error@0.54.0",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:e05abdb8cff6"
+        "npm-registry:a3c3241f303b"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/upgrade@2.0.4",
+      "canonicalSubjectId": "pkg:npm/concavejs/docstore-sqlite-base@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:c7e3bd2f3449"
+        "npm-registry:5deb1488cf92"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/testing@2.2.6",
+      "canonicalSubjectId": "pkg:npm/eth-chainlist@0.0.790",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:8aa5991f45df"
+        "npm-registry:5b751df48c27"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/helix3/helix-mcp@0.2.3-helix3.15",
+      "canonicalSubjectId": "pkg:npm/eai-cli@3.7.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:9a02de7fe26e"
+        "npm-registry:98f87fa5766c"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/tanstack-react-start@1.4.16",
+      "canonicalSubjectId": "pkg:npm/concavejs/runtime-base@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:074bd3ea3b70"
+        "npm-registry:8837fce24583"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/react-router@3.5.8",
+      "canonicalSubjectId": "pkg:npm/stacksjs/socials@0.70.54",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:638d5ce5d911"
+        "npm-registry:fb3932e47786"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/localizations@4.13.2",
+      "canonicalSubjectId": "pkg:npm/chaos_team/chaos-ui@1.1.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:72de63a09a87"
+        "npm-registry:a30ef41a40dd"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/nextjs@7.5.16",
+      "canonicalSubjectId": "pkg:npm/adhdev/daemon-standalone@0.9.81",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:cd6016a37926"
+        "npm-registry:86a0b6ccf5b7"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/react@6.12.2",
+      "canonicalSubjectId": "pkg:npm/lydianpay/lydianconnect-catalog@1.2.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:6db8cca8006e"
+        "npm-registry:4c1f154f648a"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/dztabel/reportkit-linux-x64@0.1.28",
+      "canonicalSubjectId": "pkg:npm/concavejs/cloud-api@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:a03056392632"
+        "npm-registry:8b9aa20c8e88"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/nuxt@2.6.15",
+      "canonicalSubjectId": "pkg:npm/curless/agentbank-merchant-mcp@0.0.39",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:c971c1ef245f"
+        "npm-registry:0e43d24487a7"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/fastify@3.1.49",
+      "canonicalSubjectId": "pkg:npm/stacksjs/orm@0.70.54",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:a75190d7f4c0"
+        "npm-registry:afa3c8fc54c5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/express@2.1.39",
+      "canonicalSubjectId": "pkg:npm/concavejs/brand@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:f04a34397fdc"
+        "npm-registry:eec5e441ecea"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/expo@3.7.3",
+      "canonicalSubjectId": "pkg:npm/enterpriseai/cli@3.7.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:dbc1279b7ca1"
+        "npm-registry:44073406ae7a"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:npm/clerk/expo-passkeys@1.2.3",
+      "canonicalSubjectId": "pkg:npm/concavejs/blobstore-cf-r2@0.0.1-alpha.18",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "npm-registry:ba57d5eb0658"
+        "npm-registry:6f5527946c35"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/k8s.io/cloud-provider-azure@v1.33.14",
+      "canonicalSubjectId": "pkg:golang/github.com/cloudquery/cloudquery-platform-api-go/v2@v2.0.2-0.20260624104252-778ef8cd6f9f",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6dbcd51b53f0"
+        "go-index:352a084afa18"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/phalcon/vokuro@v5.0.0%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/atmosphere/atmosphere@v0.0.0-20260624000717-3e172303e0a6",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:81bc9712bac3"
+        "go-index:15ad3ab040c8"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/edgelesssys/contrast/imagepuller@v0.0.0-20260624091217-11986ab8b834",
+      "canonicalSubjectId": "pkg:golang/github.com/tx7do/go-wind-plugins/log/zap@v0.0.2-0.20260619052353-6c0b771184ef",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:6dfe753f1327"
+        "go-index:490c789d61f2"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/git.meatbag.se/varl/gout@v0.1.0",
+      "canonicalSubjectId": "pkg:golang/k8s.io/cloud-provider-azure@v1.30.16",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:44fd8aa637f5"
+        "go-index:c4150f0c2ab8"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/deanwilson/unixdaemon-fpm-cookery-recipes@v0.0.0-20260624064236-450caec580b1",
+      "canonicalSubjectId": "pkg:golang/github.com/anaregdesign/lantern/core@v0.14.1-0.20260624073956-2b098d9a5f40",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:c5590aa7489a"
+        "go-index:4f2e86d01cf1"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.5.222%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/openclaw/openclaw@v0.0.0-20260624102956-bfffc77bfc86",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:494eb30e6540"
+        "go-index:93a401ae2118"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apmantza/pi-webaio@v0.6.1-0.20260620134328-bb44cba2e47f",
+      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v1.0.1-rc.14",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:fbbff8cf545e"
+        "go-index:9931667665c9"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v0.5.0-alpha.7",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v9.33.65%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:02802d375c81"
+        "go-index:fd8a0841d849"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/apexcharts/apexcharts.js@v5.15.3-0.20260623070234-a25b3394b456%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/grafana/grafana@v0.0.0-20260624104315-fd443127ae31",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:7b44ad88c3b9"
+        "go-index:6d399290ad89"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.29.1-20260619064626-e5e95b496fc2.1",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/pocketsign/apis/protocolbuffers/go@v1.33.0-20260619064626-e5e95b496fc2.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:84d64e020f6a"
+        "go-index:ecdff2e1d4f5"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v9.22.28%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/smplkit/go-sdk/v3@v3.0.158",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:e7d15ad9bf7a"
+        "go-index:98757b914861"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/git.meatbag.se/varl/gout@v0.1.1",
+      "canonicalSubjectId": "pkg:golang/github.com/audreyt/ethercalc@v0.0.0-20260619165608-8b467defe0af",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:46d4254a45eb"
+        "go-index:e958d0e74ed1"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/go.ytsaurus.tech/yt/admin/timbertruck@v0.0.0-20260624104309-6740f6bf53b5",
+      "canonicalSubjectId": "pkg:golang/github.com/augustalabs/arcus-artifacts@v0.0.0-20260623214514-2485bb27c27c",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:27edb7fa7b68"
+        "go-index:7ca24b780780"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/lumapps/design-system@v4.18.0%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v1.0.1-rc.13",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:c634cc5ce0c3"
+        "go-index:49906b327d39"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/atarity/deploy-your-own-saas@v0.0.0-20260623153139-bf67503c4d89",
+      "canonicalSubjectId": "pkg:golang/github.com/yugabyte/yugabyte-db/docs@v0.0.0-20260624101347-d5f0962cd107",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:5ed7acd70318"
+        "go-index:49c1f562c09f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/syncthing/relaysrv@v2.1.2-rc.3%2Bincompatible",
+      "canonicalSubjectId": "pkg:golang/github.com/e2b-dev/infra/packages/orchestrator@v0.0.0-20260624092724-09d040ee4ebe",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:9cadc805989c"
+        "go-index:bdd15138818e"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/AsyncHttpClient/async-http-client@v0.0.0-20260623175942-ccdcaa627db6",
+      "canonicalSubjectId": "pkg:golang/github.com/astronomer/astro-cli/pkg/telemetry@v0.0.0-20260623165435-6cc17bb9362f",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:7a20082933c5"
+        "go-index:0737026ce542"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/ate329/top-us-stock-tickers@v0.0.0-20260623110309-c6d853520536",
+      "canonicalSubjectId": "pkg:golang/github.com/mpdf/mpdf@v0.0.0-20260311105844-2a454ec33410",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:be13e4974983"
+        "go-index:814525b9ed47"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v0.4.0-alpha.4",
+      "canonicalSubjectId": "pkg:golang/github.com/ashishsharma1203/rideflow/api@v0.0.0-20260621141451-431fda36790d",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:8eba54c356e9"
+        "go-index:f18259b74237"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/tx7do/go-wind-plugins/cache/redis@v0.0.2-0.20260619052353-6c0b771184ef",
+      "canonicalSubjectId": "pkg:golang/github.com/wso2/carbon-apimgt@v6.5.225%2Bincompatible",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:19fbad3a6ae2"
+        "go-index:f4757df9f276"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/posthog/posthog-foss@v0.0.0-20260624104325-95a013b22edd",
+      "canonicalSubjectId": "pkg:golang/github.com/audunarn/ANYstructure@v0.0.0-20260624090441-f10137ee72af",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:da45c31f9793"
+        "go-index:6117c5af211f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/atsumeru-xyz/atsumeru@v0.0.0-20260611104512-df1bce2a9e86",
+      "canonicalSubjectId": "pkg:golang/github.com/mpdf/psr-http-message-shim@v0.0.0-20231002143403-f25a0153d645",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:5169b32e7868"
+        "go-index:4aecedf3968f"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/mewebstudio/captcha@v0.0.0-20240320161548-e996a9a56382",
+      "canonicalSubjectId": "pkg:golang/github.com/aurracloud/openbroker-monitoring@v0.0.0-20260623135058-3eb7198086e2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:7d457f1aa955"
+        "go-index:46fce42e3073"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v0.5.0-alpha.6",
+      "canonicalSubjectId": "pkg:golang/github.com/dessaya/wasp@v0.4.0-alpha.1",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:a259e573eb5d"
+        "go-index:df1ca82f0722"
       ]
     },
     {
-      "canonicalSubjectId": "pkg:golang/github.com/kubernetes-sigs/cluster-api-provider-openstack@v0.14.0-rc.0.0.20260624051619-9394678da375",
+      "canonicalSubjectId": "pkg:golang/buf.build/gen/go/xmtp/proto/protocolbuffers/go@v1.36.0-20260618223123-e61687448568.2",
       "reason": "not_supply_chain_relevant",
       "mergedLeadRefs": [
-        "go-index:fa82c537f5b9"
+        "go-index:33279b0c8f94"
       ]
     },
     {
@@ -671,11 +671,13 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-039bb5f43b8a4369",
       "canonicalSubjectId": "MAL-2026-10101",
+      "subjectAliases": [],
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in date-kit-lite (npm)",
@@ -730,6 +732,7 @@
     {
       "candidateId": "SC-CAND-4ad8aefe580d3350",
       "canonicalSubjectId": "MAL-2026-10102",
+      "subjectAliases": [],
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in dc-repro (npm)",
@@ -784,6 +787,7 @@
     {
       "candidateId": "SC-CAND-060ef9c8adef0dab",
       "canonicalSubjectId": "MAL-2026-10109",
+      "subjectAliases": [],
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in validator-string (npm)",
@@ -838,6 +842,7 @@
     {
       "candidateId": "SC-CAND-01f47acf5c745397",
       "canonicalSubjectId": "MAL-2026-6327",
+      "subjectAliases": [],
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in security-alerts-sdk (PyPI)",
@@ -892,6 +897,9 @@
     {
       "candidateId": "SC-CAND-28a8700f1b410967",
       "canonicalSubjectId": "MAL-2026-5303",
+      "subjectAliases": [
+        "PYSEC-2026-584"
+      ],
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in rlask (PyPI)",
@@ -946,6 +954,7 @@
     {
       "candidateId": "SC-CAND-e7688b6f2e32717d",
       "canonicalSubjectId": "MAL-2026-6753",
+      "subjectAliases": [],
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in schemavault (PyPI)",
@@ -1000,6 +1009,7 @@
     {
       "candidateId": "SC-CAND-ba3a5452f7c56333",
       "canonicalSubjectId": "MAL-2026-10100",
+      "subjectAliases": [],
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in proxy-check-i (PyPI)",
@@ -1099,11 +1109,15 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "subjectAliases": [],
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z"
     },
     {
       "candidateId": "SC-CAND-7cb9b53fbd538087",
@@ -1153,11 +1167,15 @@
         "current lead",
         "active exploitation or malware signal",
         "advisory database signal",
-        "supply-chain term match"
+        "supply-chain term match",
+        "carried forward pending review"
       ],
       "queueAction": "candidate_review",
       "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
+      "subjectAliases": [],
+      "staleCarryForward": true,
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z"
     },
     {
       "candidateId": "SC-CAND-80a78ad7629e7231",
@@ -1214,7 +1232,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-a2a183f5c263b36f",
@@ -1271,7 +1290,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-a8b5710ffa86bcac",
@@ -1328,7 +1348,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-0c534f134f383fa9",
@@ -1385,7 +1406,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-0c7e72f4609823a7",
@@ -1442,7 +1464,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-bbbfbe9564317f8d",
@@ -1499,7 +1522,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-0e131a3d2f8593f2",
@@ -1556,7 +1580,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-cb2b647b7f73f1e6",
@@ -1613,7 +1638,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-e52ccaa1f2a9a7ab",
@@ -1670,7 +1696,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-f9d1ed1e10c975c3",
@@ -1727,7 +1754,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-e5e71da47b15d831",
@@ -1784,7 +1812,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-1ba4af08c5b6dba3",
@@ -1841,7 +1870,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-26080c9dd8054b54",
@@ -1898,7 +1928,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-849de07944c0721e",
@@ -1955,7 +1986,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-2659d8aedb505748",
@@ -2015,7 +2047,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
       "subjectAliases": [
         "GHSA-GWX3-MRCV-2C26"
       ]
@@ -2078,14 +2110,14 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
       "subjectAliases": [
         "GHSA-HMX8-MH72-WJ54"
       ]
     },
     {
-      "candidateId": "SC-CAND-a6d5d5bf527cd833",
-      "canonicalSubjectId": "GHSA-7J3Q-2RPH-CWF8",
+      "candidateId": "SC-CAND-00ea72baf40e44a1",
+      "canonicalSubjectId": "MAL-2026-6434",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in serverless-convention (npm)",
@@ -2141,11 +2173,14 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": [
+        "GHSA-7J3Q-2RPH-CWF8"
+      ]
     },
     {
-      "candidateId": "SC-CAND-49204675b404b6f7",
-      "canonicalSubjectId": "GHSA-29Q5-MM45-3XM3",
+      "candidateId": "SC-CAND-5544dedcf91773f8",
+      "canonicalSubjectId": "MAL-2026-6433",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in rstreams-shard-util (npm)",
@@ -2201,11 +2236,14 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": [
+        "GHSA-29Q5-MM45-3XM3"
+      ]
     },
     {
-      "candidateId": "SC-CAND-d38e16b83deb3a08",
-      "canonicalSubjectId": "GHSA-HQCJ-4R96-9WJ6",
+      "candidateId": "SC-CAND-1d63ed96613fc14d",
+      "canonicalSubjectId": "MAL-2026-6432",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in rstreams-metrics (npm)",
@@ -2261,11 +2299,14 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": [
+        "GHSA-HQCJ-4R96-9WJ6"
+      ]
     },
     {
-      "candidateId": "SC-CAND-765a1cdbecd42b93",
-      "canonicalSubjectId": "GHSA-H98V-2HWG-56FX",
+      "candidateId": "SC-CAND-ce1ba27ffaa11ef6",
+      "canonicalSubjectId": "MAL-2026-6431",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in leo-streams (npm)",
@@ -2321,7 +2362,10 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": [
+        "GHSA-H98V-2HWG-56FX"
+      ]
     },
     {
       "candidateId": "SC-CAND-c69b76b6632f8327",
@@ -2381,7 +2425,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
       "subjectAliases": [
         "GHSA-J4V3-8CW4-PG32"
       ]
@@ -2444,7 +2488,7 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
       "subjectAliases": [
         "GHSA-474V-72PF-X6Q5"
       ]
@@ -2504,11 +2548,12 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
-      "candidateId": "SC-CAND-912e863a77c53b0c",
-      "canonicalSubjectId": "GHSA-M9CG-QM5P-9PVQ",
+      "candidateId": "SC-CAND-d9ec058ff3090439",
+      "canonicalSubjectId": "MAL-2026-6430",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in leo-sdk (npm)",
@@ -2564,7 +2609,10 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": [
+        "GHSA-M9CG-QM5P-9PVQ"
+      ]
     },
     {
       "candidateId": "SC-CAND-b19951f63123cd0f",
@@ -2621,7 +2669,8 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
     },
     {
       "candidateId": "SC-CAND-14edc51429c29c1f",
@@ -2678,7 +2727,233 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:54:35.154Z",
+      "subjectAliases": []
+    },
+    {
+      "candidateId": "SC-CAND-eb653dc14753c520",
+      "canonicalSubjectId": "CVE-2025-62718",
+      "subjectAliases": [
+        "CVE-2026-44492",
+        "GHSA-PJWM-PJ3P-43MV"
+      ],
+      "subjectType": "cve",
+      "proposedArchetype": "incident",
+      "title": "axios's shouldBypassProxy does not recognize IPv4-mapped IPv6 addresses, allowing NO_PROXY bypass (incomplete fix for CVE-2025-62718)",
+      "summary": "### Summary shouldBypassProxy, introduced in v1.15.0 to fix CVE-2025-62718, does not normalise IPv4-mapped IPv6 addresses. When NO_PROXY lists an IPv4 address such as `127.0.0.1` or `169.254.169.254`, a request URL using the IPv4-mapped IPv6 form (`::ffff:7f00:1`, `::ffff:a9fe:a9fe`) still routes through the configured proxy. Node.js resolves these addresses to the underlying IPv4 host, so the request reaches the internal service via the proxy rather than being blocked. ### Details lib/helpers/shouldBypassProxy.js (v1.15.0): ```javascript const LOOPBACK_ADDRESSES = new Set(['localhost', '127.0.0.1', '::1']); const isLoopback = (host) => LOOPBACK_ADDRESSES.has(host); // normalizeNoProxyHost strips brackets and trailing dots, but not ::ffff: prefix return hostname === entryHost || (isLoopback(hostname) && isLoopback(entryHost)); ``` The WHATWG URL parser canonicalises `http://[::ffff:127.0.0.1]/` to hostname `[::ffff:7f00:1]`. After bracket-stripping: `::ffff:7f00:1`. This string does not match 127.0.0.1 in NO_PROXY and is not in LOOPBACK_ADDRESSES, so shouldBypassProxy returns false and the proxy is used. proxy-from-env (called before shouldBypassProxy) has the same gap - it does not equate ::ffff:7f00:1 with 127.0.0.1 - so neither layer catches the bypass. ### PoC ```javascript // NO_PROXY=127.0.0.1,localhost,::1 HTTP_PROXY=http://attacker:8080 import shouldBypassProxy from 'axios/lib/helpers/shouldBypassProxy.js'; // All three should return true (bypass proxy). Only the first two do. console.log(shouldBypassProxy('http://127.0.0.1/')); // true [OK] console.log(shouldBypassProxy('http://[::1]/')); // true [OK] console.log(shouldBypassProxy('http://[::ffff:127.0.0.1]/')); // false <- bypass console.log(shouldBypassProxy('http://[::ffff:7f00:1]/')); // false <- bypass ``` Node.js routes ::ffff:7f00:1 to 127.0.0.1: ``` // net.connect({ host: '::ffff:7f00:1', port: 80 }) reaches a service // bound to 127.0.0.1:80 — confirmed on Node.js v24, Linux and macOS. ``` Cloud metadata SSRF: ::ffff:a9fe:a9fe = ::ffff:169.254.169.254. If NO_PROXY=169.254.169.254 is set to block IMDS access, a request to http://[::ffff:a9fe:a9fe]/latest/meta-data/ bypasses it. #### Fix Canonicalise IPv4-mapped IPv6 in normalizeNoProxyHost before any comparison: ```javascript const ipv4MappedDotted = /^::ffff:(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})$/i; const ipv4MappedHex = /^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/i; function hexToIPv4(a, b) { const hi = parseInt(a, 16), lo = parseInt(b, 16); return `${hi >> 8}.${hi & 0xff}.${lo >> 8}.${lo & 0xff}`; } const normalizeNoProxyHost = (hostname) => { if (!hostname) return hostname; if (hostname[0] === '[' && hostname.at(-1) === ']') hostname = hostname.slice(1, -1); hostname = hostname.replace(/\\.+$/, '').toLowerCase(); let m; if ((m = hostname.match(ipv4MappedDotted))) return m[1]; if ((m = hostname.match(ipv4MappedHex))) return hexToIPv4(m[1], m[2]); return hostname; }; ``` ### Impact Any application that sets NO_PROXY to exclude internal or metadata endpoints and uses an HTTP/HTTPS proxy can have those exclusions bypassed by a URL using IPv4-mapped IPv6 notation. The attacker must control the request URL. In cloud environments with instance metadata services, this can lead to credential exfiltration.",
+      "sources": [
+        "github-advisory"
+      ],
+      "sourceRefs": [
+        "https://github.com/advisories/GHSA-pjwm-pj3p-43mv"
+      ],
+      "mergedLeadRefs": [
+        "github-advisory:GHSA-pjwm-pj3p-43mv"
+      ],
+      "firstSeenAt": "2026-05-29T15:59:30.000Z",
+      "lastMaterialActivityAt": "2026-07-09T15:32:13.000Z",
+      "activityBasis": [
+        "advisory_updated"
+      ],
+      "entityMatch": "matched",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [
+          {
+            "id": "pkg-npm-axios",
+            "name": "axios",
+            "ecosystem": "npm"
+          }
+        ],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "material activity within 180 days",
+        "workIntent": "reverify_existing",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "none",
+        "activeStatus": "none",
+        "activeStatusExpiresAt": null,
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 64,
+      "rankReasons": [
+        "current lead",
+        "advisory database signal",
+        "connects to existing Supply Chain graph",
+        "supply-chain term match"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-0eb5fa221a55fa98",
+      "canonicalSubjectId": "MAL-2026-10104",
+      "subjectAliases": [],
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in px8my (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (c972c885927d861e92a964b7ab752e5e91ae2731092a51b08a64fbf97f015cdf) The package's main entry (px.js) is a browser-only script that creates a full-viewport iframe pointing at the hardcoded external URL https://mfmz.ywdyxn.cn/H.html?c=0gjr and appends it to document.body, hijacking any web page that loads this script via a CDN such as jsDelivr. The package ships no legitimate library API and would throw if require()'d in Node. The tarball also includes update_px8my.sh, an operator/rotation script that regex-replaces the redirect domain inside px.js, auto-bumps the patch version, runs npm publish, and then hits https://purge.jsdelivr.net/npm/px8my/px.js to force-refresh the CDN cache; a comment in that script notes that curl is blocked by the npm anti-abuse tool tirith. The combination — a hardcoded redirect payload plus a shipped domain-rotation/CDN-purge automation with an explicit anti-abuse-evasion note — establishes the package as a purpose-built malicious distribution vehicle abusing npm and jsDelivr to deliver browser redirects to end users of any site including this script.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-10104"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-10104"
+      ],
+      "firstSeenAt": "2026-07-09T23:08:44.000Z",
+      "lastMaterialActivityAt": "2026-07-09T23:47:00.926Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-08-08T23:47:00.926Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-882ca5226606e366",
+      "canonicalSubjectId": "MAL-2026-10103",
+      "subjectAliases": [],
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in optimize-regex (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (9b77c2c0dab050d3a675407d74b649c73bfc107da05191cf041fb66e0346073a) package.json declares `optimize-regex` as a dependency (and devDependency) of itself, resolved via a plain-HTTP tarball URL at http://pack.nppacks.com/npm/optimize-regex — a host unrelated to the package's publisher and outside the npm registry. On `npm install`, npm fetches and installs whatever bytes that URL currently serves as the same package name, giving the operator of pack.nppacks.com full control over the code that ends up in the installer's node_modules. The URL is unpinned (no hash, no version), served over cleartext HTTP (mutable in transit as well as at the host), and the visible index.js is a near-verbatim clone of babel-plugin-transform-define with a package name and description that do not match that functionality — a decoy while the actual payload is delivered through URL-scheme dependency resolution.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-10103"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-10103"
+      ],
+      "firstSeenAt": "2026-07-09T23:01:55.000Z",
+      "lastMaterialActivityAt": "2026-07-09T23:47:00.720Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-08-08T23:47:00.720Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
+    },
+    {
+      "candidateId": "SC-CAND-c4c291c06d748149",
+      "canonicalSubjectId": "MAL-2026-10073",
+      "subjectAliases": [],
+      "subjectType": "incident",
+      "proposedArchetype": "incident",
+      "title": "Malicious code in tailwind-animate-v4 (npm)",
+      "summary": "--- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (fd43366b04ea80c2244079c09602623af157ce00cba9ae1837005b97ffe44bdb) The package presents itself as a Tailwind CSS animation plugin and reproduces the legitimate tailwindcss-animate source (including its original author metadata) verbatim in index.js. A long whitespace run at the end of the file visually hides an appended obfuscated loader. On require(), the loader permutation-decodes a string to recover the identifiers 'require', 'module', '__dirname', '__filename', and 'undefined', re-installs them on the global object, then resolves the Function constructor indirectly via a String prototype method whose name is produced by string permutation ('constructor'). It then uses Function() to compile and immediately invoke a large opaque decoded payload (uwg(4261)). This is dynamic execution of an obfuscated blob at library-load time, delivered under a name that mimics the widely used tailwindcss-animate package. Any project that adds this dependency and requires it will execute the hidden payload in the developer/build process, with full access to environment variables, filesystem, and network.",
+      "sources": [
+        "osv"
+      ],
+      "sourceRefs": [
+        "https://osv.dev/vulnerability/MAL-2026-10073"
+      ],
+      "mergedLeadRefs": [
+        "osv:MAL-2026-10073"
+      ],
+      "firstSeenAt": "2026-07-09T15:28:38.000Z",
+      "lastMaterialActivityAt": "2026-07-09T23:47:00.629Z",
+      "activityBasis": [
+        "advisory_updated",
+        "active_exploitation_or_malware_signal"
+      ],
+      "entityMatch": "new",
+      "matchedEntityHints": {
+        "actors": [],
+        "campaigns": [],
+        "packages": [],
+        "malwareFamilies": []
+      },
+      "classification": {
+        "leadClass": "current",
+        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
+        "workIntent": "create_article",
+        "routingPriority": "p1",
+        "effectiveActiveStatus": "exploited_in_wild",
+        "activeStatus": "exploited_in_wild",
+        "activeStatusExpiresAt": "2026-08-08T23:47:00.629Z",
+        "needsReverify": false,
+        "kevStatusDerived": null,
+        "kevStatusIsAuthoredTruth": false,
+        "manualOverrideValid": false,
+        "manualOverrideErrors": []
+      },
+      "rank": 59,
+      "rankReasons": [
+        "current lead",
+        "active exploitation or malware signal",
+        "advisory database signal"
+      ],
+      "queueAction": "candidate_review",
+      "draftingAllowed": false,
+      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check."
     }
   ]
 }
