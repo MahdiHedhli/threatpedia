@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-23T19:53:54.898Z",
-  "updated": "2026-06-23T22:43:43.863Z",
+  "updated": "2026-07-10T00:52:15.742Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "kernel-k",
+  "locked_at": "2026-07-10T00:52:15.741Z",
   "input": {
     "topic": "Ubiquiti UniFi OS Path Traversal Vulnerability (CVE-2026-34909)",
     "sources": [
@@ -85,6 +85,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1286"
+    },
+    {
+      "timestamp": "2026-07-10T00:52:15.742Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "kernel-k",
+      "note": "Locked for execution"
     }
   ]
 }
