@@ -16,13 +16,21 @@ assert.doesNotMatch(supplyChainWorkflow, /git merge --no-edit origin\/main/);
 assert.match(supplyChainWorkflow, /DISCOVERY_REMOTE_HEAD/);
 assert.match(supplyChainWorkflow, /--force-with-lease=refs\/heads\/\$\{DISCOVERY_BRANCH\}/);
 assert.match(supplyChainWorkflow, /refs\/heads\/\$\{BRANCH\}:refs\/remotes\/origin\/\$\{BRANCH\}/);
-assert.ok(supplyChainWorkflow.includes('PREVIOUS_PACKET_DIR="$RUNNER_TEMP/supply-chain-previous-vulncheck-packets"'));
-assert.ok(supplyChainWorkflow.includes('git diff --name-only --diff-filter=A origin/main..."origin/${BRANCH}"'));
-assert.ok(supplyChainWorkflow.includes('git cat-file -e "origin/main:${packet_path}"'));
-assert.ok(supplyChainWorkflow.includes('cp -R "$PREVIOUS_PACKET_DIR"/. "$VULNCHECK_PACKET_DIR"/'));
 assert.ok(supplyChainWorkflow.includes("replace(/\\|/g, '\\\\|')"));
 assert.ok(supplyChainWorkflow.includes("body += '\\n### Guardrails\\n\\n'"));
 assert.ok(!supplyChainWorkflow.includes("body += '\\\\n### Guardrails"));
+
+assert.ok(discoveryWorkflow.includes('node scripts/vulncheck-kev-intake.mjs'));
+assert.ok(discoveryWorkflow.includes('git add .github/pipeline/source-packets/vulncheck-kev/'));
+assert.equal(
+  [discoveryWorkflow, supplyChainWorkflow]
+    .filter(workflow => workflow.includes('node scripts/vulncheck-kev-intake.mjs'))
+    .length,
+  1,
+  'VulnCheck source packets must have exactly one workflow writer',
+);
+assert.ok(supplyChainWorkflow.includes('--vulncheck-index .github/pipeline/source-packets/vulncheck-kev/latest.json'));
+assert.ok(!supplyChainWorkflow.includes('VULNCHECKAPI'));
 
 assert.match(discoveryWorkflow, /TOTAL_PENDING_PREFILLS/);
 assert.match(discoveryWorkflow, /"\$TOTAL_PENDING_PREFILLS" -ge "\$PENDING_CAP"/);
@@ -40,6 +48,8 @@ assert.match(supplyChainWorkflow, /--retry 3 --retry-all-errors/);
 const liveDiscoveryGraphBuild = supplyChainWorkflow.indexOf('node scripts/build-supply-chain-graph.mjs');
 const liveDiscoveryCommit = supplyChainWorkflow.indexOf('- name: Commit candidate queue and public artifacts to branch');
 assert.ok(liveDiscoveryGraphBuild > 0 && liveDiscoveryGraphBuild < liveDiscoveryCommit);
+const liveDiscoveryCommitBody = supplyChainWorkflow.slice(liveDiscoveryCommit, supplyChainWorkflow.indexOf('if git diff --cached --quiet', liveDiscoveryCommit));
+assert.ok(!liveDiscoveryCommitBody.includes('.github/pipeline/source-packets/vulncheck-kev/'));
 assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-graph.json'));
 assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-malware-families-stix.json'));
 assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-search-index.json'));
