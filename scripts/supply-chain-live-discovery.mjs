@@ -409,10 +409,11 @@ function releaseLead({ source, ecosystem, name, version, publishedAt, url, feedC
 }
 
 function vulnerabilityLead({ source, id, aliases, title, summary, modifiedAt, publishedAt, url, affected, severity, databaseSpecific, kev, raw }) {
-  const text = `${id} ${aliases?.join(' ') || ''} ${title || ''} ${summary || ''}`;
-  const ids = extractIds(text);
+  const authoritativeIdentifiers = uniqueStrings([id, aliases || []]);
+  const ids = extractIds(authoritativeIdentifiers.join(' '));
+  const leadIdentityText = `${authoritativeIdentifiers.join(' ')} ${title || ''} ${summary || ''}`;
   return {
-    leadRef: `${source}:${id || sha(text)}`,
+    leadRef: `${source}:${id || sha(leadIdentityText)}`,
     source,
     kind: 'advisory',
     advisoryId: id,
@@ -804,13 +805,95 @@ export function loadCorpusIndex() {
   };
 }
 
-function canonicalSubjectForLead(lead) {
-  const ids = uniqueStrings([lead.cves || [], lead.ghsas || [], lead.osvIds || []]).map((id) => id.toUpperCase());
-  if (ids.length > 0) return ids.sort()[0];
+function normalizeSubjectIdentifier(value) {
+  const identifier = String(value || '').trim();
+  return /^(?:CVE|GHSA|MAL|PYSEC|GO|OSV)-/i.test(identifier)
+    ? identifier.toUpperCase()
+    : identifier;
+}
+
+function subjectIdentifierPriority(identifier) {
+  if (/^CVE-/.test(identifier)) return 0;
+  if (/^(?:MAL|PYSEC|GO|OSV)-/.test(identifier)) return 1;
+  if (/^GHSA-/.test(identifier)) return 2;
+  if (identifier.startsWith('pkg:')) return 3;
+  return 4;
+}
+
+function canonicalSubjectFromIdentifiers(identifiers) {
+  return uniqueStrings(identifiers)
+    .map(normalizeSubjectIdentifier)
+    .sort((a, b) => subjectIdentifierPriority(a) - subjectIdentifierPriority(b) || a.localeCompare(b))[0] || null;
+}
+
+function stableSubjectIdentifiersForLead(lead) {
+  return uniqueStrings([lead.cves || [], lead.ghsas || [], lead.osvIds || []])
+    .map(normalizeSubjectIdentifier);
+}
+
+function fallbackSubjectForLead(lead) {
   if (lead.purl) return lead.purl;
   if (lead.ecosystem && lead.packageName && lead.version) return buildPurl(lead.ecosystem, lead.packageName, lead.version);
   if (lead.advisoryId) return lead.advisoryId;
   return `${lead.source}:${sha(`${lead.title}:${lead.url}`)}`;
+}
+
+function canonicalSubjectForLead(lead) {
+  return canonicalSubjectFromIdentifiers(stableSubjectIdentifiersForLead(lead)) || fallbackSubjectForLead(lead);
+}
+
+function connectedRecordGroups(records, identifiersForRecord) {
+  const parent = new Map();
+  const identifiersByRecord = records.map((record, index) => {
+    const identifiers = uniqueStrings(identifiersForRecord(record)).map(normalizeSubjectIdentifier);
+    return identifiers.length > 0 ? identifiers : [`__record-${index}`];
+  });
+
+  const find = (identifier) => {
+    if (!parent.has(identifier)) parent.set(identifier, identifier);
+    const current = parent.get(identifier);
+    if (current !== identifier) parent.set(identifier, find(current));
+    return parent.get(identifier);
+  };
+  const union = (left, right) => {
+    const leftRoot = find(left);
+    const rightRoot = find(right);
+    if (leftRoot !== rightRoot) parent.set(rightRoot, leftRoot);
+  };
+
+  for (const identifiers of identifiersByRecord) {
+    for (const identifier of identifiers) find(identifier);
+    for (let index = 1; index < identifiers.length; index += 1) {
+      union(identifiers[0], identifiers[index]);
+    }
+  }
+
+  const groups = new Map();
+  records.forEach((record, index) => {
+    const identifiers = identifiersByRecord[index];
+    const root = find(identifiers[0]);
+    const group = groups.get(root) || { records: [], identifiers: new Set() };
+    group.records.push(record);
+    identifiers.filter(identifier => !identifier.startsWith('__record-')).forEach(identifier => group.identifiers.add(identifier));
+    groups.set(root, group);
+  });
+  return [...groups.values()];
+}
+
+function groupLeadsBySubject(rawLeads) {
+  const grouped = new Map();
+  for (const group of connectedRecordGroups(rawLeads, (lead) => {
+    const identifiers = stableSubjectIdentifiersForLead(lead);
+    return identifiers.length > 0 ? identifiers : [fallbackSubjectForLead(lead)];
+  })) {
+    const identifiers = [...group.identifiers];
+    const canonicalSubjectId = canonicalSubjectFromIdentifiers(identifiers);
+    grouped.set(canonicalSubjectId, {
+      leads: group.records,
+      subjectAliases: identifiers.filter(identifier => identifier !== canonicalSubjectId).sort(),
+    });
+  }
+  return grouped;
 }
 
 function subjectTypeFor(subject) {
@@ -1006,26 +1089,25 @@ function chooseWorkIntent(entityMatch, leadClass) {
 function previousCandidateBySubject(previousQueue) {
   const bySubject = new Map();
   for (const candidate of previousQueue?.candidates || []) {
-    if (candidate?.canonicalSubjectId) bySubject.set(candidate.canonicalSubjectId, candidate);
+    for (const identifier of candidateSubjectIdentifiers(candidate)) {
+      const current = bySubject.get(identifier);
+      if (!current || (!current.manualOverride && candidate.manualOverride)) bySubject.set(identifier, candidate);
+    }
   }
   return bySubject;
 }
 
 export function classifyLeads(rawLeads, { config, corpusIndex, now, previousQueue = null }) {
   const previousBySubject = previousCandidateBySubject(previousQueue);
-  const grouped = new Map();
-  for (const lead of rawLeads) {
-    const canonicalSubjectId = canonicalSubjectForLead(lead);
-    const current = grouped.get(canonicalSubjectId) || [];
-    current.push(lead);
-    grouped.set(canonicalSubjectId, current);
-  }
+  const grouped = groupLeadsBySubject(rawLeads);
 
   const candidates = [];
   const rejected = [];
-  for (const [canonicalSubjectId, leads] of grouped.entries()) {
+  for (const [canonicalSubjectId, group] of grouped.entries()) {
+    const { leads, subjectAliases } = group;
+    const subjectIdentifiers = [canonicalSubjectId, ...subjectAliases];
     const primary = leads.sort((a, b) => String(b.lastMaterialActivityAt || '').localeCompare(String(a.lastMaterialActivityAt || '')))[0];
-    const duplicate = corpusIndex.subjectIds.has(canonicalSubjectId);
+    const duplicate = subjectIdentifiers.some(identifier => corpusIndex.subjectIds.has(identifier));
     if (!duplicate && !isSupplyChainRelevant(primary, corpusIndex)) {
       rejected.push({ canonicalSubjectId, reason: 'not_supply_chain_relevant', mergedLeadRefs: leads.map((lead) => lead.leadRef) });
       continue;
@@ -1033,7 +1115,9 @@ export function classifyLeads(rawLeads, { config, corpusIndex, now, previousQueu
     const subjectType = subjectTypeFor(canonicalSubjectId);
     const hints = connectivityHints(primary, corpusIndex);
     const entityMatch = duplicate || hints.packages.length > 0 ? 'matched' : 'new';
-    const previousManualOverride = previousBySubject.get(canonicalSubjectId)?.manualOverride || null;
+    const previousManualOverride = subjectIdentifiers
+      .map(identifier => previousBySubject.get(identifier)?.manualOverride)
+      .find(Boolean) || null;
     const classifiedLead = previousManualOverride ? { ...primary, manualOverride: previousManualOverride } : primary;
     const active = computeActiveStatus(classifiedLead, config, now);
     const manual = computeManualOverrideValidity(classifiedLead, now, config);
@@ -1045,6 +1129,7 @@ export function classifyLeads(rawLeads, { config, corpusIndex, now, previousQueu
     candidates.push({
       candidateId: `SC-CAND-${sha(canonicalSubjectId, 16)}`,
       canonicalSubjectId,
+      subjectAliases,
       subjectType,
       proposedArchetype: proposedArchetype(primary, subjectType),
       title: primary.title,
@@ -1096,13 +1181,61 @@ function candidateSort(a, b) {
   return String(b.lastMaterialActivityAt || '').localeCompare(String(a.lastMaterialActivityAt || ''));
 }
 
+function candidateSubjectIdentifiers(candidate) {
+  if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) return [];
+  const extracted = extractIds(uniqueStrings([
+    candidate.canonicalSubjectId,
+    candidate.subjectAliases || [],
+    candidate.sourceRefs || [],
+    candidate.mergedLeadRefs || [],
+  ]).join(' '));
+  return uniqueStrings([
+    candidate.canonicalSubjectId,
+    candidate.subjectAliases || [],
+    extracted.cves,
+    extracted.ghsas,
+    extracted.osvIds,
+  ]).map(normalizeSubjectIdentifier);
+}
+
+function coalesceCandidates(candidates) {
+  return connectedRecordGroups(candidates, candidateSubjectIdentifiers).map((group) => {
+    const identifiers = [...group.identifiers];
+    const canonicalSubjectId = canonicalSubjectFromIdentifiers(identifiers);
+    const records = [...group.records].sort(candidateSort);
+    const primary = records[0];
+    const manualOverride = records.map(candidate => candidate.manualOverride).find(Boolean);
+    const firstSeenAt = records.map(candidate => candidate.firstSeenAt).filter(Boolean).sort()[0] || null;
+    const lastMaterialActivityAt = records.map(candidate => candidate.lastMaterialActivityAt).filter(Boolean).sort().at(-1) || null;
+
+    return {
+      ...primary,
+      candidateId: `SC-CAND-${sha(canonicalSubjectId, 16)}`,
+      canonicalSubjectId,
+      subjectAliases: identifiers.filter(identifier => identifier !== canonicalSubjectId).sort(),
+      subjectType: subjectTypeFor(canonicalSubjectId),
+      sources: uniqueStrings(records.map(candidate => candidate.sources || [])).sort(),
+      sourceRefs: uniqueStrings(records.map(candidate => candidate.sourceRefs || [])),
+      mergedLeadRefs: uniqueStrings(records.map(candidate => candidate.mergedLeadRefs || [])).sort(),
+      firstSeenAt,
+      lastMaterialActivityAt,
+      activityBasis: uniqueStrings(records.map(candidate => candidate.activityBasis || [])),
+      rank: Math.max(...records.map(candidate => Number(candidate.rank) || 0)),
+      rankReasons: uniqueStrings(records.map(candidate => candidate.rankReasons || [])),
+      ...(manualOverride ? { manualOverride } : {}),
+    };
+  });
+}
+
 function carryForwardPendingCandidates(previousQueue, freshCandidates, now) {
-  const freshSubjects = new Set(freshCandidates.map((candidate) => candidate.canonicalSubjectId));
-  return (previousQueue?.candidates || [])
+  const freshSubjects = new Set(freshCandidates.flatMap(candidateSubjectIdentifiers));
+  const eligiblePrevious = (previousQueue?.candidates || [])
     .filter((candidate) => candidate && typeof candidate === 'object' && !Array.isArray(candidate))
     .filter((candidate) => candidate.queueAction === 'candidate_review' && candidate.draftingAllowed === false)
-    .filter((candidate) => candidate.canonicalSubjectId && !freshSubjects.has(candidate.canonicalSubjectId))
-    .filter((candidate) => candidate.classification?.workIntent && ['current', 'historical'].includes(candidate.classification?.leadClass))
+    .filter((candidate) => candidate.canonicalSubjectId)
+    .filter((candidate) => candidate.classification?.workIntent && ['current', 'historical'].includes(candidate.classification?.leadClass));
+  return coalesceCandidates(eligiblePrevious)
+    .filter((candidate) => !candidateSubjectIdentifiers(candidate).some(identifier => freshSubjects.has(identifier)))
     .map((candidate) => ({
       ...candidate,
       staleCarryForward: true,
@@ -1121,6 +1254,7 @@ export function validateCandidateQueue(queue) {
   if (queue?.drafting_enabled !== false) errors.push('drafting_enabled must be false');
   if (queue?.auto_drafting_allowed !== false) errors.push('auto_drafting_allowed must be false');
   const ids = new Set();
+  const subjectOwners = new Map();
   for (const [index, candidate] of (queue?.candidates || []).entries()) {
     if (!candidate || typeof candidate !== 'object' || Array.isArray(candidate)) {
       errors.push(`candidates[${index}] must be a valid object`);
@@ -1146,6 +1280,13 @@ export function validateCandidateQueue(queue) {
       continue;
     }
     ids.add(candidateId);
+    for (const identifier of candidateSubjectIdentifiers(candidate)) {
+      if (subjectOwners.has(identifier)) {
+        errors.push(`duplicate candidate subject identifier ${identifier}`);
+      } else {
+        subjectOwners.set(identifier, index);
+      }
+    }
   }
   return errors;
 }
@@ -1239,7 +1380,7 @@ export async function buildCandidateQueue(args = parseArgs()) {
     },
     summary: {
       raw_leads_loaded: leads.length,
-      deduped_subjects: new Set(leads.map(canonicalSubjectForLead)).size,
+      deduped_subjects: groupLeadsBySubject(leads).size,
       rejected_low_relevance: rejected.length,
       classifier_candidates: candidates.length,
       candidates_emitted: emitted.length,
