@@ -7,9 +7,11 @@ on:
       - ".github/workflows/supply-chain-validate.yml"
       - "data/supply-chain-entities/**"
       - "data/supply-chain-incidents/**"
+      - "data/supply-chain-malware-families/**"
       - "data/supply-chain-relationships/**"
       - "docs/supply-chain*.md"
       - ".github/pipeline/supply-chain-candidates/**"
+      - "scripts/build-supply-chain-graph.mjs"
       - "scripts/build_supply_chain_entities.py"
       - "scripts/supply-chain-live-discovery.mjs"
       - "scripts/supply_chain_purl.py"
@@ -18,6 +20,9 @@ on:
       - "scripts/test-supply-chain-pages.mjs"
       - "scripts/test-supply-chain-live-discovery.mjs"
       - "site/src/lib/supplyChainPages.mjs"
+      - "site/public/supply-chain-graph.json"
+      - "site/public/supply-chain-malware-families-stix.json"
+      - "site/public/supply-chain-search-index.json"
       - "tests/test_supply_chain*.py"
       - "tests/fixtures/supply_chain_live_discovery/**"
   workflow_dispatch:
@@ -61,6 +66,9 @@ jobs:
           cd scripts
           npm ci --no-audit --no-fund
           node test-supply-chain-live-discovery.mjs
+
+      - name: Check generated supply-chain artifacts
+        run: node scripts/build-supply-chain-graph.mjs --check
 
       - name: Run page model test
         run: node scripts/test-supply-chain-pages.mjs

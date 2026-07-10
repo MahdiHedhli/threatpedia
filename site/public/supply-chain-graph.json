@@ -8,11 +8,11 @@
     "candidate_queue": ".github/pipeline/supply-chain-candidates/latest.json"
   },
   "discovery_currency": {
-    "latest_corpus_incident_at": null,
-    "latest_discovery_signal_at": null,
-    "pending_candidate_count": 0,
-    "pending_current_count": 0,
-    "graph_latest_reflects": "corpus"
+    "latest_corpus_incident_at": "2026-05-28T00:00:00.000Z",
+    "latest_discovery_signal_at": "2026-07-09T23:47:01.172Z",
+    "pending_candidate_count": 40,
+    "pending_current_count": 40,
+    "graph_latest_reflects": "discovery"
   },
   "renderer_contract": {
     "g2_drawable_tiers": [

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const supplyChainWorkflow = readFileSync(new URL('../.github/workflows/supply-chain-live-discovery.yml', import.meta.url), 'utf8');
+const supplyChainValidationWorkflow = readFileSync(new URL('../.github/workflows/supply-chain-validate.yml', import.meta.url), 'utf8');
 const discoveryWorkflow = readFileSync(new URL('../.github/workflows/pipeline-discovery.yml', import.meta.url), 'utf8');
 const reviewGateWorkflow = readFileSync(new URL('../.github/workflows/pipeline-review-gate.yml', import.meta.url), 'utf8');
 const reviewGateScript = readFileSync(new URL('./pipeline-review-gate.mjs', import.meta.url), 'utf8');
@@ -32,6 +33,13 @@ assert.ok(discoveryWorkflow.includes('pulls?state=open&per_page=100&page=${OPEN_
 assert.ok(discoveryWorkflow.includes('OPEN_PREFILL_PAGE=$((OPEN_PREFILL_PAGE + 1))'));
 
 assert.match(supplyChainWorkflow, /--retry 3 --retry-all-errors/);
+
+assert.ok(supplyChainValidationWorkflow.includes('data/supply-chain-malware-families/**'));
+assert.ok(supplyChainValidationWorkflow.includes('scripts/build-supply-chain-graph.mjs'));
+assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-graph.json'));
+assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-malware-families-stix.json'));
+assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-search-index.json'));
+assert.ok(supplyChainValidationWorkflow.includes('node scripts/build-supply-chain-graph.mjs --check'));
 
 assert.match(reviewGateWorkflow, /coderabbitai/);
 assert.match(reviewGateScript, /'coderabbitai'/);
