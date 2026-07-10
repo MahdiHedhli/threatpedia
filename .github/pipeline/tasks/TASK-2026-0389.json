@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "incident",
   "priority": "P2",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-26T02:44:47.838Z",
-  "updated": "2026-06-26T06:33:20.182Z",
+  "updated": "2026-07-10T01:01:37.569Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "kernel-k",
+  "locked_at": "2026-07-10T01:01:37.568Z",
   "input": {
     "topic": "Photo ZIP campaign targeting hospitality industry delivers Node.js implant for persistent access",
     "sources": [
@@ -79,6 +79,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1327"
+    },
+    {
+      "timestamp": "2026-07-10T01:01:37.569Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "kernel-k",
+      "note": "Locked for execution"
     }
   ]
 }
