@@ -53,7 +53,10 @@ assert.ok(taskSchema.properties.source.enum.includes('historical_corpus_backlog'
 assert.ok(taskSchema.properties.output.properties.pr.type.includes('null'));
 assert.ok(taskSchema.anyOf.some((rule) => rule.required?.includes('acceptance_criteria')));
 assert.ok(taskSchema.anyOf.some((rule) => rule.required?.includes('acceptance')));
-assert.match(taskValidator, /const SOURCES = new Set\(\[[^\]]*'promotion'[^\]]*\]\);/);
+const taskSourceSetBody = taskValidator.match(/const SOURCES = new Set\(\[([\s\S]*?)\]\);/)?.[1] || '';
+for (const source of taskSchema.properties.source.enum) {
+  assert.ok(taskSourceSetBody.includes(`'${source}'`), `task validator SOURCES missing schema value: ${source}`);
+}
 
 assert.match(reviewGateWorkflow, /coderabbitai/);
 assert.match(reviewGateScript, /'coderabbitai'/);

@@ -23,7 +23,16 @@ const STAGES = new Set(['discovery', 'triage', 'draft', 'generation', 'validatio
 const TYPES = new Set(['incident', 'campaign', 'threat-actor', 'zero-day']);
 const PRIORITIES = new Set(['P0', 'P1', 'P2', 'P3']);
 const STATUSES = new Set(['pending', 'locked', 'pr_open', 'complete', 'failed', 'blocked', 'cancelled']);
-const SOURCES = new Set(['auto_discovery', 'promotion', 'manual_submission', 'enrichment', 'backfill']);
+const SOURCES = new Set([
+  'auto_discovery',
+  'promotion',
+  'manual_submission',
+  'enrichment',
+  'backfill',
+  'automated_submission',
+  'historical-corpus',
+  'historical_corpus_backlog',
+]);
 
 function parseArgs(argv) {
   const args = {
