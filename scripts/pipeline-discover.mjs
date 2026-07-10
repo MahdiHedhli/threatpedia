@@ -59,6 +59,10 @@ const INCIDENT_STRONG_PATTERNS = [
   { label: 'phishing', regex: /\bphishing\b/i, points: 14 },
   { label: 'ransomware', regex: /\bransomware\b/i, points: 16 },
   { label: 'malware', regex: /\bmalware\b/i, points: 12 },
+  { label: 'wiper', regex: /\b(?:wiper|wiping)\b/i, points: 18 },
+  { label: 'backdoor', regex: /\bbackdoor\b/i, points: 16 },
+  { label: 'malicious extension', regex: /\bmalicious\s+(?:(?:chromium(?:-based)?|browser)\s+)?extension\b/i, points: 16 },
+  { label: 'active targeting campaign', regex: /\b(?:global|active|ongoing|widespread)\s+(?:targeting|campaign)\b|\bcampaign affecting\b/i, points: 14 },
   { label: 'supply chain', regex: /\bsupply[- ]chain\b/i, points: 18 },
   { label: 'exfiltration', regex: /\bexfiltrat(?:e|ion|ed)\b/i, points: 16 },
   { label: 'active exploitation', regex: /\b(active exploitation|exploited in the wild)\b/i, points: 14 },
@@ -68,12 +72,16 @@ const INCIDENT_BOUNDARY_PATTERNS = [
   { label: 'affects/impacts', regex: /\b(affect(?:s|ed|ing)?|impact(?:s|ed|ing)?)\b/i, points: 10 },
   { label: 'targets/against', regex: /\b(target(?:s|ed|ing)?|against)\b/i, points: 10 },
   { label: 'victim language', regex: /\b(victim|victims|victimised|victimized)\b/i, points: 10 },
+  { label: 'user boundary', regex: /\busers?\b/i, points: 8 },
+  { label: 'observed threat activity', regex: /\b(?:identified|observed|detected|uncovered)\b.{0,80}\b(?:activity|attack|campaign|compromised|infected|malicious|wiper|backdoor|extension)\b/i, points: 12 },
+  { label: 'traffic/data impact', regex: /\b(?:redirects?|intercepts?|captures?|collects?|exfiltrates?)\b.{0,50}\b(?:browser|search|traffic|quer(?:y|ies)|data|credentials?)\b/i, points: 12 },
+  { label: 'operational deployment', regex: /\b(?:operational platform|compromised environments?|infected systems?|deployed (?:against|in)|used (?:against|in))\b/i, points: 12 },
   { label: 'org/service boundary', regex: /\b(compromise of|breach of|attack on)\b/i, points: 12 },
 ];
 
 const INCIDENT_NEGATIVE_PATTERNS = [
   { label: 'kev catalog churn', regex: /\b(cisa adds?.*known exploited vulnerabilities|known exploited vulnerabilities(?: to)? catalog)\b/i, points: 50, hardReject: true },
-  { label: 'generic strategy/guidance', regex: /\b(detection strategies|harder by design|best practices|guidance|defending against|security update)\b/i, points: 30, hardReject: true },
+  { label: 'generic strategy/guidance', regex: /\b(detection strategies|harder by design|best practices|guidance|defending against|security update)\b/i, points: 30, hardReject: true, allowWithIncidentSignals: true },
   { label: 'analysis-style writeup', regex: /\b(dissecting|investigating|playbook|lessons learned|containing a)\b/i, points: 30, hardReject: true },
   { label: 'vulnerability advisory only', regex: /\b(out-of-bounds|use-after-free|heap overflow|cvss|vulnerability)\b/i, points: 16 },
 ];
@@ -985,7 +993,7 @@ function scoreZeroDayCandidate(candidate) {
   return candidate;
 }
 
-function evaluateIncidentItem(sourceKey, item) {
+export function evaluateIncidentItem(sourceKey, item) {
   const combined = `${item.title} ${item.summary}`.trim();
   const positiveHits = INCIDENT_STRONG_PATTERNS.filter(entry => entry.regex.test(combined));
   const boundaryHits = INCIDENT_BOUNDARY_PATTERNS.filter(entry => entry.regex.test(combined));
@@ -1003,7 +1011,13 @@ function evaluateIncidentItem(sourceKey, item) {
     return { accepted: false, score: 0, reason: 'Non-news NCSC entry excluded', positiveHits: [], boundaryHits: [], negativeHits: [] };
   }
 
-  const hardReject = negativeHits.find(entry => entry.hardReject);
+  const hardReject = negativeHits.find(entry =>
+    entry.hardReject && !(
+      entry.allowWithIncidentSignals &&
+      positiveHits.length > 0 &&
+      boundaryHits.length > 0
+    )
+  );
   if (hardReject) {
     return {
       accepted: false,
@@ -2033,7 +2047,9 @@ async function main() {
   console.log('\n  Done.\n');
 }
 
-main().catch(error => {
-  console.error(`\n  ERROR: ${error.message}`);
-  process.exit(1);
-});
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+  main().catch(error => {
+    console.error(`\n  ERROR: ${error.message}`);
+    process.exit(1);
+  });
+}

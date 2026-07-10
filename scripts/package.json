@@ -7,7 +7,7 @@
     "check:supply-chain-preview": "node check_supply_chain_preview.mjs",
     "check:supply-chain-public-readiness": "node check_supply_chain_public_readiness.mjs",
     "social:share-x": "node social-share-x.mjs",
-    "test": "node test-vulncheck-kev-intake.mjs && node test-supply-chain-live-discovery.mjs && node test-grounded-drafting.mjs && node test-pipeline-dispatcher-stall.cjs && node test-pipeline-orchestration-contracts.mjs && node test-adversary-schema-foundation.mjs"
+    "test": "node test-vulncheck-kev-intake.mjs && node test-pipeline-discover-incidents.mjs && node test-supply-chain-live-discovery.mjs && node test-grounded-drafting.mjs && node test-pipeline-dispatcher-stall.cjs && node test-pipeline-orchestration-contracts.mjs && node test-adversary-schema-foundation.mjs"
   },
   "keywords": [],
   "author": "",
