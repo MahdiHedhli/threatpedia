@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 const supplyChainWorkflow = readFileSync(new URL('../.github/workflows/supply-chain-live-discovery.yml', import.meta.url), 'utf8');
 const supplyChainValidationWorkflow = readFileSync(new URL('../.github/workflows/supply-chain-validate.yml', import.meta.url), 'utf8');
 const discoveryWorkflow = readFileSync(new URL('../.github/workflows/pipeline-discovery.yml', import.meta.url), 'utf8');
+const taskValidationWorkflow = readFileSync(new URL('../.github/workflows/pipeline-validate-tasks.yml', import.meta.url), 'utf8');
 const reviewGateWorkflow = readFileSync(new URL('../.github/workflows/pipeline-review-gate.yml', import.meta.url), 'utf8');
 const reviewGateScript = readFileSync(new URL('./pipeline-review-gate.mjs', import.meta.url), 'utf8');
 const taskValidator = readFileSync(new URL('./validate-pipeline-tasks.mjs', import.meta.url), 'utf8');
@@ -49,6 +50,11 @@ assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-graph
 assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-malware-families-stix.json'));
 assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-search-index.json'));
 assert.ok(supplyChainValidationWorkflow.includes('node scripts/build-supply-chain-graph.mjs --check'));
+assert.ok(supplyChainValidationWorkflow.includes('.github/workflows/supply-chain-live-discovery.yml'));
+assert.ok(supplyChainValidationWorkflow.includes('node scripts/test-pipeline-orchestration-contracts.mjs'));
+
+assert.ok(taskValidationWorkflow.includes('.github/pipeline/schema/task-schema.json'));
+assert.ok(taskValidationWorkflow.includes('node scripts/test-pipeline-orchestration-contracts.mjs'));
 
 assert.ok(taskSchema.properties.stage.enum.includes('generation'));
 assert.ok(taskSchema.properties.status.enum.includes('pr_open'));

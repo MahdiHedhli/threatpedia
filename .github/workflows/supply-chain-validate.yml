@@ -4,6 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
+      - ".github/workflows/supply-chain-live-discovery.yml"
       - ".github/workflows/supply-chain-validate.yml"
       - "data/supply-chain-entities/**"
       - "data/supply-chain-incidents/**"
@@ -19,6 +20,7 @@ on:
       - "scripts/validate_supply_chain_incidents.py"
       - "scripts/test-supply-chain-pages.mjs"
       - "scripts/test-supply-chain-live-discovery.mjs"
+      - "scripts/test-pipeline-orchestration-contracts.mjs"
       - "site/src/lib/supplyChainPages.mjs"
       - "site/public/supply-chain-graph.json"
       - "site/public/supply-chain-malware-families-stix.json"
@@ -43,6 +45,9 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+
+      - name: Run orchestration contract tests
+        run: node scripts/test-pipeline-orchestration-contracts.mjs
 
       - name: Python syntax
         run: |
