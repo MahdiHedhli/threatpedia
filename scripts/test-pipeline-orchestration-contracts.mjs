@@ -16,6 +16,9 @@ assert.ok(supplyChainWorkflow.includes('PREVIOUS_PACKET_DIR="$RUNNER_TEMP/supply
 assert.ok(supplyChainWorkflow.includes('git diff --name-only --diff-filter=A origin/main..."origin/${BRANCH}"'));
 assert.ok(supplyChainWorkflow.includes('git cat-file -e "origin/main:${packet_path}"'));
 assert.ok(supplyChainWorkflow.includes('cp -R "$PREVIOUS_PACKET_DIR"/. "$VULNCHECK_PACKET_DIR"/'));
+assert.ok(supplyChainWorkflow.includes("replace(/\\|/g, '\\\\|')"));
+assert.ok(supplyChainWorkflow.includes("body += '\\n### Guardrails\\n\\n'"));
+assert.ok(!supplyChainWorkflow.includes("body += '\\\\n### Guardrails"));
 
 assert.match(discoveryWorkflow, /TOTAL_PENDING_PREFILLS/);
 assert.match(discoveryWorkflow, /"\$TOTAL_PENDING_PREFILLS" -ge "\$PENDING_CAP"/);

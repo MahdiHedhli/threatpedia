@@ -75,7 +75,7 @@ assert.equal(result.candidates[0].recency_bucket, 'recent');
 assert.equal(result.candidates[1].cves[0], 'CVE-2026-0001');
 assert.equal(result.candidates[1].recency_bucket, 'backlog');
 assert.equal(result.candidates[0].drafting_allowed, false);
-assert.equal(result.candidates[0].official_cisa_kev.listed, false);
+assert.equal(result.candidates[0].official_cisa_kev.listed, null);
 assert.equal(result.candidates[0].official_cisa_kev.date_added, null);
 assert.equal(
   result.candidates[0].official_cisa_kev.status_source,
@@ -181,10 +181,156 @@ const correctedProduct = buildRecentIntake({
 
 assert.equal(correctedProduct.candidates[0].vendorProject, 'Red Hat');
 assert.equal(correctedProduct.candidates[0].product, 'cockpit');
+assert.equal(
+  correctedProduct.candidates[0].vulnerabilityName,
+  'Cockpit: unauthenticated remote code execution due to SSH command-line argument injection',
+);
 assert.equal(correctedProduct.candidates[0].source_packet_prefill.affected_products[0].vendor, 'Red Hat');
 assert.equal(correctedProduct.candidates[0].source_packet_prefill.affected_products[0].product, 'cockpit');
 assert.equal(correctedProduct.candidates[0].source_packet_prefill.preserved_vulncheck_fields.vendorProject, 'Red Hat');
 assert.equal(correctedProduct.candidates[0].source_packet_prefill.preserved_vulncheck_fields.product, 'cockpit');
+assert.equal(
+  correctedProduct.candidates[0].source_packet_prefill.preserved_vulncheck_fields.vulnerabilityName,
+  'Cockpit: unauthenticated remote code execution due to SSH command-line argument injection',
+);
+assert.ok(
+  correctedProduct.candidates[0].source_packet_prefill.supporting_sources.some(
+    source => source.url === 'https://www.cve.org/CVERecord?id=CVE-2026-4631'
+      && source.id.startsWith('src-cve-normalization-')
+      && !source.notes.includes('VulnCheck observed'),
+  ),
+);
+assert.ok(
+  correctedProduct.candidates[0].source_packet_prefill.affected_products[0].source_refs.some(
+    sourceRef => sourceRef.startsWith('src-cve-normalization-'),
+  ),
+);
+const correctedSourcesById = new Map(
+  correctedProduct.candidates[0].source_packet_prefill.supporting_sources.map(source => [source.id, source]),
+);
+const correctedCvesById = new Map(
+  correctedProduct.candidates[0].source_packet_prefill.cves.map(cve => [cve.id, cve]),
+);
+for (const cve of correctedCvesById.values()) {
+  assert.ok(cve.source_refs.every(sourceRef => typeof sourceRef === 'string' && sourceRef.length > 0));
+}
+assert.ok(
+  correctedCvesById.get('CVE-2026-4631').source_refs.some(
+    sourceRef => correctedSourcesById.get(sourceRef)?.url.endsWith('CVE-2026-4631'),
+  ),
+);
+assert.ok(
+  correctedCvesById.get('CVE-2025-12352').source_refs.every(
+    sourceRef => !correctedSourcesById.get(sourceRef)?.url.endsWith('CVE-2026-4631'),
+  ),
+);
+
+const reportedEvidenceFixture = [
+  { url: ' HTTPS://cyber.gov.au/example-alert ', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://www.cve.org/CVERecord?id=CVE-2026-31843', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://nvd.nist.gov/vuln/detail/CVE-2026-31843', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://www.ncsc.gov.uk/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://cyber.gc.ca/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://www.bsi.bund.de/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://www.ncsc.govt.nz/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://cyber.example.gov.scot/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://cert.ssi.gouv.fr/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://example.gc.ca/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://example.gob.mx/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://example.go.jp/example-alert', date_added: '2026-07-09T00:00:00Z' },
+  { url: 'https://example.gv.at/example-alert', date_added: '2026-07-09T00:00:00Z' },
+];
+
+const evidenceClassified = buildRecentIntake({
+  data: [
+    {
+      vendorProject: null,
+      product: null,
+      vulnerabilityName: 'pay-uz remote code execution',
+      shortDescription: 'The goodoneuz/pay-uz package allows unauthenticated remote code execution.',
+      required_action: 'Patch.',
+      knownRansomwareCampaignUse: 'Unknown',
+      cve: ['CVE-2026-31843'],
+      cwes: [],
+      vulncheck_xdb: [],
+      vulncheck_reported_exploitation: reportedEvidenceFixture,
+      reported_exploited_by_vulncheck_canaries: false,
+      date_added: '2026-07-09T00:00:00Z',
+    },
+  ],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-07-09',
+  seenCves: new Set(),
+});
+
+const classifiedCandidate = evidenceClassified.candidates[0];
+assert.equal(classifiedCandidate.vendorProject, 'goodoneuz');
+assert.equal(classifiedCandidate.product, 'pay-uz');
+assert.equal(classifiedCandidate.vulncheck_exploitation_signal.reported_exploitation_count, 11);
+assert.deepEqual(classifiedCandidate.vulncheck_exploitation_signal.evidence_urls, [
+  'https://cyber.gov.au/example-alert',
+  'https://www.ncsc.gov.uk/example-alert',
+  'https://cyber.gc.ca/example-alert',
+  'https://www.bsi.bund.de/example-alert',
+  'https://www.ncsc.govt.nz/example-alert',
+  'https://cyber.example.gov.scot/example-alert',
+  'https://cert.ssi.gouv.fr/example-alert',
+  'https://example.gc.ca/example-alert',
+  'https://example.gob.mx/example-alert',
+  'https://example.go.jp/example-alert',
+  'https://example.gv.at/example-alert',
+]);
+assert.ok(classifiedCandidate.priority_reasons.includes('11 VulnCheck reported exploitation reference(s)'));
+assert.equal(classifiedCandidate.source_packet_prefill.source_quality.has_government_source, true);
+assert.equal(classifiedCandidate.source_packet_prefill.source_quality.has_primary_source, false);
+assert.ok(
+  classifiedCandidate.source_packet_prefill.supporting_sources.some(
+    source => source.url.includes('cve.org/CVERecord') && source.notes.includes('not counted as exploitation evidence'),
+  ),
+);
+assert.ok(
+  classifiedCandidate.source_packet_prefill.supporting_sources.some(
+    source => source.publisher === 'National Vulnerability Database' && source.source_type === 'database',
+  ),
+);
+const classifiedSourcesById = new Map(
+  classifiedCandidate.source_packet_prefill.supporting_sources.map(source => [source.id, source]),
+);
+assert.ok(
+  classifiedCandidate.source_packet_prefill.affected_products[0].source_refs.some(
+    sourceRef => classifiedSourcesById.get(sourceRef)?.url.endsWith('CVE-2026-31843'),
+  ),
+);
+for (const publisher of [
+  'National Cyber Security Centre',
+  'Canadian Centre for Cyber Security',
+  'Federal Office for Information Security',
+  'National Cyber Security Centre New Zealand',
+]) {
+  assert.ok(
+    classifiedCandidate.source_packet_prefill.supporting_sources.some(
+      source => source.publisher === publisher && source.source_type === 'government',
+    ),
+  );
+}
+assert.ok(
+  classifiedCandidate.source_packet_prefill.supporting_sources.some(
+    source => source.publisher === 'cyber.example.gov.scot' && source.source_type === 'government',
+  ),
+);
+for (const publisher of ['cert.ssi.gouv.fr', 'example.gc.ca', 'example.gob.mx', 'example.go.jp', 'example.gv.at']) {
+  assert.ok(
+    classifiedCandidate.source_packet_prefill.supporting_sources.some(
+      source => source.publisher === publisher && source.source_type === 'government',
+    ),
+  );
+}
+assert.deepEqual(
+  classifiedCandidate.source_packet_prefill.preserved_vulncheck_fields.vulncheck_reported_exploitation,
+  reportedEvidenceFixture,
+);
 
 const escapedMetadata = buildRecentIntake({
   data: [

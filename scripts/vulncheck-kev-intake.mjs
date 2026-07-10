@@ -30,14 +30,22 @@ const DEFAULT_CANDIDATE_INDEX_PATH = '.github/pipeline/source-packets/vulncheck-
 const DEFAULT_SIBLING_LIMIT = 4;
 const CVE_RE = /\bCVE-\d{4}-\d{4,}\b/gi;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const GOVERNMENT_COUNTRY_DOMAIN_RE = /(^|\.)(?:gov|govt|gouv|gc|gob|go|gv)\.(?:scot|wales|cymru|[a-z]{2})$/;
 const PRODUCT_NORMALIZATION_BY_CVE = new Map([
   ['CVE-2025-12352', { vendorProject: 'rocketgenius', product: 'gravityforms' }],
   ['CVE-2026-6433', { vendorProject: 'custom_css_js_php_project', product: 'custom_css_js_php' }],
+  ['CVE-2026-31843', {
+    vendorProject: 'goodoneuz',
+    product: 'pay-uz',
+    sourceUrl: 'https://www.cve.org/CVERecord?id=CVE-2026-31843',
+  }],
   // VulnCheck currently carries unrelated GNU/grub2 fields; Red Hat's CVE
   // record identifies the affected package as Cockpit.
   ['CVE-2026-4631', {
     vendorProject: 'Red Hat',
     product: 'cockpit',
+    vulnerabilityName: 'Cockpit: unauthenticated remote code execution due to SSH command-line argument injection',
+    sourceUrl: 'https://www.cve.org/CVERecord?id=CVE-2026-4631',
     overrideExisting: true,
   }],
 ]);
@@ -509,13 +517,139 @@ function siblingKey(candidate) {
   ].join(':');
 }
 
+function parsedHttpUrl(value) {
+  if (typeof value !== 'string') return null;
+  try {
+    const parsed = new URL(value);
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function isCveIdentityUrl(value) {
+  const parsed = parsedHttpUrl(value);
+  if (!parsed) return false;
+  const host = parsed.hostname.toLowerCase();
+  const pathname = parsed.pathname.toLowerCase();
+  return ((host === 'cve.org' || host.endsWith('.cve.org') || host === 'cve.mitre.org')
+      && (pathname.includes('cverecord') || pathname.includes('/cgi-bin/cvename.cgi')))
+    || ((host === 'nvd.nist.gov' || host.endsWith('.nvd.nist.gov')) && pathname.startsWith('/vuln/detail/'));
+}
+
+function reportedExploitationEntriesFor(record) {
+  return (Array.isArray(record?.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : [])
+    .filter(item => parsedHttpUrl(item?.url) && !isCveIdentityUrl(item.url));
+}
+
+function cveIdentityEntriesFor(record) {
+  return (Array.isArray(record?.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : [])
+    .filter(item => parsedHttpUrl(item?.url) && isCveIdentityUrl(item.url));
+}
+
+function isGovernmentHost(host) {
+  return host === 'cisa.gov'
+    || host.endsWith('.cisa.gov')
+    || host.endsWith('.gov')
+    || GOVERNMENT_COUNTRY_DOMAIN_RE.test(host);
+}
+
+function sourceMetadataForUrl(value) {
+  const parsed = parsedHttpUrl(value);
+  if (!parsed) return { publisher: 'Other', source_type: 'other' };
+  const host = parsed.hostname.toLowerCase();
+  if (host === 'cve.org' || host.endsWith('.cve.org') || host === 'cve.mitre.org') {
+    return { publisher: 'CVE Program', source_type: 'database' };
+  }
+  if (host === 'nvd.nist.gov' || host.endsWith('.nvd.nist.gov')) {
+    return { publisher: 'National Vulnerability Database', source_type: 'database' };
+  }
+  if (host === 'cyber.gov.au' || host.endsWith('.cyber.gov.au')) {
+    return { publisher: 'Australian Cyber Security Centre', source_type: 'government' };
+  }
+  if (host === 'cisa.gov' || host.endsWith('.cisa.gov')) {
+    return { publisher: 'Cybersecurity and Infrastructure Security Agency', source_type: 'government' };
+  }
+  if (host === 'ncsc.gov.uk' || host.endsWith('.ncsc.gov.uk')) {
+    return { publisher: 'National Cyber Security Centre', source_type: 'government' };
+  }
+  if (host === 'cyber.gc.ca' || host.endsWith('.cyber.gc.ca')) {
+    return { publisher: 'Canadian Centre for Cyber Security', source_type: 'government' };
+  }
+  if (host === 'bsi.bund.de' || host.endsWith('.bsi.bund.de')) {
+    return { publisher: 'Federal Office for Information Security', source_type: 'government' };
+  }
+  if (host === 'ncsc.govt.nz' || host.endsWith('.ncsc.govt.nz')) {
+    return { publisher: 'National Cyber Security Centre New Zealand', source_type: 'government' };
+  }
+  if (isGovernmentHost(host)) return { publisher: host, source_type: 'government' };
+  return { publisher: host || 'Other', source_type: 'other' };
+}
+
+function supportingSourcesFor(record, dateAdded) {
+  const sources = [{
+    id: 'src-vulncheck-kev',
+    publisher: 'VulnCheck',
+    url: 'https://api.vulncheck.com/v3/backup/vulncheck-kev',
+    published_at: dateAdded,
+    source_type: 'vendor',
+    role: 'supporting',
+    notes: 'VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced.',
+  }];
+  const seen = new Set(sources.map(source => source.url));
+
+  const appendEntries = (entries, idPrefix, notes, options = {}) => {
+    for (const item of entries) {
+      const url = parsedHttpUrl(item?.url)?.toString();
+      if (!url || seen.has(url)) continue;
+      seen.add(url);
+      const metadata = sourceMetadataForUrl(url);
+      sources.push({
+        id: `${idPrefix}-${sources.length}`,
+        publisher: metadata.publisher,
+        url,
+        published_at: null,
+        source_type: metadata.source_type,
+        role: 'supporting',
+        notes: options.observedByVulnCheck === false
+          ? notes
+          : `${notes} VulnCheck observed this reference on ${normalizeDate(item?.date_added) || 'an unknown date'}.`,
+      });
+    }
+  };
+
+  appendEntries(
+    reportedExploitationEntriesFor(record),
+    'src-vulncheck-exploitation',
+    'Direct URL carried by VulnCheck as reported exploitation evidence; independently verify before publication.',
+  );
+  appendEntries(
+    cveIdentityEntriesFor(record),
+    'src-vulncheck-cve-identity',
+    'CVE identity provenance carried by VulnCheck; not counted as exploitation evidence.',
+  );
+  const normalizationEntries = uniqueStrings(record?.cve)
+    .map(cve => PRODUCT_NORMALIZATION_BY_CVE.get(cve)?.sourceUrl)
+    .filter(Boolean)
+    .map(url => ({ url, date_added: null }));
+  appendEntries(
+    normalizationEntries,
+    'src-cve-normalization',
+    'Authoritative CVE Program provenance for normalized product or vulnerability metadata; not exploitation evidence.',
+    { observedByVulnCheck: false },
+  );
+  return sources;
+}
+
 function sourceRefsFor(record) {
   const urls = [];
-  for (const item of Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation : []) {
-    if (typeof item?.url === 'string' && item.url.startsWith('http')) urls.push(item.url);
+  for (const item of reportedExploitationEntriesFor(record)) {
+    const url = parsedHttpUrl(item?.url)?.toString();
+    if (url) urls.push(url);
   }
   for (const item of xdbEntriesFor(record)) {
-    if (typeof item?.xdb_url === 'string' && item.xdb_url.startsWith('http')) urls.push(item.xdb_url);
+    const url = parsedHttpUrl(item?.xdb_url)?.toString();
+    if (url) urls.push(url);
   }
   return uniqueStrings(urls);
 }
@@ -538,7 +672,7 @@ function exploitTypes(record) {
 function priorityScore(record, addedDate, recencyBucket) {
   let score = 0;
   const reasons = [];
-  const reported = Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation.length : 0;
+  const reported = reportedExploitationEntriesFor(record).length;
   const xdb = xdbEntriesFor(record).length;
 
   if (addedDate) {
@@ -596,6 +730,7 @@ function normalizeKnownProductFields(record) {
       ...cleaned,
       vendorProject: forcedNormalization.vendorProject,
       product: forcedNormalization.product,
+      vulnerabilityName: forcedNormalization.vulnerabilityName || cleaned.vulnerabilityName,
     };
   }
   const cves = uniqueStrings(record?.cve);
@@ -606,6 +741,7 @@ function normalizeKnownProductFields(record) {
       ...cleaned,
       vendorProject: cleaned.vendorProject || normalized.vendorProject,
       product: cleaned.product || normalized.product,
+      vulnerabilityName: cleaned.vulnerabilityName || normalized.vulnerabilityName,
     };
   }
   return cleaned;
@@ -621,6 +757,31 @@ function makePrefill(rawRecord) {
   const dueDate = normalizeDate(record.dueDate);
   const dateAdded = normalizeDate(record.date_added);
   const vulncheckSourceId = 'src-vulncheck-kev';
+  const supportingSources = supportingSourcesFor(rawRecord, dateAdded);
+  const sourceIdByUrl = new Map(supportingSources.map(source => [source.url, source.id]));
+  const identitySourceRefsByCve = new Map(cves.map(cve => [cve, []]));
+  for (const item of cveIdentityEntriesFor(rawRecord)) {
+    const url = parsedHttpUrl(item?.url)?.toString();
+    const sourceId = sourceIdByUrl.get(url);
+    if (!sourceId) continue;
+    const referencedCves = new Set(extractCvesFromText(url));
+    for (const cve of cves) {
+      if (referencedCves.has(cve)) identitySourceRefsByCve.get(cve).push(sourceId);
+    }
+  }
+  const normalizationSourceRefForCve = new Map(cves.map((cve) => {
+    const sourceUrl = parsedHttpUrl(PRODUCT_NORMALIZATION_BY_CVE.get(cve)?.sourceUrl)?.toString();
+    return [cve, sourceIdByUrl.get(sourceUrl) || null];
+  }));
+  const cveSourceRefsFor = cve => uniqueStrings([
+    vulncheckSourceId,
+    ...(identitySourceRefsByCve.get(cve) || []),
+    normalizationSourceRefForCve.get(cve),
+  ].filter(Boolean));
+  const productSourceRefs = uniqueStrings([
+    vulncheckSourceId,
+    ...[...normalizationSourceRefForCve.values()].filter(Boolean),
+  ]);
 
   return {
     status: 'prefill_only',
@@ -631,19 +792,9 @@ function makePrefill(rawRecord) {
       vulncheck_role: 'non-authoritative exploitation signal and supporting source',
       instruction: 'Do not draft or apply official KEV labeling from VulnCheck alone; verify CISA KEV membership against CISA before publication.',
     },
-    supporting_sources: [
-      {
-        id: vulncheckSourceId,
-        publisher: 'VulnCheck',
-        url: 'https://api.vulncheck.com/v3/backup/vulncheck-kev',
-        published_at: dateAdded,
-        source_type: 'vendor',
-        role: 'supporting',
-        notes: 'VulnCheck KEV community backup record; prominent VulnCheck KEV attribution required when data is surfaced.',
-      },
-    ],
+    supporting_sources: supportingSources,
     source_quality: {
-      has_government_source: false,
+      has_government_source: supportingSources.some(source => source.source_type === 'government'),
       has_vendor_source: true,
       has_primary_source: false,
       source_sufficiency: 'needs_human_review',
@@ -658,15 +809,15 @@ function makePrefill(rawRecord) {
         vendor: String(record.vendorProject || 'Unknown'),
         product: String(record.product || 'Unknown'),
         versions: 'unknown',
-        source_refs: [vulncheckSourceId],
+        source_refs: productSourceRefs,
       },
     ],
-    cves: cves.map(id => ({ id, source_refs: [vulncheckSourceId] })),
+    cves: cves.map(id => ({ id, source_refs: cveSourceRefsFor(id) })),
     cwes: cwes.map(id => ({ id, name: 'Unknown', source_refs: [vulncheckSourceId] })),
     preserved_vulncheck_fields: {
       vendorProject: forcedNormalization ? record.vendorProject : normalizeVulnCheckText(rawRecord.vendorProject) || null,
       product: forcedNormalization ? record.product : normalizeVulnCheckText(rawRecord.product) || null,
-      vulnerabilityName: normalizeVulnCheckText(rawRecord.vulnerabilityName) || null,
+      vulnerabilityName: forcedNormalization ? record.vulnerabilityName : normalizeVulnCheckText(rawRecord.vulnerabilityName) || null,
       shortDescription: normalizeVulnCheckText(rawRecord.shortDescription) || null,
       required_action: rawRecord.required_action || null,
       knownRansomwareCampaignUse: rawRecord.knownRansomwareCampaignUse || null,
@@ -714,7 +865,7 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
     priority_reasons: priority.reasons,
     official_cisa_kev: {
       status_source: 'not inferred from VulnCheck; verify CISA KEV membership against CISA before official labeling',
-      listed: false,
+      listed: null,
       date_added: null,
       due_date: null,
     },
@@ -724,7 +875,7 @@ function toCandidate(record, seenCves, recencyBucket = 'recent') {
       date_added: addedDate,
       known_ransomware_campaign_use: record.knownRansomwareCampaignUse || 'Unknown',
       reported_exploited_by_vulncheck_canaries: record.reported_exploited_by_vulncheck_canaries === true,
-      reported_exploitation_count: Array.isArray(record.vulncheck_reported_exploitation) ? record.vulncheck_reported_exploitation.length : 0,
+      reported_exploitation_count: reportedExploitationEntriesFor(record).length,
       xdb_count: xdbEntriesFor(record).length,
       xdb_exploit_types: exploitTypes(record),
       evidence_urls: sourceRefsFor(record),
