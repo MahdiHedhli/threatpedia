@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-07-07T19:46:42.156Z",
-  "updated": "2026-07-07T21:49:40.653Z",
+  "updated": "2026-07-10T00:10:04.775Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "kernel-k",
+  "locked_at": "2026-07-10T00:10:04.774Z",
   "input": {
     "topic": "JoomShaper SP Page Builder Unrestricted Upload of File with Dangerous Type Vulnerability (CVE-2026-48908)",
     "sources": [
@@ -85,6 +85,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1396"
+    },
+    {
+      "timestamp": "2026-07-10T00:10:04.775Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "kernel-k",
+      "note": "Locked for execution"
     }
   ]
 }
