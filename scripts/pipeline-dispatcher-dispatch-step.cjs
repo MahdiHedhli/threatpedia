@@ -274,6 +274,12 @@ module.exports = async function runDispatcherDispatchStep({ github, context, cor
   }
 
   async function alertIfReadyIssueStalled(task, readyIssue) {
+    if (readyIssueHasAssignee(readyIssue)) {
+      console.log(`Ready Issue #${readyIssue.number} is assigned; treating it as actively owned.`);
+      await closeStalledReadyIssue(task.task_id, `${task.task_id} ready Issue #${readyIssue.number} is assigned`);
+      return;
+    }
+
     const ageMinutes = readyIssueAgeMinutes(readyIssue);
     const stallThreshold = readyIssueStallThreshold(task);
 
@@ -282,12 +288,6 @@ module.exports = async function runDispatcherDispatchStep({ github, context, cor
     emitWarning(
       `${task.task_id} has open ready Issue #${readyIssue.number} with no covering PR after ${Math.round(ageMinutes)} minutes.`
     );
-
-    if (readyIssueHasAssignee(readyIssue)) {
-      console.log(`Ready Issue #${readyIssue.number} is assigned; treating it as actively owned.`);
-      await closeStalledReadyIssue(task.task_id, `${task.task_id} ready Issue #${readyIssue.number} is assigned`);
-      return;
-    }
 
     if (ageMinutes < stallThreshold) return;
 

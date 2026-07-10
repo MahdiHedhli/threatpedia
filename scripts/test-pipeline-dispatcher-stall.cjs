@@ -244,12 +244,13 @@ async function testStalledReadyIssueLookupIsCachedPerRun() {
   );
 }
 
-async function testAssignedReadyIssueDoesNotCreateAlert() {
+async function testRecentlyAssignedReadyIssueClosesAlertImmediately() {
   const existingAlert = alertIssue();
   const mock = createMockGithub({
     readyIssues: [
       readyIssue({
         assignees: [{ login: 'human-owner' }],
+        updated_at: isoMinutesAgo(5),
       }),
     ],
     alertIssues: [existingAlert],
@@ -321,7 +322,7 @@ async function testPrBackedTaskClosesAlertWithoutReadyIssue() {
 async function main() {
   await testStaleUnassignedReadyIssueCreatesAlert();
   await testStalledReadyIssueLookupIsCachedPerRun();
-  await testAssignedReadyIssueDoesNotCreateAlert();
+  await testRecentlyAssignedReadyIssueClosesAlertImmediately();
   await testCoveringPrClosesReadyIssueAndAlert();
   await testPrBackedTaskClosesAlertWithoutReadyIssue();
   console.log('pipeline-dispatcher stall tests passed');
