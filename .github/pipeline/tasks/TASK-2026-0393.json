@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-07-07T19:46:42.156Z",
-  "updated": "2026-07-10T00:04:48.843Z",
+  "updated": "2026-07-10T00:06:48.706Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": "kernel-k",
-  "locked_at": "2026-07-10T00:04:48.842Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Langflow Authorization Bypass Through User-Controlled Key Vulnerability (CVE-2026-55255)",
     "sources": [
@@ -92,6 +92,16 @@
       "to": "locked",
       "agent": "kernel-k",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-07-10T00:06:48.706Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "kernel-k",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1424"
     }
-  ]
+  ],
+  "pr_number": 1424,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1424"
 }
