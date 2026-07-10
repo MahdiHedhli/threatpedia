@@ -91,6 +91,47 @@ assert.equal(result.candidates[0].source_packet_prefill.status, 'prefill_only');
 assert.equal(result.candidates[0].source_packet_prefill.source_quality.source_sufficiency, 'needs_human_review');
 assert.match(result.candidates[0].source_packet_prefill.authority_boundary.instruction, /verify CISA KEV membership/);
 
+const msrcPrimaryEvidence = buildRecentIntake({
+  data: [{
+    vendorProject: 'Microsoft',
+    product: 'Windows',
+    vulnerabilityName: 'Microsoft Windows vulnerability',
+    shortDescription: 'Microsoft Windows vulnerability with first-party MSRC evidence.',
+    required_action: 'Apply the vendor update.',
+    knownRansomwareCampaignUse: 'Unknown',
+    cve: ['CVE-2020-1027'],
+    cwes: ['CWE-787'],
+    vulncheck_xdb: [],
+    vulncheck_reported_exploitation: [{
+      url: 'https://api.msrc.microsoft.com/cvrf/v3.0/cvrf/2020-Apr',
+      date_added: '2020-04-14T00:00:00Z',
+    }],
+    reported_exploited_by_vulncheck_canaries: false,
+    date_added: '2020-03-23T00:00:00Z',
+  }],
+}, {
+  lookbackDays: 30,
+  maxCandidates: 1,
+  asOf: '2026-07-09',
+  seenCves: new Set(),
+});
+
+const msrcPacket = msrcPrimaryEvidence.candidates[0].source_packet_prefill;
+assert.ok(msrcPacket.supporting_sources.some(source => (
+  source.url === 'https://api.msrc.microsoft.com/cvrf/v3.0/cvrf/2020-Apr'
+    && source.publisher === 'Microsoft'
+    && source.source_type === 'vendor'
+    && source.role === 'primary'
+)));
+assert.equal(msrcPacket.source_quality.has_primary_source, true);
+assert.equal(msrcPacket.source_quality.source_sufficiency, 'needs_human_review');
+assert.match(
+  msrcPacket.not_supported.find(item => item.claim === 'Article-ready source sufficiency').reason,
+  /direct primary references.*unverified.*human review.*authoritative cross-checking/,
+);
+assert.equal(msrcPrimaryEvidence.drafting_enabled, false);
+assert.equal(msrcPrimaryEvidence.candidates[0].drafting_allowed, false);
+
 const noBacklog = buildRecentIntake(fixture, {
   lookbackDays: 30,
   maxCandidates: 25,
