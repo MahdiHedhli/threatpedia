@@ -36,6 +36,13 @@ assert.ok(discoveryWorkflow.includes('OPEN_PREFILL_PAGE=$((OPEN_PREFILL_PAGE + 1
 
 assert.match(supplyChainWorkflow, /--retry 3 --retry-all-errors/);
 
+const liveDiscoveryGraphBuild = supplyChainWorkflow.indexOf('node scripts/build-supply-chain-graph.mjs');
+const liveDiscoveryCommit = supplyChainWorkflow.indexOf('- name: Commit candidate queue and public artifacts to branch');
+assert.ok(liveDiscoveryGraphBuild > 0 && liveDiscoveryGraphBuild < liveDiscoveryCommit);
+assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-graph.json'));
+assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-malware-families-stix.json'));
+assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-search-index.json'));
+
 assert.ok(supplyChainValidationWorkflow.includes('data/supply-chain-malware-families/**'));
 assert.ok(supplyChainValidationWorkflow.includes('scripts/build-supply-chain-graph.mjs'));
 assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-graph.json'));

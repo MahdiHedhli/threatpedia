@@ -159,13 +159,24 @@ jobs:
           fi
           node scripts/supply-chain-live-discovery.mjs --check --queue-path "$CHECK_PATH"
 
-      - name: Commit candidate queue to branch
+      - name: Regenerate supply-chain public artifacts
+        if: ${{ inputs.execute != 'false' }}
+        run: |
+          set -euo pipefail
+          node scripts/build-supply-chain-graph.mjs
+
+      - name: Commit candidate queue and public artifacts to branch
         id: commit
         if: ${{ inputs.execute != 'false' }}
         run: |
           set -euo pipefail
           LEASE="--force-with-lease=refs/heads/${DISCOVERY_BRANCH}:${DISCOVERY_REMOTE_HEAD:-}"
-          git add .github/pipeline/supply-chain-candidates/ .github/pipeline/source-packets/vulncheck-kev/
+          git add \
+            .github/pipeline/supply-chain-candidates/ \
+            .github/pipeline/source-packets/vulncheck-kev/ \
+            site/public/supply-chain-graph.json \
+            site/public/supply-chain-malware-families-stix.json \
+            site/public/supply-chain-search-index.json
           if git diff --cached --quiet; then
             echo "No candidate queue changes this run."
             if [ -n "${DISCOVERY_REMOTE_HEAD:-}" ]; then
@@ -206,7 +217,7 @@ jobs:
 
             const top = (queue.candidates || []).slice(0, 10);
             let body = '## Supply Chain B1 candidate queue\n\n';
-            body += 'This PR updates the live Supply Chain discovery/classification queue. It is candidate review only: no article tasks, no drafts, and no corpus records are created by this lane.\n\n';
+            body += 'This PR updates the live Supply Chain discovery/classification queue and its deterministic public graph/search artifacts. It is candidate review only: no article tasks, no drafts, and no corpus records are created by this lane.\n\n';
             body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\n\n`;
             body += `Summary: ${queue.summary.candidates_emitted} emitted candidates, ${queue.summary.current_candidates} current, ${queue.summary.matched_existing} matched existing corpus subjects.\n`;
             body += `Currency: latest corpus ${queue.currency.latest_corpus_incident_at || 'unknown'}, latest discovery ${queue.currency.latest_discovery_signal_at || 'none'}, pending ${queue.currency.pending_candidate_count}.\n\n`;
