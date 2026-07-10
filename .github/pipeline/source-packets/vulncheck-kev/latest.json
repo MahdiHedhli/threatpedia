@@ -21538,11 +21538,11 @@
           },
           {
             "id": "src-vulncheck-exploitation-2",
-            "publisher": "api.msrc.microsoft.com",
+            "publisher": "Microsoft",
             "url": "https://api.msrc.microsoft.com/cvrf/v3.0/cvrf/2020-Apr",
             "published_at": null,
-            "source_type": "other",
-            "role": "supporting",
+            "source_type": "vendor",
+            "role": "primary",
             "notes": "Direct URL carried by VulnCheck as reported exploitation evidence; independently verify before publication. VulnCheck observed this reference on 2020-04-14."
           },
           {
@@ -21558,7 +21558,7 @@
         "source_quality": {
           "has_government_source": true,
           "has_vendor_source": true,
-          "has_primary_source": false,
+          "has_primary_source": true,
           "source_sufficiency": "needs_human_review"
         },
         "key_dates": {
