@@ -62,6 +62,55 @@ async function testFixtureDiscoveryBuildsSafeQueue() {
   }
 }
 
+function testAliasBridgeDeduplicatesOsvAndGhsaLeads() {
+  const now = new Date('2026-07-09T00:00:00Z');
+  const config = {
+    currentWindowDays: 180,
+    kev: { recentlyAddedDays: 30, overdueGraceDays: 30, agedDays: 180 },
+    activeStatus: { defaultExpiryDays: 30 },
+    minRank: 0,
+  };
+  const corpusIndex = { subjectIds: new Set(), packages: new Map(), actors: [], campaigns: [] };
+  const { candidates } = classifyLeads([
+    {
+      leadRef: 'osv:MAL-2026-6424',
+      source: 'osv',
+      kind: 'advisory',
+      advisoryId: 'MAL-2026-6424',
+      title: 'Malicious code in leo-connector-mongo',
+      summary: 'Malicious npm package supply-chain fixture.',
+      osvIds: ['MAL-2026-6424', 'GHSA-GWX3-MRCV-2C26'],
+      publishedAt: '2026-06-24T00:00:00Z',
+      lastMaterialActivityAt: '2026-06-25T00:00:00Z',
+      url: 'https://osv.dev/vulnerability/MAL-2026-6424',
+      affected: [{ package: { ecosystem: 'npm', name: 'leo-connector-mongo' } }],
+    },
+    {
+      leadRef: 'github-advisory:GHSA-gwx3-mrcv-2c26',
+      source: 'github-advisory',
+      kind: 'advisory',
+      advisoryId: 'GHSA-GWX3-MRCV-2C26',
+      title: 'Malicious code in leo-connector-mongo',
+      summary: 'Malicious npm package supply-chain fixture.',
+      ghsas: ['GHSA-GWX3-MRCV-2C26'],
+      osvIds: ['GHSA-GWX3-MRCV-2C26'],
+      publishedAt: '2026-06-24T00:00:00Z',
+      lastMaterialActivityAt: '2026-06-25T01:00:00Z',
+      url: 'https://github.com/advisories/GHSA-gwx3-mrcv-2c26',
+      affected: [{ package: { ecosystem: 'npm', name: 'leo-connector-mongo' } }],
+    },
+  ], { config, corpusIndex, now });
+
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].canonicalSubjectId, 'MAL-2026-6424');
+  assert.deepEqual(candidates[0].subjectAliases, ['GHSA-GWX3-MRCV-2C26']);
+  assert.deepEqual(candidates[0].sources, ['github-advisory', 'osv']);
+  assert.deepEqual([...candidates[0].sourceRefs].sort(), [
+    'https://github.com/advisories/GHSA-gwx3-mrcv-2c26',
+    'https://osv.dev/vulnerability/MAL-2026-6424',
+  ]);
+}
+
 async function testOsvAscendingCsvAndMalformedGoLinesAreSafe() {
   const tempDir = mkdtempSync(path.join(tmpdir(), 'threatpedia-b1-osv-'));
   try {
@@ -507,6 +556,28 @@ function testQueueValidatorRejectsInvalidRootShapes() {
     auto_drafting_allowed: false,
     candidates: [null],
   }).includes('candidates[0] must be a valid object'));
+
+  const duplicateSubjects = {
+    schema_version: 'threatpedia-supply-chain-candidate-queue/1',
+    drafting_enabled: false,
+    auto_drafting_allowed: false,
+    candidates: [
+      {
+        candidateId: 'SC-CAND-one',
+        canonicalSubjectId: 'MAL-2026-6424',
+        subjectAliases: ['GHSA-GWX3-MRCV-2C26'],
+        classification: { workIntent: 'create_article', leadClass: 'current', leadClassReason: 'fixture', kevStatusIsAuthoredTruth: false },
+        draftingAllowed: false,
+      },
+      {
+        candidateId: 'SC-CAND-two',
+        canonicalSubjectId: 'GHSA-GWX3-MRCV-2C26',
+        classification: { workIntent: 'create_article', leadClass: 'current', leadClassReason: 'fixture', kevStatusIsAuthoredTruth: false },
+        draftingAllowed: false,
+      },
+    ],
+  };
+  assert.ok(validateCandidateQueue(duplicateSubjects).includes('duplicate candidate subject identifier GHSA-GWX3-MRCV-2C26'));
 }
 
 async function testVulncheckKevFeedsDerivedKevStatus() {
@@ -607,45 +678,59 @@ async function testPendingCandidatesCarryForwardWhenNotRediscovered() {
     writeFileSync(path.join(tempDir, 'osv_modified_id.csv'), 'not-a-date,no-record\n');
     writeFileSync(path.join(tempDir, 'ghsa_advisories.json'), '[]');
     const queuePath = path.join(tempDir, 'queue.json');
+    const pendingCandidate = {
+      candidateId: 'SC-CAND-previous123',
+      canonicalSubjectId: 'MAL-2026-PREVIOUS',
+      subjectType: 'incident',
+      proposedArchetype: 'incident',
+      title: 'Previous pending candidate',
+      summary: 'Pending supply-chain candidate awaiting review.',
+      sources: ['osv'],
+      sourceRefs: ['https://osv.dev/vulnerability/MAL-2026-PREVIOUS'],
+      mergedLeadRefs: ['osv:MAL-2026-PREVIOUS'],
+      firstSeenAt: '2026-06-20T00:00:00.000Z',
+      lastMaterialActivityAt: '2026-06-20T00:00:00.000Z',
+      activityBasis: ['advisory_updated'],
+      entityMatch: 'new',
+      matchedEntityHints: { actors: [], campaigns: [], packages: [], malwareFamilies: [] },
+      classification: {
+        leadClass: 'current',
+        leadClassReason: 'material activity within 180 days',
+        workIntent: 'create_article',
+        routingPriority: 'p2',
+        effectiveActiveStatus: 'none',
+        activeStatus: 'none',
+        activeStatusExpiresAt: null,
+        needsReverify: false,
+        kevStatusDerived: null,
+        kevStatusIsAuthoredTruth: false,
+        manualOverrideValid: false,
+        manualOverrideErrors: [],
+      },
+      rank: 32,
+      rankReasons: ['current lead'],
+      queueAction: 'candidate_review',
+      draftingAllowed: false,
+      autoDraftingBlockedReason: 'B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.',
+    };
     writeFileSync(queuePath, JSON.stringify({
       schema_version: 'threatpedia-supply-chain-candidate-queue/1',
       drafting_enabled: false,
       auto_drafting_allowed: false,
-      candidates: [{
-        candidateId: 'SC-CAND-previous123',
-        canonicalSubjectId: 'MAL-2026-PREVIOUS',
-        subjectType: 'incident',
-        proposedArchetype: 'incident',
-        title: 'Previous pending candidate',
-        summary: 'Pending supply-chain candidate awaiting review.',
-        sources: ['osv'],
-        sourceRefs: ['https://example.invalid/previous'],
-        mergedLeadRefs: ['osv:MAL-2026-PREVIOUS'],
-        firstSeenAt: '2026-06-20T00:00:00.000Z',
-        lastMaterialActivityAt: '2026-06-20T00:00:00.000Z',
-        activityBasis: ['advisory_updated'],
-        entityMatch: 'new',
-        matchedEntityHints: { actors: [], campaigns: [], packages: [], malwareFamilies: [] },
-        classification: {
-          leadClass: 'current',
-          leadClassReason: 'material activity within 180 days',
-          workIntent: 'create_article',
-          routingPriority: 'p2',
-          effectiveActiveStatus: 'none',
-          activeStatus: 'none',
-          activeStatusExpiresAt: null,
-          needsReverify: false,
-          kevStatusDerived: null,
-          kevStatusIsAuthoredTruth: false,
-          manualOverrideValid: false,
-          manualOverrideErrors: [],
+      candidates: [
+        pendingCandidate,
+        {
+          ...pendingCandidate,
+          candidateId: 'SC-CAND-previous456',
+          canonicalSubjectId: 'GHSA-1111-2222-3333',
+          sources: ['github-advisory'],
+          sourceRefs: [
+            'https://github.com/advisories/GHSA-1111-2222-3333',
+            'https://osv.dev/vulnerability/MAL-2026-PREVIOUS',
+          ],
+          mergedLeadRefs: ['github-advisory:GHSA-1111-2222-3333'],
         },
-        rank: 32,
-        rankReasons: ['current lead'],
-        queueAction: 'candidate_review',
-        draftingAllowed: false,
-        autoDraftingBlockedReason: 'B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.',
-      }],
+      ],
     }));
 
     const queue = await buildCandidateQueue({
@@ -665,6 +750,8 @@ async function testPendingCandidatesCarryForwardWhenNotRediscovered() {
     assert.equal(validateCandidateQueue(queue).length, 0);
     assert.equal(queue.candidates.length, 1);
     assert.equal(queue.candidates[0].canonicalSubjectId, 'MAL-2026-PREVIOUS');
+    assert.deepEqual(queue.candidates[0].subjectAliases, ['GHSA-1111-2222-3333']);
+    assert.deepEqual(queue.candidates[0].sources, ['github-advisory', 'osv']);
     assert.equal(queue.candidates[0].staleCarryForward, true);
     assert.equal(queue.summary.candidates_carried_forward, 1);
   } finally {
@@ -709,6 +796,7 @@ function testSupplyChainCveRoutesAsIncidentWithoutKev() {
 
 testMixedCaseEcosystemPurlsAreCanonical();
 await testFixtureDiscoveryBuildsSafeQueue();
+testAliasBridgeDeduplicatesOsvAndGhsaLeads();
 await testOsvAscendingCsvAndMalformedGoLinesAreSafe();
 await testOsvDescendingCsvCollectsRecentRows();
 await testGoIndexAdvancesSequentiallyWithoutSkippingRows();

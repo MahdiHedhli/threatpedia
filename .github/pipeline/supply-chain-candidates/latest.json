@@ -22,20 +22,20 @@
   },
   "summary": {
     "raw_leads_loaded": 238,
-    "deduped_subjects": 230,
+    "deduped_subjects": 226,
     "rejected_low_relevance": 80,
-    "classifier_candidates": 150,
-    "candidates_emitted": 40,
-    "candidates_carried_forward": 31,
-    "current_candidates": 40,
+    "classifier_candidates": 146,
+    "candidates_emitted": 36,
+    "candidates_carried_forward": 27,
+    "current_candidates": 36,
     "matched_existing": 0,
     "collector_errors": 0
   },
   "currency": {
     "latest_corpus_incident_at": "2026-05-28T00:00:00.000Z",
     "latest_discovery_signal_at": "2026-07-09T23:47:01.172Z",
-    "pending_candidate_count": 40,
-    "pending_current_count": 40,
+    "pending_candidate_count": 36,
+    "pending_current_count": 36,
     "graph_latest_reflects": "discovery"
   },
   "feed_cursors": {
@@ -1958,8 +1958,8 @@
       "carriedForwardAt": "2026-07-10T01:10:05.258Z"
     },
     {
-      "candidateId": "SC-CAND-5deac3312a84aeb8",
-      "canonicalSubjectId": "GHSA-GWX3-MRCV-2C26",
+      "candidateId": "SC-CAND-2659d8aedb505748",
+      "canonicalSubjectId": "MAL-2026-6424",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in leo-connector-mongo (npm)",
@@ -2015,11 +2015,14 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "subjectAliases": [
+        "GHSA-GWX3-MRCV-2C26"
+      ]
     },
     {
-      "candidateId": "SC-CAND-9b88075a686f9f48",
-      "canonicalSubjectId": "GHSA-HMX8-MH72-WJ54",
+      "candidateId": "SC-CAND-55c2197fdb4115bc",
+      "canonicalSubjectId": "MAL-2026-6421",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in leo-cli (npm)",
@@ -2075,7 +2078,10 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "subjectAliases": [
+        "GHSA-HMX8-MH72-WJ54"
+      ]
     },
     {
       "candidateId": "SC-CAND-a6d5d5bf527cd833",
@@ -2318,8 +2324,8 @@
       "carriedForwardAt": "2026-07-10T01:10:05.258Z"
     },
     {
-      "candidateId": "SC-CAND-bcf9a9d111812e3e",
-      "canonicalSubjectId": "GHSA-J4V3-8CW4-PG32",
+      "candidateId": "SC-CAND-c69b76b6632f8327",
+      "canonicalSubjectId": "MAL-2026-6426",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in leo-connector-oracle (npm)",
@@ -2375,11 +2381,14 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "subjectAliases": [
+        "GHSA-J4V3-8CW4-PG32"
+      ]
     },
     {
-      "candidateId": "SC-CAND-e4a7ac6cf796f321",
-      "canonicalSubjectId": "GHSA-474V-72PF-X6Q5",
+      "candidateId": "SC-CAND-c846153914f7bd0f",
+      "canonicalSubjectId": "MAL-2026-6425",
       "subjectType": "incident",
       "proposedArchetype": "incident",
       "title": "Malicious code in leo-connector-mysql (npm)",
@@ -2435,7 +2444,10 @@
       "draftingAllowed": false,
       "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
       "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
+      "carriedForwardAt": "2026-07-10T01:10:05.258Z",
+      "subjectAliases": [
+        "GHSA-474V-72PF-X6Q5"
+      ]
     },
     {
       "candidateId": "SC-CAND-93ded92a02d5b6f4",
@@ -2555,120 +2567,6 @@
       "carriedForwardAt": "2026-07-10T01:10:05.258Z"
     },
     {
-      "candidateId": "SC-CAND-c69b76b6632f8327",
-      "canonicalSubjectId": "MAL-2026-6426",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-connector-oracle (npm)",
-      "summary": "The `leo-connector-oracle` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (6f58d7bafe2bb3cea11b6066ac48bf357bc79d2b0170c6a76c4b247c89eadb71) The package ships a binding.gyp containing GYP command-expansion syntax (`<!(...)`) at line 6 inside the `sources` field of a target definition. npm implicitly runs `node-gyp rebuild` whenever a `binding.gyp` is present, even with no declared install/postinstall script, and GYP evaluates `<!(...)` as a shell invocation during its configure step. This causes the embedded command to execute automatically on `npm install`, functionally identical to a lifecycle hook. Use of GYP command expansion in a `sources` list is anomalous for a normal native addon build (sources are expected to be literal file paths). Any installer running `npm install leo-connector-oracle` will execute the command at build-configuration time.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6426"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6426"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T08:01:29.445Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T08:01:29.445Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match",
-        "carried forward pending review"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
-      "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
-    },
-    {
-      "candidateId": "SC-CAND-c846153914f7bd0f",
-      "canonicalSubjectId": "MAL-2026-6425",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-connector-mysql (npm)",
-      "summary": "The `leo-connector-mysql` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (cc20d78464a78cbe988dbbbc2fe10cd4207311a8ff43ee7c5a0411e68e81bb57) The package ships a binding.gyp file containing GYP command-expansion syntax (`<!(...)`) at line 6. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present — even without any declared install/postinstall script — and GYP evaluates `<!(...)` expressions as shell commands during the configure step. This causes the embedded command to execute automatically on every `npm install`, functionally identical to a lifecycle hook. Any installer or build system that pulls this package will run the expanded command with the privileges of the installing user.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6425"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6425"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T08:01:29.233Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T08:01:29.233Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match",
-        "carried forward pending review"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
-      "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
-    },
-    {
       "candidateId": "SC-CAND-b19951f63123cd0f",
       "canonicalSubjectId": "MAL-2026-6423",
       "subjectType": "incident",
@@ -2705,120 +2603,6 @@
         "effectiveActiveStatus": "exploited_in_wild",
         "activeStatus": "exploited_in_wild",
         "activeStatusExpiresAt": "2026-07-25T08:01:29.181Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match",
-        "carried forward pending review"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
-      "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
-    },
-    {
-      "candidateId": "SC-CAND-2659d8aedb505748",
-      "canonicalSubjectId": "MAL-2026-6424",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-connector-mongo (npm)",
-      "summary": "The `leo-connector-mongo` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (dc9ecc7f6488cb4c941a9184df1b6cf93ff87dc98f904d7b2b45025bd88f143a) The package ships a binding.gyp at the root that uses GYP command-expansion syntax (`<!(...)`) at line 6 within the targets/sources fields. npm implicitly runs `node-gyp rebuild` whenever a binding.gyp is present — even when no install/postinstall script is declared — and node-gyp's configure step evaluates `<!(...)` as a shell command. This results in arbitrary command execution on the installer's machine during a default `npm install`, functionally equivalent to a malicious lifecycle hook. The command embedded in the GYP expansion runs with the installing user's privileges on every install of this version.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6424"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6424"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T08:01:29.080Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T08:01:29.080Z",
-        "needsReverify": false,
-        "kevStatusDerived": null,
-        "kevStatusIsAuthoredTruth": false,
-        "manualOverrideValid": false,
-        "manualOverrideErrors": []
-      },
-      "rank": 71,
-      "rankReasons": [
-        "current lead",
-        "active exploitation or malware signal",
-        "advisory database signal",
-        "supply-chain term match",
-        "carried forward pending review"
-      ],
-      "queueAction": "candidate_review",
-      "draftingAllowed": false,
-      "autoDraftingBlockedReason": "B1 discovery/classification stops at candidate queue; B2 grounded drafting requires explicit approval, source-packet preflight, and fidelity check.",
-      "staleCarryForward": true,
-      "carriedForwardAt": "2026-07-10T01:10:05.258Z"
-    },
-    {
-      "candidateId": "SC-CAND-55c2197fdb4115bc",
-      "canonicalSubjectId": "MAL-2026-6421",
-      "subjectType": "incident",
-      "proposedArchetype": "incident",
-      "title": "Malicious code in leo-cli (npm)",
-      "summary": "The `leo-cli` npm package was compromised as part of the Miasma worm campaign targeting the LeoPlatform npm ecosystem. On June 24, 2026, 20 LeoPlatform packages were published within a 3-second window by a threat actor who had taken over the npm account `czirker` belonging to the LeoPlatform organization. The malicious payload is triggered automatically during `npm install` via a `binding.gyp` file using node-gyp command expansion (`<!(node index.js > /dev/null 2>&1 && echo stub.c)`), which bypasses lifecycle script scanners. The replaced `index.js` (~5.2 MB, obfuscated with ROT-N + AES-128-GCM encryption) deploys a multi-stage worm with the following capabilities: - Credential theft: Targets npm, GitHub, PyPI, RubyGems, Kubernetes, HashiCorp Vault, AWS (IAM keys, Secrets Manager, IMDS), 1Password, JFrog Artifactory, and SSH keys. - AI tool targeting: Exfiltrates configuration files for Claude, Cursor, Gemini, and VS Code. - Worm propagation: Enumerates npm packages and auto-publishes version bumps to spread to other maintainers in the ecosystem. - GitHub persistence: Creates orphan `snapshot-<hex>` branches with fake \"Dependabot Updates\" workflows to maintain access after initial compromise. Any system that installed this version should be considered fully compromised. Rotate all secrets immediately from a separate, clean machine. See the linked SafeDep report for full payload analysis, indicators of compromise, and remediation guidance. --- _-= Per source details. Do not edit below this line.=-_ ## Source: amazon-inspector (520c95e9cea55807cedb7f42a819fdb63febb61fe9a392b3de8f31f129cfa0fc) The package ships a binding.gyp file containing GYP command-expansion syntax (`<!(...)`) in its target configuration. npm implicitly invokes `node-gyp rebuild` whenever a binding.gyp is present — even without an explicit install/postinstall script — and node-gyp evaluates `<!(...)` expressions as shell commands during the configure step. This causes arbitrary shell execution on the installer's machine on `npm install`, functionally equivalent to a lifecycle hook. Additional files (docker/run.js, docker-run.js, lib/build.js, lib/defaultCronRunner.js) combine child_process and outbound HTTP usage, broadening the install/runtime risk surface, though the binding.gyp command-expansion alone is sufficient grounds for installer-side concern.",
-      "sources": [
-        "osv"
-      ],
-      "sourceRefs": [
-        "https://osv.dev/vulnerability/MAL-2026-6421"
-      ],
-      "mergedLeadRefs": [
-        "osv:MAL-2026-6421"
-      ],
-      "firstSeenAt": "2026-06-24T23:04:55.000Z",
-      "lastMaterialActivityAt": "2026-06-25T08:01:28.978Z",
-      "activityBasis": [
-        "advisory_updated",
-        "active_exploitation_or_malware_signal"
-      ],
-      "entityMatch": "new",
-      "matchedEntityHints": {
-        "actors": [],
-        "campaigns": [],
-        "packages": [],
-        "malwareFamilies": []
-      },
-      "classification": {
-        "leadClass": "current",
-        "leadClassReason": "active status exploited_in_wild; material activity within 180 days",
-        "workIntent": "create_article",
-        "routingPriority": "p0",
-        "effectiveActiveStatus": "exploited_in_wild",
-        "activeStatus": "exploited_in_wild",
-        "activeStatusExpiresAt": "2026-07-25T08:01:28.978Z",
         "needsReverify": false,
         "kevStatusDerived": null,
         "kevStatusIsAuthoredTruth": false,
