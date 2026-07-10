@@ -55,7 +55,7 @@
     },
     "source": {
       "type": "string",
-      "enum": ["auto_discovery", "manual_submission", "enrichment", "backfill", "automated_submission", "historical-corpus", "historical_corpus_backlog"],
+      "enum": ["auto_discovery", "promotion", "manual_submission", "enrichment", "backfill", "automated_submission", "historical-corpus", "historical_corpus_backlog"],
       "description": "How this task entered the pipeline"
     },
     "submitted_by": {
