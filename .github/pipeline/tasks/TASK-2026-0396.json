@@ -1,0 +1,80 @@
+{
+  "task_id": "TASK-2026-0396",
+  "stage": "draft",
+  "type": "incident",
+  "priority": "P0",
+  "status": "pending",
+  "created": "2026-07-10T15:32:49.184Z",
+  "updated": "2026-07-10T15:32:49.184Z",
+  "source": "auto_discovery",
+  "submitted_by": "pipeline-discovery",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "GigaWiper: Anatomy of a destructive backdoor assembled from multiple malware",
+    "sources": [
+      "https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware"
+    ],
+    "candidate_data": {
+      "discovery_type": "incident",
+      "candidate_key": "incident:microsoft_security_blog:https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware",
+      "source_url": "https://www.microsoft.com/en-us/security/blog/2026/07/09/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malware",
+      "source_feed": "microsoft_security_blog",
+      "source_label": "Microsoft Security Blog",
+      "published_at": "2026-07-09T15:00:00.000Z",
+      "discovered_signals": [
+        "ransomware",
+        "malware",
+        "wiper",
+        "backdoor"
+      ],
+      "boundary_signals": [
+        "targets/against",
+        "operational deployment"
+      ],
+      "feed_categories": [
+        "Malware"
+      ]
+    },
+    "notes": "Auto-discovered from Microsoft Security Blog on 2026-07-09. Source summary: GigaWiper is a destructive backdoor that combines multiple wiping and ransomware-like capabilities into a single operational platform. This blog analyzes how the malware incorporates code from several previously separate malware families and provides guidance to help defenders detect and defend against similar threats.… Incident signals: ransomware, malware, wiper, backdoor. Boundary signals: targets/against, operational deployment. Watch-outs: generic strategy/guidance. Treat this as incident intake first: keep the article grounded in the concrete event described by the sources, and only elevate to a campaign or actor follow-on if the evidence supports it. Discovery score: 88/100."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 5,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/incidents/gigawiper-anatomy-of-a-destructive-backdoor-assembled-from-multiple-malw-2026.md",
+    "branch": "pipeline/TASK-2026-0396",
+    "pr": true
+  },
+  "discovery": {
+    "feed": "microsoft_security_blog",
+    "score": 88,
+    "auto_certify": false,
+    "discovered_at": "2026-07-10T15:32:49.184Z",
+    "published_at": "2026-07-09T15:00:00.000Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-07-10T15:32:49.184Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "pipeline-discovery",
+      "note": "Auto-discovered incident candidate from Microsoft Security Blog (score: 88)"
+    }
+  ]
+}
