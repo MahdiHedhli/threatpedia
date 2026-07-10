@@ -5,7 +5,7 @@
   "priority": "P0",
   "status": "pr_open",
   "created": "2026-07-07T19:46:42.156Z",
-  "updated": "2026-07-10T00:06:48.706Z",
+  "updated": "2026-07-10T01:06:03.081Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
   "locked_by": null,
@@ -100,6 +100,14 @@
       "agent": "kernel-k",
       "action": "pr_opened",
       "note": "Article generated, validated, and recorded against PR #1424"
+    },
+    {
+      "timestamp": "2026-07-10T01:06:03.081Z",
+      "action": "dispatch_skipped",
+      "from": "pending",
+      "to": "pending",
+      "agent": "dispatcher",
+      "note": "Dispatch skipped because open PR #1424 already covers this task."
     }
   ],
   "pr_number": 1424,
