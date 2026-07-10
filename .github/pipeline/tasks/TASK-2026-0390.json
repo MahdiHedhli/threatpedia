@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-06-29T19:48:50.384Z",
-  "updated": "2026-07-02T01:29:25.226Z",
+  "updated": "2026-07-10T00:26:10.217Z",
   "source": "auto_discovery",
   "submitted_by": "pipeline-discovery",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "kernel-k",
+  "locked_at": "2026-07-10T00:26:10.216Z",
   "input": {
     "topic": "SimpleHelp Authentication Bypass Vulnerability (CVE-2026-48558)",
     "sources": [
@@ -85,6 +85,13 @@
       "to": "pending",
       "agent": "dispatcher",
       "note": "Dispatched as Issue #1350"
+    },
+    {
+      "timestamp": "2026-07-10T00:26:10.217Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "kernel-k",
+      "note": "Locked for execution"
     }
   ]
 }
