@@ -426,7 +426,7 @@ function vulnerabilityLead({ source, id, aliases, title, summary, modifiedAt, pu
     url,
     cves: ids.cves,
     ghsas: ids.ghsas,
-    osvIds: ids.osvIds,
+    osvIds: uniqueStrings([id, ids.osvIds]),
     affected: Array.isArray(affected) ? affected : [],
     severity,
     databaseSpecific: databaseSpecific || null,
