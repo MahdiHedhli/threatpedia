@@ -125,6 +125,10 @@ assert.ok(msrcPacket.supporting_sources.some(source => (
 )));
 assert.equal(msrcPacket.source_quality.has_primary_source, true);
 assert.equal(msrcPacket.source_quality.source_sufficiency, 'needs_human_review');
+assert.match(
+  msrcPacket.not_supported.find(item => item.claim === 'Article-ready source sufficiency').reason,
+  /direct primary references.*unverified.*human review.*authoritative cross-checking/,
+);
 assert.equal(msrcPrimaryEvidence.drafting_enabled, false);
 assert.equal(msrcPrimaryEvidence.candidates[0].drafting_allowed, false);
 

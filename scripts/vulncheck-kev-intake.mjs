@@ -838,7 +838,7 @@ function makePrefill(rawRecord) {
       },
       {
         claim: 'Article-ready source sufficiency',
-        reason: 'This prefill contains VulnCheck supporting evidence only and must be joined with CISA, CVE/NVD, vendor, or other primary sources before drafting.',
+        reason: 'This prefill may include direct primary references, but every carried reference remains unverified and requires human review plus authoritative cross-checking before drafting.',
       },
     ],
   };
