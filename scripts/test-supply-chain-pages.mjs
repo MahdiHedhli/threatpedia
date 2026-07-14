@@ -137,8 +137,8 @@ assert.ok(
     supplyChainRouteSource.includes('position: fixed') &&
     supplyChainRouteSource.includes('max-width: none') &&
     supplyChainRouteSource.includes(':global(body.sc-explore-active) .graph-hero-explore') &&
-    supplyChainRouteSource.includes('.graph-hero-explore .graph-chrome-actions') &&
-    supplyChainRouteSource.includes('right: 376px') &&
+    supplyChainRouteSource.includes('class="graph-toolbar"') &&
+    supplyChainRouteSource.includes('grid-template-rows: auto minmax(360px, 1fr) auto') &&
     supplyChainRouteSource.includes('z-index: 1000') &&
     supplyChainRouteSource.includes('background: var(--bg)') &&
     supplyChainRouteSource.includes('.graph-icon-button svg') &&
@@ -204,6 +204,8 @@ assert.ok(
 );
 assert.ok(
   supplyChainRouteSource.includes('detail.replaceChildren') &&
+    supplyChainRouteSource.includes("document.querySelector('div[data-lineage-detail]')") &&
+    supplyChainRouteSource.includes('button.dataset.lineageSummary') &&
     supplyChainRouteSource.includes('textContent') &&
     !supplyChainRouteSource.includes('detail.innerHTML'),
   'lineage detail script should render dataset-backed content as text, not HTML'
@@ -342,7 +344,7 @@ assert.ok(
 );
 assert.ok(
   supplyChainGraphSource.includes('const pushCurve =') &&
-    supplyChainGraphSource.includes('return 0.11;') &&
+    supplyChainGraphSource.includes("return edge.type === 'SEEDED_BY' ? 0.56 : 0.3;") &&
     supplyChainGraphSource.includes('return 0.035;') &&
     supplyChainGraphSource.includes('selection.nodes?.has(edge.source) && this.selection.nodes?.has(edge.target)'),
   'graph edges should render as subdued curves and brighten only for selected subgraphs'
@@ -730,8 +732,9 @@ assert.ok(
     supplyChainGraphSource.includes('selectEntityContext') &&
     supplyChainGraphSource.includes('source_incident_ids') &&
     supplyChainGraphSource.includes('connected incident') &&
-    supplyChainGraphSource.includes('const actorPosition = new Map()') &&
-    supplyChainGraphSource.includes('incidentsByActor.forEach') &&
+    supplyChainGraphSource.includes('activeActorSlots.forEach') &&
+    supplyChainGraphSource.includes('archiveActorSlots') &&
+    supplyChainGraphSource.includes('let laneCursor = 0') &&
     supplyChainGraphSource.includes('setCameraTarget') &&
     supplyChainGraphSource.includes('clamp(') &&
     supplyChainGraphSource.includes('this.lastLabelKey') &&

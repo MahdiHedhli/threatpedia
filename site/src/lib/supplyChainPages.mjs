@@ -839,8 +839,8 @@ function lineageEdgePath(edge, nodeById, forkById) {
   const from = target;
   const to = source;
   const fork = edge.fork_event_id ? forkById.get(edge.fork_event_id) : null;
-  const startOffset = from.kind === 'fork' ? 14 : 86;
-  const endOffset = to.kind === 'fork' ? 14 : 86;
+  const startOffset = from.kind === 'fork' ? 14 : 70;
+  const endOffset = to.kind === 'fork' ? 14 : 70;
   const x1 = Number(from.layout?.x ?? 0) + startOffset;
   const y1 = Number(from.layout?.y ?? 0);
   const x2 = Number(to.layout?.x ?? 0) - endOffset;
