@@ -61,6 +61,7 @@ for (const requiredPath of [
 const supplyChainValidationCommands = supplyChainValidationContract.jobs['validate-supply-chain'].steps
   .map((step) => step.run || '')
   .join('\n');
+assert.match(supplyChainValidationCommands, /cd scripts && npm ci --no-audit --no-fund/);
 assert.match(supplyChainValidationCommands, /node scripts\/build-supply-chain-graph\.mjs --check/);
 assert.match(supplyChainValidationCommands, /node scripts\/test-pipeline-orchestration-contracts\.mjs/);
 

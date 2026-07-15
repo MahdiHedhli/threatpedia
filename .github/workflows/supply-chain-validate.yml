@@ -46,6 +46,9 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Install script dependencies
+        run: cd scripts && npm ci --no-audit --no-fund
+
       - name: Run orchestration contract tests
         run: node scripts/test-pipeline-orchestration-contracts.mjs
 
@@ -67,10 +70,7 @@ jobs:
         run: python3 -m unittest tests/test_supply_chain_purl.py tests/test_supply_chain_incidents.py tests/test_supply_chain_graph.py
 
       - name: Run live discovery candidate queue test
-        run: |
-          cd scripts
-          npm ci --no-audit --no-fund
-          node test-supply-chain-live-discovery.mjs
+        run: node scripts/test-supply-chain-live-discovery.mjs
 
       - name: Check generated supply-chain artifacts
         run: node scripts/build-supply-chain-graph.mjs --check
