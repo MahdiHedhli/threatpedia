@@ -67,6 +67,7 @@ assert.match(supplyChainValidationCommands, /node scripts\/test-pipeline-orchest
 
 const taskValidationPaths = taskValidationContract.on.pull_request.paths;
 assert.ok(taskValidationPaths.includes('.github/pipeline/schema/task-schema.json'));
+assert.ok(taskValidationPaths.includes('scripts/validate-pipeline-tasks.mjs'));
 const taskValidationCommands = taskValidationContract.jobs['validate-tasks'].steps
   .map((step) => step.run || '')
   .join('\n');
