@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import yaml from 'js-yaml';
 
 const supplyChainWorkflow = readFileSync(new URL('../.github/workflows/supply-chain-live-discovery.yml', import.meta.url), 'utf8');
 const supplyChainValidationWorkflow = readFileSync(new URL('../.github/workflows/supply-chain-validate.yml', import.meta.url), 'utf8');
@@ -10,16 +11,18 @@ const reviewGateWorkflow = readFileSync(new URL('../.github/workflows/pipeline-r
 const reviewGateScript = readFileSync(new URL('./pipeline-review-gate.mjs', import.meta.url), 'utf8');
 const taskValidator = readFileSync(new URL('./validate-pipeline-tasks.mjs', import.meta.url), 'utf8');
 const taskSchema = JSON.parse(readFileSync(new URL('../.github/pipeline/schema/task-schema.json', import.meta.url), 'utf8'));
+const supplyChainWorkflowContract = yaml.load(supplyChainWorkflow, { schema: yaml.JSON_SCHEMA });
+const supplyChainValidationContract = yaml.load(supplyChainValidationWorkflow, { schema: yaml.JSON_SCHEMA });
+const taskValidationContract = yaml.load(taskValidationWorkflow, { schema: yaml.JSON_SCHEMA });
 
 assert.match(supplyChainWorkflow, /git checkout -B "\$BRANCH" origin\/main/);
 assert.doesNotMatch(supplyChainWorkflow, /git merge --no-edit origin\/main/);
 assert.match(supplyChainWorkflow, /DISCOVERY_REMOTE_HEAD/);
 assert.match(supplyChainWorkflow, /--force-with-lease=refs\/heads\/\$\{DISCOVERY_BRANCH\}/);
 assert.match(supplyChainWorkflow, /refs\/heads\/\$\{BRANCH\}:refs\/remotes\/origin\/\$\{BRANCH\}/);
-assert.ok(supplyChainWorkflow.includes('PREVIOUS_PACKET_DIR="$RUNNER_TEMP/supply-chain-previous-vulncheck-packets"'));
-assert.ok(supplyChainWorkflow.includes('git diff --name-only --diff-filter=A origin/main..."origin/${BRANCH}"'));
-assert.ok(supplyChainWorkflow.includes('git cat-file -e "origin/main:${packet_path}"'));
-assert.ok(supplyChainWorkflow.includes('cp -R "$PREVIOUS_PACKET_DIR"/. "$VULNCHECK_PACKET_DIR"/'));
+assert.deepEqual(supplyChainWorkflowContract.on.schedule, [{ cron: '17 */6 * * *' }]);
+assert.ok(!supplyChainWorkflow.includes('Run VulnCheck KEV source-packet intake'));
+assert.doesNotMatch(supplyChainWorkflow, /^\s+\.github\/pipeline\/source-packets\/vulncheck-kev\/\s*\\?$/m);
 assert.ok(supplyChainWorkflow.includes("replace(/\\|/g, '\\\\|')"));
 assert.ok(supplyChainWorkflow.includes("body += '\\n### Guardrails\\n\\n'"));
 assert.ok(!supplyChainWorkflow.includes("body += '\\\\n### Guardrails"));
@@ -44,17 +47,29 @@ assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-graph.json'));
 assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-malware-families-stix.json'));
 assert.ok(supplyChainWorkflow.includes('site/public/supply-chain-search-index.json'));
 
-assert.ok(supplyChainValidationWorkflow.includes('data/supply-chain-malware-families/**'));
-assert.ok(supplyChainValidationWorkflow.includes('scripts/build-supply-chain-graph.mjs'));
-assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-graph.json'));
-assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-malware-families-stix.json'));
-assert.ok(supplyChainValidationWorkflow.includes('site/public/supply-chain-search-index.json'));
-assert.ok(supplyChainValidationWorkflow.includes('node scripts/build-supply-chain-graph.mjs --check'));
-assert.ok(supplyChainValidationWorkflow.includes('.github/workflows/supply-chain-live-discovery.yml'));
-assert.ok(supplyChainValidationWorkflow.includes('node scripts/test-pipeline-orchestration-contracts.mjs'));
+const supplyChainValidationPaths = supplyChainValidationContract.on.pull_request.paths;
+for (const requiredPath of [
+  '.github/workflows/supply-chain-live-discovery.yml',
+  'data/supply-chain-malware-families/**',
+  'scripts/build-supply-chain-graph.mjs',
+  'site/public/supply-chain-graph.json',
+  'site/public/supply-chain-malware-families-stix.json',
+  'site/public/supply-chain-search-index.json',
+]) {
+  assert.ok(supplyChainValidationPaths.includes(requiredPath), `supply-chain validation trigger missing ${requiredPath}`);
+}
+const supplyChainValidationCommands = supplyChainValidationContract.jobs['validate-supply-chain'].steps
+  .map((step) => step.run || '')
+  .join('\n');
+assert.match(supplyChainValidationCommands, /node scripts\/build-supply-chain-graph\.mjs --check/);
+assert.match(supplyChainValidationCommands, /node scripts\/test-pipeline-orchestration-contracts\.mjs/);
 
-assert.ok(taskValidationWorkflow.includes('.github/pipeline/schema/task-schema.json'));
-assert.ok(taskValidationWorkflow.includes('node scripts/test-pipeline-orchestration-contracts.mjs'));
+const taskValidationPaths = taskValidationContract.on.pull_request.paths;
+assert.ok(taskValidationPaths.includes('.github/pipeline/schema/task-schema.json'));
+const taskValidationCommands = taskValidationContract.jobs['validate-tasks'].steps
+  .map((step) => step.run || '')
+  .join('\n');
+assert.match(taskValidationCommands, /node scripts\/test-pipeline-orchestration-contracts\.mjs/);
 
 assert.ok(taskSchema.properties.stage.enum.includes('generation'));
 assert.ok(taskSchema.properties.status.enum.includes('pr_open'));
