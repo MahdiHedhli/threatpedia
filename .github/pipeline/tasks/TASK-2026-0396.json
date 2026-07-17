@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "locked",
+  "status": "pr_open",
   "created": "2026-07-17T02:04:42.791Z",
-  "updated": "2026-07-17T02:10:53.532Z",
+  "updated": "2026-07-17T02:14:52.859Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": "MahdiHedhli",
-  "locked_at": "2026-07-17T02:10:53.531Z",
+  "locked_by": null,
+  "locked_at": null,
   "input": {
     "topic": "Phantom Enigma campaign using compromised Brazilian public-sector portals to deliver a Node.js backdoor",
     "sources": [
@@ -63,6 +63,16 @@
       "to": "locked",
       "agent": "MahdiHedhli",
       "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-07-17T02:14:52.858Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "MahdiHedhli",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1434"
     }
-  ]
+  ],
+  "pr_number": 1434,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1434"
 }
