@@ -3,13 +3,13 @@
   "stage": "draft",
   "type": "campaign",
   "priority": "P1",
-  "status": "pending",
+  "status": "locked",
   "created": "2026-07-17T02:04:42.791Z",
-  "updated": "2026-07-17T02:04:42.791Z",
+  "updated": "2026-07-17T02:10:53.532Z",
   "source": "manual_submission",
   "submitted_by": "MahdiHedhli",
-  "locked_by": null,
-  "locked_at": null,
+  "locked_by": "MahdiHedhli",
+  "locked_at": "2026-07-17T02:10:53.531Z",
   "input": {
     "topic": "Phantom Enigma campaign using compromised Brazilian public-sector portals to deliver a Node.js backdoor",
     "sources": [
@@ -56,6 +56,13 @@
       "to": "pending",
       "agent": "MahdiHedhli",
       "note": "Manual submission from Issue #1432"
+    },
+    {
+      "timestamp": "2026-07-17T02:10:53.532Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "MahdiHedhli",
+      "note": "Locked for execution"
     }
   ]
 }
