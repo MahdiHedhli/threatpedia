@@ -1,0 +1,61 @@
+{
+  "task_id": "TASK-2026-0396",
+  "stage": "draft",
+  "type": "campaign",
+  "priority": "P1",
+  "status": "pending",
+  "created": "2026-07-17T02:04:42.791Z",
+  "updated": "2026-07-17T02:04:42.791Z",
+  "source": "manual_submission",
+  "submitted_by": "MahdiHedhli",
+  "locked_by": null,
+  "locked_at": null,
+  "input": {
+    "topic": "Phantom Enigma campaign using compromised Brazilian public-sector portals to deliver a Node.js backdoor",
+    "sources": [
+      "https://any.run/cybersecurity-blog/phantomenigma-research",
+      "https://global.ptsecurity.com/en/research/pt-esc-threat-intelligence/phantom-in-the-flesh-new-attacks-by-phantom-enigma",
+      "https://ssp.sc.gov.br/alerta-de-fraude-intimacao-falsa-da-policia-civil"
+    ],
+    "candidate_data": {
+      "severity": "high",
+      "sector": "Financial Services; Public Sector delivery infrastructure",
+      "geography": "Brazil",
+      "threat_actor": "Unknown (vendor-tracked as Phantom Enigma; attribution requires cautious wording)"
+    },
+    "notes": "Cover this as a current campaign, not an actor profile. The supplied ANY.RUN analysis reports compromised Brazilian public-sector portals delivering a Node.js/Electron backdoor and a QR/PDF false-summons arm. Treat reported infrastructure counts, victims, C2 behavior, and operator linkage as vendor-attributed observations. Distinguish compromised delivery infrastructure from confirmed victim organizations; do not publish indicators that are not necessary for the article."
+  },
+  "specs": [
+    "DATA-STANDARDS-v1.0.md",
+    "EDITORIAL-WORKFLOW-SPEC.md §14A",
+    "INGESTION-SPEC.md §2"
+  ],
+  "acceptance_criteria": {
+    "frontmatter_valid": true,
+    "min_sources": 3,
+    "min_h2_sections": 7,
+    "min_mitre_mappings": 1,
+    "review_status": "draft_ai",
+    "schema_validation": "pass",
+    "astro_build": true
+  },
+  "depends_on": [],
+  "preconditions": [
+    "editorial queue depth < 100"
+  ],
+  "output": {
+    "file_pattern": "site/src/content/campaigns/{slug}.md",
+    "branch": "pipeline/TASK-2026-0396",
+    "pr": true
+  },
+  "history": [
+    {
+      "timestamp": "2026-07-17T02:04:42.791Z",
+      "action": "created",
+      "from": "none",
+      "to": "pending",
+      "agent": "MahdiHedhli",
+      "note": "Manual submission from Issue #1432"
+    }
+  ]
+}
