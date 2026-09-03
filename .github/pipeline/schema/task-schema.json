@@ -27,7 +27,7 @@
     },
     "status": {
       "type": "string",
-      "enum": ["pending", "locked", "complete", "failed", "blocked", "cancelled"],
+      "enum": ["pending", "locked", "pr_open", "complete", "failed", "blocked", "cancelled"],
       "description": "Task execution status"
     },
     "created": {
