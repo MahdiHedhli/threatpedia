@@ -94,79 +94,6 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     data-graph-selection-value={graphSelectionValue}
     data-supply-chain-explore={isExplore ? 'true' : 'false'}
   >
-    <div class="graph-chrome-actions" aria-label="Graph actions">
-      <button
-        class="graph-search-pill"
-        type="button"
-        data-sc-search-open
-        aria-label="Search graph"
-        title="Search graph"
-      >
-        <svg aria-hidden="true" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="6.25"></circle>
-          <path d="m16 16 4.2 4.2"></path>
-        </svg>
-        <span class="graph-search-label" aria-hidden="true">Search</span>
-        <span class="graph-search-shortcut" aria-hidden="true">⌘K / /</span>
-      </button>
-      <button
-        class="graph-icon-button"
-        type="button"
-        data-sc-graph-zoom="in"
-        aria-label="Zoom graph in"
-        title="Zoom in"
-      >
-        <span aria-hidden="true">+</span>
-      </button>
-      <button
-        class="graph-icon-button"
-        type="button"
-        data-sc-graph-zoom="out"
-        aria-label="Zoom graph out"
-        title="Zoom out"
-      >
-        <span aria-hidden="true">-</span>
-      </button>
-      {isExplore ? (
-        <a
-          class="graph-icon-button"
-          href="/supply-chain/"
-          data-sc-explore-exit
-          aria-label="Exit full screen"
-          title="Exit full screen"
-        >
-          <svg aria-hidden="true" viewBox="0 0 24 24">
-            <path d="M8 3v5H3"></path>
-            <path d="M3 8l6-6"></path>
-            <path d="M16 3v5h5"></path>
-            <path d="M21 8l-6-6"></path>
-            <path d="M8 21v-5H3"></path>
-            <path d="M3 16l6 6"></path>
-            <path d="M16 21v-5h5"></path>
-            <path d="M21 16l-6 6"></path>
-          </svg>
-        </a>
-      ) : (
-        <a
-          class="graph-icon-button"
-          href="/supply-chain/explore/"
-          data-sc-explore-enter
-          aria-label="Toggle full screen"
-          title="Full screen"
-        >
-          <svg aria-hidden="true" viewBox="0 0 24 24">
-            <path d="M3 9V3h6"></path>
-            <path d="M3 3l7 7"></path>
-            <path d="M21 9V3h-6"></path>
-            <path d="M21 3l-7 7"></path>
-            <path d="M3 15v6h6"></path>
-            <path d="M3 21l7-7"></path>
-            <path d="M21 15v6h-6"></path>
-            <path d="M21 21l-7-7"></path>
-          </svg>
-        </a>
-      )}
-    </div>
     <div
       class="graph-placeholder sc-graph-root"
       transition:persist="supply-chain-graph-hero"
@@ -177,39 +104,131 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       aria-describedby="supply-chain-graph-description"
       tabindex="0"
     >
-      <div class="graph-status">
-        <span data-sc-graph-status>{graphHero.status}</span>
-        <span>Actor to Incident</span>
+      <div class="graph-toolbar">
+        <div class="graph-toolbar-heading">
+          <span class="graph-toolbar-mark" aria-hidden="true"></span>
+          <strong>Supply Chain Graph</strong>
+          <span data-sc-graph-status>{graphHero.status}</span>
+        </div>
+        <div class="graph-toolbar-counts" aria-label="Graph totals">
+          {graphHero.nodeCount !== undefined && <span>{compactNumber(graphHero.nodeCount)} nodes</span>}
+          {graphHero.relationshipCount !== undefined && <span>{compactNumber(graphHero.relationshipCount)} relationships</span>}
+        </div>
+        <div class="graph-chrome-actions" aria-label="Graph actions">
+          <button
+            class="graph-search-pill"
+            type="button"
+            data-sc-search-open
+            aria-label="Search graph"
+            title="Search graph"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="6.25"></circle>
+              <path d="m16 16 4.2 4.2"></path>
+            </svg>
+            <span class="graph-search-label" aria-hidden="true">Search</span>
+            <span class="graph-search-shortcut" aria-hidden="true">⌘K / /</span>
+          </button>
+          <button
+            class="graph-icon-button"
+            type="button"
+            data-sc-graph-zoom="in"
+            aria-label="Zoom graph in"
+            title="Zoom in"
+          >
+            <span aria-hidden="true">+</span>
+          </button>
+          <button
+            class="graph-icon-button"
+            type="button"
+            data-sc-graph-zoom="out"
+            aria-label="Zoom graph out"
+            title="Zoom out"
+          >
+            <span aria-hidden="true">-</span>
+          </button>
+          {isExplore ? (
+            <a
+              class="graph-icon-button"
+              href="/supply-chain/"
+              data-sc-explore-exit
+              aria-label="Exit full screen"
+              title="Exit full screen"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M8 3v5H3"></path>
+                <path d="M3 8l6-6"></path>
+                <path d="M16 3v5h5"></path>
+                <path d="M21 8l-6-6"></path>
+                <path d="M8 21v-5H3"></path>
+                <path d="M3 16l6 6"></path>
+                <path d="M16 21v-5h5"></path>
+                <path d="M21 16l-6 6"></path>
+              </svg>
+            </a>
+          ) : (
+            <a
+              class="graph-icon-button"
+              href="/supply-chain/explore/"
+              data-sc-explore-enter
+              aria-label="Toggle full screen"
+              title="Full screen"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M3 9V3h6"></path>
+                <path d="M3 3l7 7"></path>
+                <path d="M21 9V3h-6"></path>
+                <path d="M21 3l-7 7"></path>
+                <path d="M3 15v6h6"></path>
+                <path d="M3 21l7-7"></path>
+                <path d="M21 15v6h-6"></path>
+                <path d="M21 21l-7-7"></path>
+              </svg>
+            </a>
+          )}
+        </div>
       </div>
-      <button
-        class="graph-focus-reflow"
-        type="button"
-        data-sc-graph-focus-reflow
-        aria-pressed="false"
-        hidden
-        disabled
-      >
-        Focus reflow
-      </button>
-      <canvas
-        class="sc-graph-canvas"
-        data-sc-graph-canvas
-        aria-hidden="true"
-      ></canvas>
-      <div class="sc-graph-label-layer" data-sc-graph-labels aria-hidden="true"></div>
-      <div class="graph-field sc-graph-fallback" aria-hidden="true">
-        <span class="lane lane-actor"></span>
-        <span class="lane lane-campaign"></span>
-        <span class="lane lane-incident"></span>
-        <span class="edge edge-one"></span>
-        <span class="edge edge-two"></span>
-        <span class="node node-actor">Actor</span>
-        <span class="node node-campaign">Campaign</span>
-        <span class="node node-incident">Incident</span>
+      <div class="sc-graph-stage" data-sc-graph-stage>
+        <button
+          class="graph-focus-reflow"
+          type="button"
+          data-sc-graph-focus-reflow
+          aria-pressed="false"
+          hidden
+          disabled
+        >
+          Focus reflow
+        </button>
+        <canvas
+          class="sc-graph-canvas"
+          data-sc-graph-canvas
+          aria-hidden="true"
+        ></canvas>
+        <div class="sc-graph-label-layer" data-sc-graph-labels aria-hidden="true"></div>
+        <div class="graph-field sc-graph-fallback" aria-hidden="true">
+          <span class="lane lane-actor"></span>
+          <span class="lane lane-campaign"></span>
+          <span class="lane lane-incident"></span>
+          <span class="edge edge-one"></span>
+          <span class="edge edge-two"></span>
+          <span class="node node-actor">Actor</span>
+          <span class="node node-campaign">Campaign</span>
+          <span class="node node-incident">Incident</span>
+        </div>
       </div>
-      <div class="graph-caption">
-        <strong data-sc-graph-caption-title>Supply Chain Graph</strong>
-        <span data-sc-graph-caption-body>Pan, zoom, and select actor, campaign, and incident tiers.</span>
+      <div class="graph-footer">
+        <div class="graph-caption" aria-live="polite">
+          <strong data-sc-graph-caption-title>Supply Chain Graph</strong>
+          <span data-sc-graph-caption-body>Pan, zoom, and select actor, campaign, and incident tiers.</span>
+        </div>
+        <div class="graph-legend" aria-label="Graph legend">
+          <span><i class="legend-node legend-actor"></i>Actor</span>
+          <span><i class="legend-node legend-campaign"></i>Campaign</span>
+          <span><i class="legend-node legend-incident"></i>Incident</span>
+          <span><i class="legend-node legend-package"></i>Package / release</span>
+          <span><i class="legend-edge legend-context"></i>Context</span>
+          <span><i class="legend-edge legend-propagation"></i>Propagation</span>
+        </div>
       </div>
       <p id="supply-chain-graph-description" class="sr-only" data-sc-graph-description>
         Supply Chain graph is loading. Keyboard controls become available after graph initialization.
@@ -800,12 +819,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
                 data-lineage-name={strain.name}
                 data-lineage-meta={`${strain.first_seen} · ${(strain.ecosystems || []).join(' · ')}`}
                 data-lineage-confidence={titleCase(strain.lineage_confidence)}
-                data-lineage-detail={strain.mutation_summary}
+                data-lineage-key-mutation={strain.key_mutation}
+                data-lineage-summary={strain.mutation_summary}
+                aria-label={`${strain.name}, ${strain.first_seen}, ${(strain.ecosystems || []).join(', ')}, ${titleCase(strain.lineage_confidence)} lineage. ${strain.key_mutation}`}
+                aria-pressed="false"
               >
-                <strong>{strain.name}</strong>
-                <span>{strain.first_seen} · {(strain.ecosystems || []).join(' · ')}</span>
-                <em>{strain.key_mutation}</em>
-                <b>{titleCase(strain.lineage_confidence)}</b>
+                <i class="lineage-node-mark" aria-hidden="true"></i>
+                <span class="lineage-node-copy">
+                  <strong>{strain.name}</strong>
+                  <small>{strain.first_seen}</small>
+                </span>
               </button>
             ))}
           </div>
@@ -816,9 +839,12 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
           <span><i class="legend-fork"></i> source-release fork event</span>
           <span>EVOLVED_FROM is genealogy; SEEDED_BY remains infection path.</span>
         </div>
-        <div class="lineage-detail" data-lineage-detail>
-          <strong>Hover a strain</strong>
-          <span>Targets and incidents live one layer down; this page traces family genealogy.</span>
+        <div class="lineage-detail" data-lineage-detail aria-live="polite">
+          <span class="lineage-detail-heading">
+            <strong>Focus a strain</strong>
+            <span>Hover, focus, or select a compact node</span>
+          </span>
+          <p>Mutation, ecosystem, confidence, and date stay available here without covering the topology.</p>
         </div>
       </section>
 
@@ -909,24 +935,35 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   (() => {
     const stage = document.querySelector('[data-lineage-stage]');
     if (!stage) return;
-    const detail = document.querySelector('[data-lineage-detail]');
+    const detail = document.querySelector('div[data-lineage-detail]');
     const parents = JSON.parse(stage.dataset.lineageParents || '{}');
     const nodes = Array.from(stage.querySelectorAll('[data-lineage-node]'));
     const edges = Array.from(stage.querySelectorAll('[data-lineage-edge]'));
     const labels = Array.from(stage.querySelectorAll('[data-lineage-edge-label]'));
-    const renderDetail = (title, meta, body) => {
+    let pinnedNode = null;
+    const renderDetail = (title, meta, keyMutation, body) => {
       if (!detail) return;
+      const heading = document.createElement('span');
+      heading.className = 'lineage-detail-heading';
       const titleEl = document.createElement('strong');
       titleEl.textContent = title;
       const metaEl = document.createElement('span');
       metaEl.textContent = meta;
+      heading.append(titleEl, metaEl);
+      const content = [];
+      if (keyMutation) {
+        const mutationEl = document.createElement('p');
+        const mutationLabel = document.createElement('b');
+        mutationLabel.textContent = 'Key mutation: ';
+        mutationEl.append(mutationLabel, document.createTextNode(keyMutation));
+        content.push(mutationEl);
+      }
       if (body) {
         const bodyEl = document.createElement('p');
         bodyEl.textContent = body;
-        detail.replaceChildren(titleEl, metaEl, bodyEl);
-      } else {
-        detail.replaceChildren(titleEl, metaEl);
+        content.push(bodyEl);
       }
+      detail.replaceChildren(heading, ...content);
     };
 
     const ancestry = (id) => {
@@ -944,11 +981,17 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       return chain;
     };
 
-    const clear = () => {
+    const reset = () => {
       nodes.forEach((node) => node.classList.remove('is-lit', 'is-dim'));
+      nodes.forEach((node) => node.setAttribute('aria-pressed', 'false'));
       edges.forEach((edge) => edge.classList.remove('is-lit', 'is-dim'));
       labels.forEach((label) => label.classList.remove('is-lit'));
-      renderDetail('Hover a strain', 'Targets and incidents live one layer down; this page traces family genealogy.');
+      renderDetail(
+        'Focus a strain',
+        'Hover, focus, or select a compact node',
+        '',
+        'Mutation, ecosystem, confidence, and date stay available here without covering the topology.'
+      );
     };
 
     const focusLineage = (button) => {
@@ -963,6 +1006,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
         const active = activeNodes.has(node.dataset.lineageNode);
         node.classList.toggle('is-lit', active);
         node.classList.toggle('is-dim', !active);
+        node.setAttribute('aria-pressed', String(node === pinnedNode));
       });
       edges.forEach((edge) => {
         const active = activeEdges.has(edge.dataset.lineageEdge);
@@ -973,16 +1017,29 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       renderDetail(
         button.dataset.lineageName || 'Unknown strain',
         `${button.dataset.lineageMeta || 'unknown'} · ${button.dataset.lineageConfidence || 'unknown'}`,
-        button.dataset.lineageDetail || ''
+        button.dataset.lineageKeyMutation || '',
+        button.dataset.lineageSummary || ''
       );
     };
 
     nodes.forEach((node) => {
       node.addEventListener('mouseenter', () => focusLineage(node));
       node.addEventListener('focus', () => focusLineage(node));
-      node.addEventListener('click', () => focusLineage(node));
+      node.addEventListener('click', () => {
+        pinnedNode = pinnedNode === node ? null : node;
+        if (pinnedNode) focusLineage(pinnedNode);
+        else reset();
+      });
     });
-    stage.addEventListener('mouseleave', clear);
+    stage.addEventListener('mouseleave', () => {
+      if (pinnedNode) focusLineage(pinnedNode);
+      else reset();
+    });
+    stage.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      pinnedNode = null;
+      reset();
+    });
   })();
 </script>
 
@@ -1050,9 +1107,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     margin-top: 0;
   }
 
-  .hero-meta span,
-  .graph-status span,
-  .graph-caption span {
+  .hero-meta span {
     border: 1px solid var(--border);
     color: var(--muted);
     font-family: var(--font-mono);
@@ -1064,20 +1119,28 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
   .graph-placeholder {
     position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(360px, 1fr) auto;
     overflow: hidden;
-    min-height: clamp(360px, 52vh, 580px);
+    min-height: clamp(520px, 64vh, 720px);
     border: 1px solid var(--border);
     border-radius: 4px 4px 0 0;
-    background:
-      radial-gradient(circle at center, rgba(232, 160, 32, 0.16) 0, rgba(232, 160, 32, 0.16) 1px, transparent 1.4px),
-      radial-gradient(ellipse at center, transparent 34%, rgba(3, 5, 9, 0.48) 100%),
-      var(--surface);
-    background-size: 34px 34px, auto, auto;
+    background: #06090d;
   }
 
   .graph-placeholder:focus-visible {
     outline: 2px solid var(--amber);
     outline-offset: 3px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .graph-hero-explore {
@@ -1115,6 +1178,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   .graph-hero-explore .graph-placeholder {
+    height: 100svh;
     min-height: 100svh;
     border-radius: 0;
     border-color: rgba(90, 106, 126, 0.34);
@@ -1130,16 +1194,93 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   .graph-chrome-actions {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 5;
     display: flex;
+    flex: 0 0 auto;
     gap: 8px;
+    margin-left: auto;
   }
 
   .graph-hero-explore .graph-chrome-actions {
-    right: 376px;
+    right: auto;
+  }
+
+  .graph-toolbar {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(90, 106, 126, 0.34);
+    background: rgba(8, 11, 16, 0.96);
+    padding: 10px 12px;
+  }
+
+  .graph-toolbar-heading,
+  .graph-toolbar-counts {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .graph-toolbar-heading strong {
+    overflow: hidden;
+    color: var(--white);
+    font-size: 0.88rem;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .graph-toolbar-heading > span:last-child,
+  .graph-toolbar-counts span {
+    border: 1px solid rgba(90, 106, 126, 0.34);
+    border-radius: 3px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    padding: 4px 6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .graph-toolbar-heading > span:last-child {
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #6ee7a0;
+  }
+
+  .graph-toolbar-mark {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+  }
+
+  .graph-toolbar-mark::before,
+  .graph-toolbar-mark::after {
+    content: '';
+    position: absolute;
+    border: 1px solid #ef4456;
+    border-radius: 50%;
+  }
+
+  .graph-toolbar-mark::before {
+    inset: 1px 6px 11px;
+    box-shadow: -5px 10px 0 -1px #06090d, -5px 10px 0 0 #ef4456, 5px 10px 0 -1px #06090d, 5px 10px 0 0 #ef4456;
+  }
+
+  .graph-toolbar-mark::after {
+    top: 5px;
+    left: 7px;
+    width: 1px;
+    height: 8px;
+    border: 0;
+    border-left: 1px solid #ef4456;
+    border-radius: 0;
+    transform: rotate(30deg);
+    transform-origin: top;
   }
 
   .graph-icon-button {
@@ -1271,6 +1412,19 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     grid-column: 1 / -1;
   }
 
+  .sc-graph-stage {
+    position: relative;
+    min-width: 0;
+    min-height: 360px;
+    overflow: hidden;
+    background:
+      linear-gradient(rgba(90, 106, 126, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90, 106, 126, 0.055) 1px, transparent 1px),
+      radial-gradient(ellipse at center, transparent 28%, rgba(3, 5, 9, 0.58) 100%),
+      #05080c;
+    background-size: 42px 42px, 42px 42px, auto, auto;
+  }
+
   .sc-graph-canvas {
     position: absolute;
     inset: 0;
@@ -1297,27 +1451,37 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     position: absolute;
     top: 0;
     left: 0;
-    display: block;
-    max-width: 220px;
-    border: 1px solid rgba(232, 160, 32, 0.34);
-    border-radius: 4px;
-    background: linear-gradient(180deg, rgba(13, 18, 26, 0.94), rgba(6, 9, 14, 0.88));
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+    display: inline-flex;
+    max-width: 190px;
+    align-items: center;
+    gap: 5px;
     color: var(--text);
     font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    line-height: 1.3;
-    padding: 5px 7px;
-    text-transform: uppercase;
+    font-size: 0.61rem;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    padding: 2px 3px;
+    text-shadow: 0 1px 2px #020305, 0 0 5px #020305, 0 0 8px #020305;
     white-space: nowrap;
     will-change: transform;
   }
 
+  :global(.sc-graph-label::before) {
+    content: '';
+    width: 5px;
+    height: 5px;
+    flex: 0 0 auto;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+  }
+
   :global(.sc-graph-label-selected) {
-    border-color: rgba(232, 160, 32, 0.82);
-    box-shadow: 0 0 0 1px rgba(232, 160, 32, 0.2), 0 10px 26px rgba(0, 0, 0, 0.36);
+    background: rgba(5, 8, 12, 0.82);
     color: var(--white);
+    outline: 1px solid rgba(232, 160, 32, 0.58);
+    outline-offset: 2px;
   }
 
   :global(.sc-graph-label-keyboard) {
@@ -1326,12 +1490,21 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   :global(.sc-graph-label-actor) {
-    border-color: rgba(232, 160, 32, 0.72);
-    color: var(--white);
+    color: #ff6675;
   }
 
   :global(.sc-graph-label-campaign) {
-    border-color: rgba(232, 160, 32, 0.58);
+    color: #b779ff;
+  }
+
+  :global(.sc-graph-label-incident) {
+    color: #f6b84f;
+  }
+
+  :global(.sc-graph-label-package),
+  :global(.sc-graph-label-release),
+  :global(.sc-graph-label-organization) {
+    color: #55db91;
   }
 
   .sc-graph-root[data-graph-status='ready'] .sc-graph-fallback,
@@ -1340,26 +1513,13 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     display: none;
   }
 
-  .graph-status,
-  .graph-focus-reflow,
-  .graph-caption {
+  .graph-focus-reflow {
     position: absolute;
     z-index: 4;
   }
 
-  .graph-status,
-  .graph-caption {
-    display: flex;
-    gap: 8px;
-  }
-
-  .graph-status {
-    top: 16px;
-    left: 16px;
-  }
-
   .graph-focus-reflow {
-    top: 60px;
+    top: 14px;
     right: 16px;
     border: 1px solid rgba(232, 160, 32, 0.7);
     border-radius: 4px;
@@ -1378,15 +1538,71 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     display: none;
   }
 
-  .graph-caption {
-    right: 16px;
-    bottom: 16px;
+  .graph-footer {
+    position: relative;
+    z-index: 4;
+    display: grid;
+    grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1fr);
+    gap: 12px 24px;
     align-items: center;
-    max-width: min(440px, calc(100% - 32px));
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    background: rgba(8, 11, 16, 0.82);
-    padding: 10px;
+    border-top: 1px solid rgba(90, 106, 126, 0.34);
+    background: rgba(8, 11, 16, 0.96);
+    padding: 9px 12px;
+  }
+
+  .graph-caption {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+  }
+
+  .graph-legend {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 7px 13px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .graph-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .legend-node,
+  .legend-edge {
+    display: inline-block;
+    flex: 0 0 auto;
+  }
+
+  .legend-node {
+    width: 8px;
+    height: 8px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .legend-actor { color: #ef4456; transform: rotate(45deg); border-radius: 1px; }
+  .legend-campaign { color: #9b5de5; border-radius: 1px; }
+  .legend-incident { color: #e8a020; }
+  .legend-package { color: #22c76f; }
+
+  .legend-edge {
+    width: 22px;
+    border-top: 1px solid #657286;
+  }
+
+  .legend-propagation {
+    border-color: #22c76f;
+    border-top-style: dashed;
   }
 
   :global(.sc-search-backdrop) {
@@ -1478,18 +1694,24 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
   .graph-caption strong {
     color: var(--white);
-    font-family: var(--font-serif);
-    font-size: 1rem;
+    font-size: 0.7rem;
     line-height: 1.25;
   }
 
   .graph-caption span {
-    flex: 0 0 auto;
+    overflow: hidden;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.03em;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .graph-field {
     position: absolute;
-    inset: 62px 22px 70px;
+    inset: 22px;
   }
 
   .lane,
@@ -2327,7 +2549,11 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     overflow-x: auto;
     border: 1px solid var(--border);
     border-radius: 6px;
-    background: radial-gradient(130% 100% at 75% 0%, #0e141b, #070a0e);
+    background:
+      linear-gradient(rgba(90, 106, 126, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90, 106, 126, 0.055) 1px, transparent 1px),
+      radial-gradient(130% 100% at 75% 0%, #0e141b, #070a0e);
+    background-size: 42px 42px, 42px 42px, auto;
   }
 
   .lineage-stage {
@@ -2348,6 +2574,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   .lineage-edge {
     fill: none;
     stroke-width: 2;
+    opacity: 0.66;
+    transition: opacity 140ms ease, stroke 140ms ease;
   }
 
   .lineage-confirmed {
@@ -2360,7 +2588,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   .lineage-edge.is-lit {
-    stroke: var(--amber);
+    stroke: #34d17a;
+    opacity: 1;
   }
 
   .lineage-edge.is-dim {
@@ -2389,52 +2618,77 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   .lineage-node {
     position: absolute;
     display: grid;
-    gap: 5px;
-    width: 172px;
+    grid-template-columns: 18px minmax(0, 1fr);
+    gap: 8px;
+    width: 138px;
+    min-height: 48px;
+    align-items: center;
     transform: translate(-50%, -50%);
-    border: 1px solid var(--border);
-    border-left-width: 3px;
-    border-radius: 5px;
-    background: var(--surface);
+    border: 1px solid rgba(90, 106, 126, 0.58);
+    border-radius: 4px;
+    background: rgba(7, 10, 14, 0.94);
     color: var(--text);
     cursor: pointer;
-    padding: 9px 11px 10px;
+    padding: 7px 9px;
     text-align: left;
+    transition: border-color 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
   }
 
   .lineage-node:hover,
   .lineage-node:focus-visible,
   .lineage-node.is-lit {
-    border-color: var(--amber);
-    box-shadow: 0 0 0 1px var(--amber), 0 0 22px rgba(232, 160, 32, 0.18);
+    border-color: #34d17a;
+    box-shadow: 0 0 0 1px rgba(52, 209, 122, 0.44), 0 0 22px rgba(52, 209, 122, 0.12);
     outline: none;
   }
 
   .lineage-node.is-dim {
-    opacity: 0.32;
+    opacity: 0.25;
   }
 
-  .lineage-node strong {
+  .lineage-node-copy {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+  }
+
+  .lineage-node-copy strong {
+    overflow: hidden;
     color: var(--white);
-    font-size: 0.86rem;
+    font-size: 0.74rem;
     line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .lineage-node span {
+  .lineage-node-copy small {
     color: var(--muted);
     font-family: var(--font-mono);
-    font-size: 0.59rem;
+    font-size: 0.52rem;
     letter-spacing: 0.04em;
   }
 
-  .lineage-node em {
-    color: var(--text);
-    font-size: 0.7rem;
-    font-style: normal;
-    line-height: 1.25;
+  .lineage-node-mark {
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+    background: #070a0e;
+    box-shadow: 0 0 0 3px rgba(232, 160, 32, 0.1), 0 0 10px rgba(232, 160, 32, 0.24);
   }
 
-  .lineage-node b,
+  .lineage-node-confirmed .lineage-node-mark {
+    border-color: #34d17a;
+    box-shadow: 0 0 0 3px rgba(52, 209, 122, 0.1), 0 0 10px rgba(52, 209, 122, 0.2);
+  }
+
+  .lineage-node-suspected .lineage-node-mark {
+    border-color: var(--severity-high);
+    border-radius: 2px;
+    transform: rotate(45deg);
+  }
+
   .lineage-pill {
     width: max-content;
     border: 1px solid var(--border);
@@ -2448,19 +2702,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     text-transform: uppercase;
   }
 
-  .lineage-node-origin b,
   .lineage-pill-origin {
     border-color: var(--amber);
     color: var(--amber);
   }
 
-  .lineage-node-confirmed b,
   .lineage-pill-confirmed {
     border-color: #2f6a3a;
     color: #7fd18c;
   }
 
-  .lineage-node-suspected b,
   .lineage-pill-suspected {
     border-color: #7a5418;
     color: var(--severity-high);
@@ -2468,14 +2719,20 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
   .lineage-fork {
     position: absolute;
-    transform: translate(-50%, -50%);
-    text-align: center;
+    display: grid;
+    grid-template-columns: 22px max-content;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    align-items: center;
+    transform: translate(-11px, -50%);
+    text-align: left;
   }
 
   .lineage-fork-diamond {
+    grid-row: 1 / 3;
     width: 22px;
     height: 22px;
-    margin: 0 auto 10px;
+    margin: 0;
     transform: rotate(45deg);
     border: 2px solid var(--amber);
     background: var(--surface);
@@ -2493,20 +2750,23 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
   }
 
   .lineage-fork strong {
+    grid-column: 2;
     color: var(--amber);
   }
 
   .lineage-fork span {
+    grid-column: 2;
     color: var(--muted);
-    margin-top: 3px;
+    margin-top: 2px;
   }
 
   .lineage-edge-label {
     position: absolute;
     max-width: 150px;
     transform: translate(-50%, -50%);
+    opacity: 0;
     border-radius: 3px;
-    background: rgba(7, 10, 14, 0.82);
+    background: rgba(7, 10, 14, 0.94);
     color: var(--muted);
     font-family: var(--font-mono);
     font-size: 0.56rem;
@@ -2514,10 +2774,12 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     padding: 2px 6px;
     pointer-events: none;
     text-align: center;
+    transition: opacity 120ms ease;
   }
 
   .lineage-edge-label.is-lit {
     color: var(--white);
+    opacity: 1;
   }
 
   .lineage-legend {
@@ -2560,8 +2822,10 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
   .lineage-detail {
     display: grid;
-    gap: 4px;
-    min-height: 58px;
+    grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1fr);
+    gap: 8px 22px;
+    min-height: 76px;
+    align-items: start;
     margin-top: 14px;
     border: 1px solid var(--border);
     border-left: 2px solid var(--amber);
@@ -2570,13 +2834,18 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     padding: 13px 15px;
   }
 
-  .lineage-detail strong {
+  .lineage-detail-heading {
+    display: grid;
+    gap: 3px;
+  }
+
+  .lineage-detail-heading strong {
     color: var(--white);
     font-family: var(--font-serif);
     font-size: 1rem;
   }
 
-  .lineage-detail span {
+  .lineage-detail-heading span {
     color: var(--muted);
     font-family: var(--font-mono);
     font-size: 0.64rem;
@@ -2586,6 +2855,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
 
   .lineage-detail p {
     margin: 0;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  .lineage-detail p + p {
+    grid-column: 2;
+  }
+
+  .lineage-detail p b {
+    color: var(--amber);
   }
 
   .lineage-changelog {
@@ -2661,7 +2940,8 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     }
 
     .graph-placeholder {
-      min-height: 420px;
+      grid-template-rows: auto minmax(330px, 1fr) auto;
+      min-height: 500px;
     }
 
     .graph-hero-explore {
@@ -2673,15 +2953,32 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
       min-height: 100svh;
     }
 
-    .graph-hero-explore .graph-chrome-actions {
-      right: 16px;
+    .graph-toolbar {
+      gap: 8px;
+      padding: 8px;
     }
 
-    .graph-hero-explore .graph-caption {
-      bottom: 94px;
-      left: 12px;
-      right: 12px;
-      max-width: none;
+    .graph-toolbar-counts,
+    .graph-toolbar-heading > span:last-child {
+      display: none;
+    }
+
+    .graph-icon-button,
+    .graph-search-pill {
+      height: 32px;
+    }
+
+    .graph-icon-button {
+      width: 32px;
+    }
+
+    .graph-footer {
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
+    .graph-legend {
+      justify-content: flex-start;
     }
 
     .sc-explore-rail {
@@ -2705,7 +3002,7 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     }
 
     .graph-caption {
-      display: block;
+      display: grid;
     }
 
     .graph-search-pill {
@@ -2724,8 +3021,16 @@ const graphSelectionValue = page.kind === 'incident' ? page.incident.id : page.k
     }
 
     .graph-caption span {
-      display: inline-block;
-      margin-top: 8px;
+      display: block;
+      margin-top: 0;
+    }
+
+    .lineage-detail {
+      grid-template-columns: 1fr;
+    }
+
+    .lineage-detail p + p {
+      grid-column: 1;
     }
 
     .timeline-list li,
