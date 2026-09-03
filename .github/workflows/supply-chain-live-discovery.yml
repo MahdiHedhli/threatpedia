@@ -2,7 +2,7 @@ name: "Supply Chain: Live Discovery"
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "17 */6 * * *"
   workflow_dispatch:
     inputs:
       execute:
@@ -67,9 +67,6 @@ jobs:
           set -euo pipefail
           BRANCH="${DISCOVERY_BRANCH}"
           PREVIOUS_QUEUE="$RUNNER_TEMP/supply-chain-previous-queue.json"
-          PREVIOUS_PACKET_DIR="$RUNNER_TEMP/supply-chain-previous-vulncheck-packets"
-          VULNCHECK_PACKET_DIR=".github/pipeline/source-packets/vulncheck-kev"
-          PRESERVED_PACKET_COUNT=0
           REMOTE_HEAD=""
 
           git fetch origin main
@@ -87,22 +84,6 @@ jobs:
                 git show "origin/${BRANCH}:${QUEUE_PATH}" > "$PREVIOUS_QUEUE"
                 echo "Preserving the pending candidate queue while rebuilding from current main."
               fi
-
-              mkdir -p "$PREVIOUS_PACKET_DIR"
-              while IFS= read -r packet_path; do
-                [ -n "$packet_path" ] || continue
-                if git cat-file -e "origin/main:${packet_path}" 2>/dev/null; then
-                  continue
-                fi
-                relative_path="${packet_path#${VULNCHECK_PACKET_DIR}/}"
-                mkdir -p "$PREVIOUS_PACKET_DIR/$(dirname "$relative_path")"
-                git show "origin/${BRANCH}:${packet_path}" > "$PREVIOUS_PACKET_DIR/$relative_path"
-                PRESERVED_PACKET_COUNT=$((PRESERVED_PACKET_COUNT + 1))
-              done < <(
-                git diff --name-only --diff-filter=A origin/main..."origin/${BRANCH}" -- "${VULNCHECK_PACKET_DIR}/*.json" \
-                  | awk '!/\/latest\.json$/'
-              )
-              echo "Preserving ${PRESERVED_PACKET_COUNT} branch-only VulnCheck source packets."
             fi
           fi
 
@@ -113,27 +94,7 @@ jobs:
             mkdir -p "$(dirname "$QUEUE_PATH")"
             cp "$PREVIOUS_QUEUE" "$QUEUE_PATH"
           fi
-          if [ "$PRESERVED_PACKET_COUNT" -gt 0 ]; then
-            mkdir -p "$VULNCHECK_PACKET_DIR"
-            cp -R "$PREVIOUS_PACKET_DIR"/. "$VULNCHECK_PACKET_DIR"/
-          fi
           echo "DISCOVERY_REMOTE_HEAD=${REMOTE_HEAD}" >> "$GITHUB_ENV"
-
-      - name: Run VulnCheck KEV source-packet intake
-        if: ${{ inputs.execute != 'false' }}
-        env:
-          VULNCHECKAPI: ${{ secrets.VULNCHECKAPI }}
-        run: |
-          set -euo pipefail
-          if [ -z "${VULNCHECKAPI:-}" ]; then
-            echo "::warning::VULNCHECKAPI secret is not configured; continuing without fresh VulnCheck lead contribution."
-          else
-            node scripts/vulncheck-kev-intake.mjs \
-              --execute \
-              --max-candidates 30 \
-              --cache "$RUNNER_TEMP/vulncheck-kev-backup.json" \
-              --out "$RUNNER_TEMP/vulncheck-kev-intake-result.json"
-          fi
 
       - name: Run Supply Chain live discovery
         env:
@@ -159,13 +120,23 @@ jobs:
           fi
           node scripts/supply-chain-live-discovery.mjs --check --queue-path "$CHECK_PATH"
 
-      - name: Commit candidate queue to branch
+      - name: Regenerate supply-chain public artifacts
+        if: ${{ inputs.execute != 'false' }}
+        run: |
+          set -euo pipefail
+          node scripts/build-supply-chain-graph.mjs
+
+      - name: Commit candidate queue and public artifacts to branch
         id: commit
         if: ${{ inputs.execute != 'false' }}
         run: |
           set -euo pipefail
           LEASE="--force-with-lease=refs/heads/${DISCOVERY_BRANCH}:${DISCOVERY_REMOTE_HEAD:-}"
-          git add .github/pipeline/supply-chain-candidates/ .github/pipeline/source-packets/vulncheck-kev/
+          git add \
+            .github/pipeline/supply-chain-candidates/ \
+            site/public/supply-chain-graph.json \
+            site/public/supply-chain-malware-families-stix.json \
+            site/public/supply-chain-search-index.json
           if git diff --cached --quiet; then
             echo "No candidate queue changes this run."
             if [ -n "${DISCOVERY_REMOTE_HEAD:-}" ]; then
@@ -206,7 +177,7 @@ jobs:
 
             const top = (queue.candidates || []).slice(0, 10);
             let body = '## Supply Chain B1 candidate queue\n\n';
-            body += 'This PR updates the live Supply Chain discovery/classification queue. It is candidate review only: no article tasks, no drafts, and no corpus records are created by this lane.\n\n';
+            body += 'This PR updates the live Supply Chain discovery/classification queue from public registry, OSV, and GitHub Advisory signals, then regenerates its deterministic public graph/search artifacts. The existing VulnCheck index on `main` may contribute read-only supplemental signals, but this workflow does not produce VulnCheck packets. It is candidate review only: no article tasks, no drafts, and no corpus records are created by this lane.\n\n';
             body += `Review requested: @MahdiHedhli @dangermouse-bot @ernestpenfold-bot.\n\n`;
             body += `Summary: ${queue.summary.candidates_emitted} emitted candidates, ${queue.summary.current_candidates} current, ${queue.summary.matched_existing} matched existing corpus subjects.\n`;
             body += `Currency: latest corpus ${queue.currency.latest_corpus_incident_at || 'unknown'}, latest discovery ${queue.currency.latest_discovery_signal_at || 'none'}, pending ${queue.currency.pending_candidate_count}.\n\n`;
