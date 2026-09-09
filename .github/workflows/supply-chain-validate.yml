@@ -4,12 +4,15 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
+      - ".github/workflows/supply-chain-live-discovery.yml"
       - ".github/workflows/supply-chain-validate.yml"
       - "data/supply-chain-entities/**"
       - "data/supply-chain-incidents/**"
+      - "data/supply-chain-malware-families/**"
       - "data/supply-chain-relationships/**"
       - "docs/supply-chain*.md"
       - ".github/pipeline/supply-chain-candidates/**"
+      - "scripts/build-supply-chain-graph.mjs"
       - "scripts/build_supply_chain_entities.py"
       - "scripts/supply-chain-live-discovery.mjs"
       - "scripts/supply_chain_purl.py"
@@ -17,7 +20,11 @@ on:
       - "scripts/validate_supply_chain_incidents.py"
       - "scripts/test-supply-chain-pages.mjs"
       - "scripts/test-supply-chain-live-discovery.mjs"
+      - "scripts/test-pipeline-orchestration-contracts.mjs"
       - "site/src/lib/supplyChainPages.mjs"
+      - "site/public/supply-chain-graph.json"
+      - "site/public/supply-chain-malware-families-stix.json"
+      - "site/public/supply-chain-search-index.json"
       - "tests/test_supply_chain*.py"
       - "tests/fixtures/supply_chain_live_discovery/**"
   workflow_dispatch:
@@ -39,6 +46,12 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Install script dependencies
+        run: cd scripts && npm ci --no-audit --no-fund
+
+      - name: Run orchestration contract tests
+        run: node scripts/test-pipeline-orchestration-contracts.mjs
+
       - name: Python syntax
         run: |
           python3 -m py_compile \
@@ -57,10 +70,10 @@ jobs:
         run: python3 -m unittest tests/test_supply_chain_purl.py tests/test_supply_chain_incidents.py tests/test_supply_chain_graph.py
 
       - name: Run live discovery candidate queue test
-        run: |
-          cd scripts
-          npm ci --no-audit --no-fund
-          node test-supply-chain-live-discovery.mjs
+        run: node scripts/test-supply-chain-live-discovery.mjs
+
+      - name: Check generated supply-chain artifacts
+        run: node scripts/build-supply-chain-graph.mjs --check
 
       - name: Run page model test
         run: node scripts/test-supply-chain-pages.mjs

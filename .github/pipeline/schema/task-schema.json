@@ -3,7 +3,11 @@
   "title": "Threatpedia Pipeline Task",
   "description": "Schema for pipeline task files. Agent-agnostic: any agent reads this file, reads the referenced specs, and produces the output.",
   "type": "object",
-  "required": ["task_id", "stage", "type", "priority", "status", "input", "acceptance", "output"],
+  "required": ["task_id", "type", "priority", "status", "input", "output"],
+  "anyOf": [
+    { "required": ["acceptance_criteria"] },
+    { "required": ["acceptance"] }
+  ],
   "properties": {
     "task_id": {
       "type": "string",
@@ -12,7 +16,7 @@
     },
     "stage": {
       "type": "string",
-      "enum": ["discovery", "triage", "draft", "validation", "review", "revision", "approval", "publish"],
+      "enum": ["discovery", "triage", "draft", "generation", "validation", "review", "revision", "approval", "publish"],
       "description": "Current pipeline stage"
     },
     "type": {
@@ -27,7 +31,7 @@
     },
     "status": {
       "type": "string",
-      "enum": ["pending", "locked", "complete", "failed", "blocked", "cancelled"],
+      "enum": ["pending", "locked", "pr_open", "complete", "failed", "blocked", "cancelled"],
       "description": "Task execution status"
     },
     "created": {
@@ -51,7 +55,7 @@
     },
     "source": {
       "type": "string",
-      "enum": ["auto_discovery", "manual_submission", "enrichment", "backfill"],
+      "enum": ["auto_discovery", "promotion", "manual_submission", "enrichment", "backfill", "automated_submission", "historical-corpus", "historical_corpus_backlog"],
       "description": "How this task entered the pipeline"
     },
     "submitted_by": {
@@ -100,15 +104,40 @@
       "items": { "type": "string" },
       "description": "Spec sections the agent must follow. Defaults applied by dispatcher if omitted."
     },
-    "acceptance": {
+    "acceptance_criteria": {
       "type": "object",
-      "description": "Machine-checkable acceptance criteria. Validation Action checks these.",
+      "description": "Canonical machine-checkable acceptance criteria used by current task writers.",
       "properties": {
         "frontmatter_valid": { "type": "boolean", "default": true },
         "min_sources": { "type": "integer", "default": 3 },
         "min_h2_sections": { "type": "integer", "default": 5 },
         "min_mitre_mappings": { "type": "integer", "default": 1 },
-        "review_status": { "type": "string", "default": "draft_ai" },
+        "review_status": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "minItems": 1, "items": { "type": "string" } }
+          ],
+          "default": "draft_ai"
+        },
+        "schema_validation": { "type": "string", "enum": ["pass", "warn"], "default": "pass" },
+        "astro_build": { "type": "boolean", "default": true }
+      }
+    },
+    "acceptance": {
+      "type": "object",
+      "description": "Legacy acceptance criteria retained for existing task compatibility.",
+      "properties": {
+        "frontmatter_valid": { "type": "boolean", "default": true },
+        "min_sources": { "type": "integer", "default": 3 },
+        "min_h2_sections": { "type": "integer", "default": 5 },
+        "min_mitre_mappings": { "type": "integer", "default": 1 },
+        "review_status": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "minItems": 1, "items": { "type": "string" } }
+          ],
+          "default": "draft_ai"
+        },
         "schema_validation": { "type": "string", "enum": ["pass", "warn"], "default": "pass" },
         "build_passes": { "type": "boolean", "default": true }
       }
@@ -136,7 +165,7 @@
           "description": "Git branch name for this task's work"
         },
         "pr": {
-          "type": "boolean",
+          "type": ["boolean", "null"],
           "default": true,
           "description": "Whether to open a PR when draft is complete"
         },
