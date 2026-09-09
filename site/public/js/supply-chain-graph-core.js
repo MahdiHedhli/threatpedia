@@ -5,8 +5,8 @@ const REST_DRAWABLE_TIERS = new Set(['actor', 'campaign', 'incident']);
 const BLOOM_TIERS = new Set(['organization', 'package', 'release', 'repository', 'maintainer', 'account', 'supporting']);
 const BLOOM_NODE_BUDGET = 28;
 const BLOOM_Z_THRESHOLD = 1.55;
-const CAMPAIGN_LABEL_Z = 1.18;
-const INCIDENT_LABEL_Z = 1.48;
+const CAMPAIGN_LABEL_Z = 0.62;
+const INCIDENT_LABEL_Z = 0.68;
 const DEEP_LABEL_Z = 1.95;
 const TECHNIQUE_Z_THRESHOLD = 1.45;
 const ALL_INCIDENT_Z_THRESHOLD = 1.72;
@@ -16,18 +16,23 @@ const CAMERA_Z_STEP = 1.28;
 const RECENT_WINDOW_DAYS = 183;
 const REST_NODE_BUDGET = 40;
 const SEVERITY_COLORS = {
-  critical: [1.0, 0.267, 0.267, 1],
-  high: [1.0, 0.647, 0.0, 1],
-  medium: [0.91, 0.627, 0.125, 1],
-  low: [0.318, 0.812, 0.4, 1],
-  actor: [1.0, 0.647, 0.0, 1],
-  campaign: [0.91, 0.627, 0.125, 1],
-  technique: [0.804, 0.835, 0.878, 1],
-  organization: [0.91, 0.627, 0.125, 1],
-  package: [0.91, 0.627, 0.125, 1],
-  release: [0.804, 0.835, 0.878, 1],
-  propagation: [1.0, 0.647, 0.0, 1],
-  default: [0.804, 0.835, 0.878, 1],
+  critical: [0.96, 0.22, 0.29, 1],
+  high: [0.96, 0.48, 0.19, 1],
+  medium: [0.91, 0.63, 0.13, 1],
+  low: [0.22, 0.78, 0.44, 1],
+  actor: [0.94, 0.27, 0.34, 1],
+  campaign: [0.61, 0.36, 0.9, 1],
+  technique: [0.32, 0.65, 0.98, 1],
+  organization: [0.18, 0.76, 0.66, 1],
+  package: [0.13, 0.78, 0.44, 1],
+  release: [0.31, 0.76, 0.92, 1],
+  repository: [0.32, 0.65, 0.98, 1],
+  maintainer: [0.82, 0.84, 0.88, 1],
+  account: [0.96, 0.72, 0.23, 1],
+  supporting: [0.48, 0.56, 0.67, 1],
+  propagation: [0.13, 0.78, 0.44, 1],
+  context: [0.48, 0.55, 0.65, 1],
+  default: [0.72, 0.77, 0.84, 1],
   muted: [0.353, 0.416, 0.494, 0.32],
 };
 
@@ -176,6 +181,12 @@ function nodeRadius(node) {
   return 8;
 }
 
+function nodeShape(node) {
+  if (node?.tier === 'actor' || node?.tier === 'release') return 1;
+  if (node?.tier === 'campaign' || node?.tier === 'package' || node?.tier === 'repository' || node?.tier === 'account') return 2;
+  return 0;
+}
+
 class SupplyChainQuadtree {
   constructor(bounds, depth = 0) {
     this.bounds = bounds;
@@ -319,7 +330,7 @@ function packageIdForRelease(releaseId, edges) {
 }
 
 function buildBloomLayout(incident, context, sourceNodes, sourceEdges, offset = 0) {
-  const centerX = incident.x + 280;
+  const centerX = incident.x + 620;
   const centerY = incident.y + 16;
   const visibleChildren = sortBloomNodes(
     [
@@ -543,20 +554,8 @@ function buildLayout(payload) {
     }
   });
 
+  const threshold = recentThreshold(incidentNodes);
   const actorSlots = [...actorNodes, { id: 'actor-unattributed', virtual: true, label: 'Unattributed' }];
-  const actorPosition = new Map();
-  actorSlots.forEach((node, index) => {
-    const angle = (index / Math.max(1, actorSlots.length)) * Math.PI * 2 - Math.PI / 2;
-    const ringX = actorSlots.length <= 3 ? 360 : 500;
-    const ringY = actorSlots.length <= 3 ? 240 : 330;
-    actorPosition.set(node.id, { x: Math.cos(angle) * ringX, y: Math.sin(angle) * ringY });
-    if (!node.virtual) {
-      node.x = Math.cos(angle) * ringX;
-      node.y = Math.sin(angle) * ringY;
-      node.radius = nodeRadius(node);
-    }
-  });
-
   const incidentsByActor = new Map(actorSlots.map((node) => [node.id, []]));
   incidentNodes
     .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')))
@@ -566,53 +565,91 @@ function buildLayout(payload) {
       list.push(node);
     });
 
-  incidentsByActor.forEach((items, actorId) => {
-    const center = actorPosition.get(actorId) || { x: 0, y: 0 };
+  const activeActorSlots = actorSlots.filter((actor) =>
+    (incidentsByActor.get(actor.id) || []).some((incident) => isRecentIncident(incident, threshold))
+  );
+  const archiveActorSlots = actorSlots.filter((actor) => !activeActorSlots.includes(actor));
+  const orderedActorSlots = [...activeActorSlots, ...archiveActorSlots];
+  let laneCursor = 0;
+  activeActorSlots.forEach((actor) => {
+    const items = (incidentsByActor.get(actor.id) || []).filter((incident) => isRecentIncident(incident, threshold));
+    const rows = Math.max(1, Math.ceil(items.length / 2));
+    const laneHeight = Math.max(108, rows * 58 + 44);
+    const centerY = laneCursor + laneHeight / 2;
+    if (!actor.virtual) {
+      actor.x = -560;
+      actor.y = centerY;
+      actor.radius = nodeRadius(actor);
+    }
     items.forEach((node, index) => {
-      const ring = Math.floor(index / 7);
-      const angle = ((index % 7) / Math.min(7, Math.max(1, items.length - ring * 7))) * Math.PI * 2 - Math.PI / 2 + ring * 0.38;
-      const radius = 118 + ring * 78;
-      node.x = center.x + Math.cos(angle) * radius;
-      node.y = center.y + Math.sin(angle) * radius;
+      const column = index % 2;
+      const row = Math.floor(index / 2);
+      node.x = 40 + column * 190;
+      node.y = laneCursor + 34 + row * 58;
       node.radius = nodeRadius(node);
     });
+    laneCursor += laneHeight + 18;
   });
 
+  orderedActorSlots.forEach((actor) => {
+    const items = (incidentsByActor.get(actor.id) || []).filter((incident) => !isRecentIncident(incident, threshold));
+    if (items.length === 0) return;
+    const rows = Math.max(1, Math.ceil(items.length / 2));
+    const laneHeight = Math.max(150, rows * 86 + 54);
+    const centerY = laneCursor + laneHeight / 2;
+    if (!activeActorSlots.includes(actor)) {
+      if (!actor.virtual) {
+        actor.x = -560;
+        actor.y = centerY;
+        actor.radius = nodeRadius(actor);
+      }
+    }
+    items.forEach((node, index) => {
+      const column = index % 2;
+      const row = Math.floor(index / 2);
+      node.x = 40 + column * 190;
+      node.y = laneCursor + 54 + row * 86;
+      node.radius = nodeRadius(node);
+    });
+    laneCursor += laneHeight + 34;
+  });
+
+  const layoutMidpoint = Math.max(0, laneCursor - 34) / 2;
+  actorNodes.forEach((node) => { node.y -= layoutMidpoint; });
+  incidentNodes.forEach((node) => { node.y -= layoutMidpoint; });
+
   campaignNodes.forEach((node, index) => {
-    const incidentChildren = incidentNodes.filter((incident) => incidentCampaign.get(incident.id) === node.id);
+    const allIncidentChildren = incidentNodes.filter((incident) => incidentCampaign.get(incident.id) === node.id);
+    const recentIncidentChildren = allIncidentChildren.filter((incident) => isRecentIncident(incident, threshold));
+    const incidentChildren = recentIncidentChildren.length > 0 ? recentIncidentChildren : allIncidentChildren;
     if (incidentChildren.length > 0) {
-      const actorId = incidentActor.get(incidentChildren[0].id) || 'actor-unattributed';
-      const center = actorPosition.get(actorId) || { x: 0, y: 0 };
-      const avg = {
-        x: incidentChildren.reduce((sum, child) => sum + child.x, 0) / incidentChildren.length,
-        y: incidentChildren.reduce((sum, child) => sum + child.y, 0) / incidentChildren.length,
-      };
-      node.x = center.x * 0.62 + avg.x * 0.38;
-      node.y = center.y * 0.62 + avg.y * 0.38;
+      node.x = -240;
+      node.y = incidentChildren.reduce((sum, child) => sum + child.y, 0) / incidentChildren.length;
     } else {
-      const angle = (index / Math.max(1, campaignNodes.length)) * Math.PI * 2 - Math.PI / 2;
-      node.x = Math.cos(angle) * 260;
-      node.y = Math.sin(angle) * 180;
+      node.x = -240;
+      node.y = -layoutMidpoint + index * 96;
     }
     node.radius = nodeRadius(node);
   });
 
   techniqueNodes.forEach((node, index) => {
-    const incidentChildren = payload.edges
+    const allIncidentChildren = payload.edges
       .filter((edge) => edge.type === 'INCIDENT_TECHNIQUE' && edge.source === node.id)
       .map((edge) => nodeById.get(edge.target))
       .filter(Boolean);
+    const recentIncidentChildren = allIncidentChildren.filter((incident) => isRecentIncident(incident, threshold));
+    const incidentChildren = recentIncidentChildren.length > 0 ? recentIncidentChildren : allIncidentChildren;
     if (incidentChildren.length > 0) {
       const avg = {
         x: incidentChildren.reduce((sum, child) => sum + child.x, 0) / incidentChildren.length,
         y: incidentChildren.reduce((sum, child) => sum + child.y, 0) / incidentChildren.length,
       };
-      const angle = (index % 12) / 12 * Math.PI * 2;
-      node.x = avg.x + Math.cos(angle) * 76;
-      node.y = avg.y + Math.sin(angle) * 52;
+      const offset = (index % 5) - 2;
+      node.x = 480 + Math.floor(index / 5) * 54;
+      node.y = avg.y + offset * 34;
     } else {
-      node.x = -240 + (index % 10) * 54;
-      node.y = 460 + Math.floor(index / 10) * 44;
+      node.x = 480 + (index % 4) * 48;
+      node.y = layoutMidpoint + 100 + Math.floor(index / 4) * 42;
     }
     node.radius = nodeRadius(node);
   });
@@ -698,6 +735,7 @@ class SupplyChainGraph {
   constructor(root, payload) {
     this.root = root;
     this.payload = payload;
+    this.stage = root.querySelector('[data-sc-graph-stage]') || root;
     this.canvas = root.querySelector('[data-sc-graph-canvas]');
     this.labelLayer = root.querySelector('[data-sc-graph-labels]');
     this.status = root.querySelector('[data-sc-graph-status]');
@@ -754,27 +792,33 @@ class SupplyChainGraph {
         attribute vec2 a_position;
         attribute vec4 a_color;
         attribute float a_size;
+        attribute float a_shape;
         uniform vec2 u_resolution;
         uniform vec3 u_camera;
         varying vec4 v_color;
+        varying float v_shape;
         void main() {
           vec2 screen = (a_position - u_camera.xy) * u_camera.z + u_resolution * 0.5;
           vec2 clip = (screen / u_resolution) * 2.0 - 1.0;
           gl_Position = vec4(clip * vec2(1.0, -1.0), 0.0, 1.0);
           gl_PointSize = a_size * u_camera.z;
           v_color = a_color;
+          v_shape = a_shape;
         }
       `,
       `
         precision mediump float;
         varying vec4 v_color;
+        varying float v_shape;
         void main() {
           vec2 center = gl_PointCoord - vec2(0.5);
           float d = length(center);
+          if (v_shape > 0.5 && v_shape < 1.5) d = abs(center.x) + abs(center.y);
+          if (v_shape >= 1.5) d = max(abs(center.x), abs(center.y));
           if (d > 0.5) discard;
           float core = 1.0 - smoothstep(0.02, 0.5, d);
           float rim = smoothstep(0.28, 0.5, d);
-          vec3 lit = mix(v_color.rgb, vec3(1.0, 0.86, 0.52), core * 0.38);
+          vec3 lit = mix(v_color.rgb, vec3(1.0), core * 0.26);
           vec3 shaded = mix(lit, v_color.rgb * 0.42, rim);
           float alpha = v_color.a * (1.0 - smoothstep(0.44, 0.5, d));
           gl_FragColor = vec4(shaded, alpha);
@@ -812,7 +856,7 @@ class SupplyChainGraph {
 
   bind() {
     this.resizeObserver = new ResizeObserver(() => this.resize());
-    this.resizeObserver.observe(this.root);
+    this.resizeObserver.observe(this.stage);
     this.canvas.addEventListener('pointerdown', (event) => {
       this.canvas.setPointerCapture(event.pointerId);
       this.activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -1248,7 +1292,7 @@ class SupplyChainGraph {
   }
 
   resize() {
-    const rect = this.root.getBoundingClientRect();
+    const rect = this.stage.getBoundingClientRect();
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     this.viewport = { width: Math.max(1, rect.width), height: Math.max(1, rect.height), dpr };
     this.canvas.width = Math.floor(this.viewport.width * dpr);
@@ -1257,7 +1301,7 @@ class SupplyChainGraph {
     this.canvas.style.height = `${this.viewport.height}px`;
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     if (!this.hasInitialFrame) {
-      this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport), true);
+      this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport, 70), true);
       this.hasInitialFrame = true;
     }
   }
@@ -1272,10 +1316,12 @@ class SupplyChainGraph {
     const incidents = incidentNodes
       .filter((node) => isRecentIncident(node, threshold))
       .sort((a, b) => String(b.time || '').localeCompare(String(a.time || '')));
-    const relatedIds = new Set(this.layout.nodes.filter((node) => node.tier === 'actor').map((node) => node.id));
-    incidents.forEach((node) => relatedIds.add(node.id));
+    const incidentIds = new Set(incidents.map((node) => node.id));
+    const relatedIds = new Set(incidentIds);
     this.layout.edges.forEach((edge) => {
-      if (!relatedIds.has(edge.target) && !relatedIds.has(edge.source)) return;
+      const sourceIsIncident = incidentIds.has(edge.source);
+      const targetIsIncident = incidentIds.has(edge.target);
+      if (!sourceIsIncident && !targetIsIncident) return;
       const sourceTier = this.layout.nodeById.get(edge.source)?.tier;
       const targetTier = this.layout.nodeById.get(edge.target)?.tier;
       if (sourceTier === 'actor' || sourceTier === 'campaign' || sourceTier === 'incident') relatedIds.add(edge.source);
@@ -1517,7 +1563,7 @@ class SupplyChainGraph {
     this.pageSelection = { type: 'overview', value: 'recent' };
     this.keyboardNodeId = null;
     this.lastBloomIncidentId = null;
-    this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport));
+    this.setCameraTarget(fitBounds(this.recentNodes(), this.viewport, 70));
     this.updateCaption(
       'Supply Chain Graph',
       `${this.payload.nodes.length} corpus nodes and ${this.payload.edges.length} typed edges loaded.`
@@ -1792,6 +1838,10 @@ class SupplyChainGraph {
     if (node.tier === 'technique') return SEVERITY_COLORS.technique;
     if (node.tier === 'organization') return SEVERITY_COLORS.organization;
     if (node.tier === 'release') return SEVERITY_COLORS.release;
+    if (node.tier === 'repository') return SEVERITY_COLORS.repository;
+    if (node.tier === 'maintainer') return SEVERITY_COLORS.maintainer;
+    if (node.tier === 'account') return SEVERITY_COLORS.account;
+    if (node.tier === 'supporting') return SEVERITY_COLORS.supporting;
     if (this.selection?.type === 'stage' && node.tier === 'incident') {
       return this.selection.nodes.has(node.id) ? SEVERITY_COLORS[node.sev] || SEVERITY_COLORS.default : SEVERITY_COLORS.muted;
     }
@@ -1804,20 +1854,20 @@ class SupplyChainGraph {
   }
 
   edgeAlpha(edge) {
-    if (!this.selection) return 0.11;
-    if (edge.type === 'SEEDED_BY') return edge.propagation_tier === 'causal' ? 0.72 : 0.38;
-    if (this.selection.nodes?.has(edge.source) && this.selection.nodes?.has(edge.target)) return 0.68;
-    if (this.selection.nodes?.has(edge.source) || this.selection.nodes?.has(edge.target)) return 0.42;
+    if (!this.selection) return edge.type === 'SEEDED_BY' ? 0.56 : 0.3;
+    if (edge.type === 'SEEDED_BY') return edge.propagation_tier === 'causal' ? 0.82 : 0.5;
+    if (this.selection.nodes?.has(edge.source) && this.selection.nodes?.has(edge.target)) return 0.76;
+    if (this.selection.nodes?.has(edge.source) || this.selection.nodes?.has(edge.target)) return 0.48;
     return 0.035;
   }
 
   colorForEdge(edge) {
-    if (edge.type === 'ATTRIBUTED_TO_ACTOR') return SEVERITY_COLORS.high;
+    if (edge.type === 'ATTRIBUTED_TO_ACTOR' || edge.type === 'RELATED_CAMPAIGN') return SEVERITY_COLORS.context;
     if (edge.type === 'INCIDENT_TECHNIQUE') return SEVERITY_COLORS.technique;
     if (edge.type === 'SEEDED_BY') return edge.propagation_tier === 'causal' ? SEVERITY_COLORS.propagation : SEVERITY_COLORS.muted;
-    if (edge.type === 'PACKAGE_RELEASE' || edge.type === 'INCIDENT_AFFECTED_RELEASE') return SEVERITY_COLORS.release;
-    if (edge.type === 'AFFECTED_ORGANIZATION' || edge.type === 'AFFECTED_PACKAGE') return SEVERITY_COLORS.package;
-    return SEVERITY_COLORS.medium;
+    if (edge.type === 'PACKAGE_RELEASE' || edge.type === 'INCIDENT_AFFECTED_RELEASE') return SEVERITY_COLORS.propagation;
+    if (edge.type.startsWith('AFFECTED_') || edge.type === 'COMPROMISED_ACCOUNT') return SEVERITY_COLORS.propagation;
+    return SEVERITY_COLORS.context;
   }
 
   labelPriority(node) {
@@ -1835,15 +1885,15 @@ class SupplyChainGraph {
   labelCandidates(node) {
     const position = this.worldToScreen(this.displayNode(node));
     const text = shortNodeLabel(node);
-    const width = Math.min(190, Math.max(58, String(text || '').length * 7.1 + 18));
-    const height = 24;
+    const width = Math.min(178, Math.max(52, String(text || '').length * 6.3 + 13));
+    const height = 18;
     const anchors = [
-      { anchorIndex: 0, x: 12, y: -10 },
-      { anchorIndex: 1, x: -width - 12, y: -10 },
-      { anchorIndex: 2, x: 12, y: 14 },
-      { anchorIndex: 3, x: -width - 12, y: 14 },
-      { anchorIndex: 4, x: -width / 2, y: -34 },
-      { anchorIndex: 5, x: -width / 2, y: 20 },
+      { anchorIndex: 0, x: 12, y: -7 },
+      { anchorIndex: 1, x: -width - 12, y: -7 },
+      { anchorIndex: 2, x: 12, y: 10 },
+      { anchorIndex: 3, x: -width - 12, y: 10 },
+      { anchorIndex: 4, x: -width / 2, y: -26 },
+      { anchorIndex: 5, x: -width / 2, y: 16 },
     ];
     const previous = this.labelPlacements?.get(node.id);
     if (Number.isInteger(previous)) {
@@ -1971,22 +2021,26 @@ class SupplyChainGraph {
         color[1],
         color[2],
         color[3],
-        selected ? node.radius * 2.5 : node.radius * 2
+        selected ? node.radius * 2.5 : node.radius * 2,
+        nodeShape(node)
       );
     });
     gl.useProgram(this.nodeProgram);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.nodeBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(values), gl.DYNAMIC_DRAW);
-    const stride = 7 * 4;
+    const stride = 8 * 4;
     const position = gl.getAttribLocation(this.nodeProgram, 'a_position');
     const color = gl.getAttribLocation(this.nodeProgram, 'a_color');
     const size = gl.getAttribLocation(this.nodeProgram, 'a_size');
+    const shape = gl.getAttribLocation(this.nodeProgram, 'a_shape');
     gl.enableVertexAttribArray(position);
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, stride, 0);
     gl.enableVertexAttribArray(color);
     gl.vertexAttribPointer(color, 4, gl.FLOAT, false, stride, 2 * 4);
     gl.enableVertexAttribArray(size);
     gl.vertexAttribPointer(size, 1, gl.FLOAT, false, stride, 6 * 4);
+    gl.enableVertexAttribArray(shape);
+    gl.vertexAttribPointer(shape, 1, gl.FLOAT, false, stride, 7 * 4);
     gl.uniform2f(gl.getUniformLocation(this.nodeProgram, 'u_resolution'), this.canvas.width, this.canvas.height);
     gl.uniform3f(
       gl.getUniformLocation(this.nodeProgram, 'u_camera'),
@@ -1994,7 +2048,7 @@ class SupplyChainGraph {
       this.camera.cy,
       this.camera.z * this.viewport.dpr
     );
-    gl.drawArrays(gl.POINTS, 0, values.length / 7);
+    gl.drawArrays(gl.POINTS, 0, values.length / 8);
   }
 
   drawLabels() {
@@ -2054,7 +2108,7 @@ class SupplyChainGraph {
     this.ensureSemanticBloom();
     this.currentVisibleGraph = this.visibleGraph();
     const gl = this.gl;
-    gl.clearColor(0.031, 0.043, 0.063, 1);
+    gl.clearColor(0.019, 0.031, 0.047, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     this.drawEdges();
     this.drawNodes();
