@@ -3,7 +3,7 @@
   "stage": "draft",
   "type": "zero-day",
   "priority": "P0",
-  "status": "pending",
+  "status": "pr_open",
   "created": "2026-06-23T19:53:54.898Z",
   "updated": "2026-06-24T17:24:33.654Z",
   "source": "auto_discovery",
@@ -87,12 +87,29 @@
       "note": "Dispatched as Issue #1287"
     },
     {
+      "timestamp": "2026-06-24T16:14:55.790Z",
+      "from": "pending",
+      "to": "locked",
+      "agent": "Danger Mouse Bot",
+      "note": "Locked for execution"
+    },
+    {
+      "timestamp": "2026-06-24T16:20:28.871Z",
+      "from": "locked",
+      "to": "pr_open",
+      "agent": "Danger Mouse Bot",
+      "action": "pr_opened",
+      "note": "Article generated, validated, and recorded against PR #1297"
+    },
+    {
       "timestamp": "2026-06-24T17:24:33.654Z",
       "action": "dispatch_skipped",
-      "from": "pending",
-      "to": "pending",
+      "from": "pr_open",
+      "to": "pr_open",
       "agent": "dispatcher",
       "note": "Dispatch skipped because open PR #1297 already covers this task."
     }
-  ]
+  ],
+  "pr_number": 1297,
+  "pr_url": "https://github.com/MahdiHedhli/threatpedia/pull/1297"
 }
